@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		880BCF5318C78B4000EA9760 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 880BCF5218C78B4000EA9760 /* main.cpp */; };
 		880BCF5518C78B4000EA9760 /* GroupProjectCSE20212.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 880BCF5418C78B4000EA9760 /* GroupProjectCSE20212.1 */; };
+		880BCF5E18C78C6100EA9760 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 880BCF5D18C78C6100EA9760 /* OpenGL.framework */; };
+		8813E7DB18CA109800F357D6 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8813E7DA18CA109800F357D6 /* SDL2.framework */; };
+		8813E7E018CA111100F357D6 /* ProgramCreator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8813E7DE18CA111100F357D6 /* ProgramCreator.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,6 +31,10 @@
 		880BCF4F18C78B4000EA9760 /* GroupProjectCSE20212 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GroupProjectCSE20212; sourceTree = BUILT_PRODUCTS_DIR; };
 		880BCF5218C78B4000EA9760 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		880BCF5418C78B4000EA9760 /* GroupProjectCSE20212.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = GroupProjectCSE20212.1; sourceTree = "<group>"; };
+		880BCF5D18C78C6100EA9760 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		8813E7DA18CA109800F357D6 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDL2.framework; sourceTree = "<group>"; };
+		8813E7DE18CA111100F357D6 /* ProgramCreator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ProgramCreator.cpp; path = OpenGLHelper/ProgramCreator.cpp; sourceTree = "<group>"; };
+		8813E7DF18CA111100F357D6 /* ProgramCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProgramCreator.h; path = OpenGLHelper/ProgramCreator.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,6 +42,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8813E7DB18CA109800F357D6 /* SDL2.framework in Frameworks */,
+				880BCF5E18C78C6100EA9760 /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -44,6 +53,8 @@
 		880BCF4618C78B4000EA9760 = {
 			isa = PBXGroup;
 			children = (
+				8813E7DA18CA109800F357D6 /* SDL2.framework */,
+				880BCF5D18C78C6100EA9760 /* OpenGL.framework */,
 				880BCF5118C78B4000EA9760 /* GroupProjectCSE20212 */,
 				880BCF5018C78B4000EA9760 /* Products */,
 			);
@@ -60,10 +71,28 @@
 		880BCF5118C78B4000EA9760 /* GroupProjectCSE20212 */ = {
 			isa = PBXGroup;
 			children = (
+				8813E7DD18CA10AC00F357D6 /* GLSL */,
+				8813E7DC18CA10A200F357D6 /* OpenGL Helper Objects */,
 				880BCF5218C78B4000EA9760 /* main.cpp */,
 				880BCF5418C78B4000EA9760 /* GroupProjectCSE20212.1 */,
 			);
 			path = GroupProjectCSE20212;
+			sourceTree = "<group>";
+		};
+		8813E7DC18CA10A200F357D6 /* OpenGL Helper Objects */ = {
+			isa = PBXGroup;
+			children = (
+				8813E7DF18CA111100F357D6 /* ProgramCreator.h */,
+				8813E7DE18CA111100F357D6 /* ProgramCreator.cpp */,
+			);
+			name = "OpenGL Helper Objects";
+			sourceTree = "<group>";
+		};
+		8813E7DD18CA10AC00F357D6 /* GLSL */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = GLSL;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -118,6 +147,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				880BCF5318C78B4000EA9760 /* main.cpp in Sources */,
+				8813E7E018CA111100F357D6 /* ProgramCreator.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -195,6 +225,11 @@
 		880BCF5918C78B4000EA9760 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+					"/Users/panelcu/GitHub/CSE-20212-Final-Project/GroupProjectCSE20212",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -202,6 +237,11 @@
 		880BCF5A18C78B4000EA9760 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+					"/Users/panelcu/GitHub/CSE-20212-Final-Project/GroupProjectCSE20212",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -225,6 +265,7 @@
 				880BCF5A18C78B4000EA9760 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
