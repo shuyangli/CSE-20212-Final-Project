@@ -26,13 +26,210 @@
 // GLM headers
 #define GLM_FORCE_RADIANS
 #include "Helper/glm/glm.hpp"
-#include "Helper/glm/gtc/matrix_transform.hpp"   // GLM extensions
+#include "Helper/glm/gtc/matrix_transform.hpp"      // GLM extensions
+
+// Game objects
+#include "Drawable/Drawable.h"
+
+
+#pragma mark - Declarations
+
+typedef enum _myMenuSelection_t {
+    kMyMenuSelectionDefault = -1,
+    kMyMenuSelectionQuit = 0,
+    kMyMenuSelectionMainGame,
+    kMyMenuSelectionSetting
+} myMenuSelection_t;
+
+typedef enum _myGameStatus_t {
+    kMyGameStatusEnd,
+    kMyGameStatusOngoing
+} myGameStatus_t;
+
+
+bool initSDL();
+void setupOpenGL();
+static void quit(int exitCode);
+
+
+static void processEvents();
+static void keyDownFunc(SDL_Keysym *keysym);
+//static void resizeFunc(SDL_Event *resizeEvent);   // currently disabled window resize
+
+
+myMenuSelection_t displayMainMenu();
+void displaySetting();
+void newGame();
+void redrawGameScreen();
+
+
+#pragma mark - Global variables
+
+SDL_Window * mainWindow = NULL;
+SDL_GLContext mainContext;
+
+GLuint globalProgram = 0;
+
+
+#pragma mark - Main
 
 int main(int argc, const char * argv[])
 {
 
-    // insert code here...
-    std::cout << "Hello, World!\n";
+    if (!initSDL()) quit(1);
+    setupOpenGL();
+    
+    myMenuSelection_t sel = kMyMenuSelectionDefault;
+    
+    while (sel != kMyMenuSelectionQuit) {
+        
+        sel = displayMainMenu();
+        
+        switch (sel) {
+            case kMyMenuSelectionMainGame:
+                newGame();
+                break;
+                
+            case kMyMenuSelectionSetting:
+                displaySetting();
+                break;
+                
+            default:
+                break;
+        }
+    }
+    
+    quit(0);
+    
+    // never reached
     return 0;
 }
 
+
+#pragma mark - Setup and event processing functions
+
+bool initSDL() {
+    
+    // init SDL
+    if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
+        std::cerr << "SDL failed to initialize: " << SDL_GetError() << std::endl;
+        return false;
+    }
+    
+    // create window with OpenGL context
+    mainWindow = SDL_CreateWindow(WINDOW_TITLE,
+                                  SDL_WINDOWPOS_UNDEFINED,
+                                  SDL_WINDOWPOS_UNDEFINED,
+                                  STARTING_WINDOW_WIDTH, STARTING_WINDOW_HEIGHT,
+                                  SDL_WINDOW_OPENGL);
+    mainContext = SDL_GL_CreateContext(mainWindow);
+    
+    SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
+    SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
+    SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
+    
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+    
+    // enable depth test, backface culling
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+    glEnable(GL_CULL_FACE);
+    
+    // error checking
+    if (mainWindow == 0) {
+        std::cerr << "Video mode set failed: " << SDL_GetError() << std::endl;
+        return false;
+    }
+    
+    return true;
+}
+
+void setupOpenGL(int width, int height) {
+    
+#warning Initialize buffer objects and feed data
+    
+    // create program
+    ProgramCreator myProgramCreator;
+    
+#warning Load shaders
+//    myProgramCreator.loadShader(GL_VERTEX_SHADER, MY_VERTEX_SHADER_PATH);
+    
+    // link program
+    globalProgram = myProgramCreator.linkProgram();
+
+}
+
+static void quit(int exitCode) {
+    SDL_GL_DeleteContext(mainContext);
+    SDL_DestroyWindow(mainWindow);
+    SDL_Quit();
+    exit(exitCode);
+}
+
+static void processEvents() {
+    
+    // Grab all the events off the event queue
+    SDL_Event event;
+    while(SDL_PollEvent(&event)) {
+        switch(event.type) {
+            case SDL_KEYDOWN:
+                keyDownFunc(&event.key.keysym);
+                break;
+                
+            case SDL_QUIT:
+                quit(0);
+                break;
+                
+            default:
+                break;
+        }
+    }
+}
+
+static void keyDownFunc(SDL_Keysym * keysym) {
+    
+    switch (keysym -> sym) {
+        case SDLK_ESCAPE:
+#warning Ideally this should display an in-game menu instead of quitting directly
+            quit(0);
+            break;
+            
+        default:
+            break;
+    }
+}
+
+
+#pragma mark - Game Functions
+
+myMenuSelection_t displayMainMenu() {
+    myMenuSelection_t tempSel = kMyMenuSelectionDefault;
+    
+#warning TODO
+    
+    return tempSel;
+}
+
+void displaySetting() {
+#warning TODO
+    
+}
+
+void newGame() {
+#warning TODO
+    
+    myGameStatus_t gameStatus = kMyGameStatusOngoing;
+    
+    // main event loop
+    while (gameStatus != kMyGameStatusEnd) {
+        processEvents();
+        redrawGameScreen();
+    }
+    
+}
+
+
+void redrawGameScreen() {
+#warning TODO
+}

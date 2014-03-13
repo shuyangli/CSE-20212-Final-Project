@@ -9,6 +9,8 @@
 #ifndef GroupProjectCSE20212_Constants_h
 #define GroupProjectCSE20212_Constants_h
 
-
+#define STARTING_WINDOW_WIDTH   650
+#define STARTING_WINDOW_HEIGHT  650
+#define WINDOW_TITLE "CSE 20212 Group Project"
 
 #endif

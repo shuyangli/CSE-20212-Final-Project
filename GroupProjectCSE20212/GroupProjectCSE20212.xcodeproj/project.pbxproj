@@ -287,6 +287,7 @@
 		88BB817E18CA90580036728A /* vec4.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vec4.hpp; sourceTree = "<group>"; };
 		88BB817F18CA90580036728A /* vector_relational.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vector_relational.hpp; sourceTree = "<group>"; };
 		88BB818118CA90580036728A /* xstream.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = xstream.hpp; sourceTree = "<group>"; };
+		88DBB60718D23B0800DBF2B4 /* Drawable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Drawable.h; path = Drawable/Drawable.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -324,6 +325,7 @@
 		880BCF5118C78B4000EA9760 /* GroupProjectCSE20212 */ = {
 			isa = PBXGroup;
 			children = (
+				88DBB60618D23AFC00DBF2B4 /* Drawable */,
 				88BB808118CA90450036728A /* Constants.h */,
 				8813E7DD18CA10AC00F357D6 /* GLSL */,
 				8813E7DC18CA10A200F357D6 /* Helper */,
@@ -638,6 +640,14 @@
 				88BB818118CA90580036728A /* xstream.hpp */,
 			);
 			path = virtrev;
+			sourceTree = "<group>";
+		};
+		88DBB60618D23AFC00DBF2B4 /* Drawable */ = {
+			isa = PBXGroup;
+			children = (
+				88DBB60718D23B0800DBF2B4 /* Drawable.h */,
+			);
+			name = Drawable;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
