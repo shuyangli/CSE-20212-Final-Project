@@ -49,7 +49,7 @@ public:
     /*
      * drawableObjectType_t type()
      *
-     * Performs inflection on the Drawable object; returns the corresponding
+     * Performs reflection on the Drawable object; returns the corresponding
      * enum defined at the beginning of this header file
      *
      */
