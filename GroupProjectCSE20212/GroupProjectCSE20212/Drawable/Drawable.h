@@ -12,36 +12,48 @@
 #include <iostream>
 #include <OpenGL/gl.h>
 
+#warning Part of an attempt to add reflection to Drawable objects; this enum list must be updated with all new subclasses of Drawable
+// Shuyang: Reflection could be very helpful in my mind; I'm not entierly sure what we're going to do with it yet, but it should be a good thing to know at debug time
+typedef enum _drawableObjectType_t {
+    kDrawableObjectTypeSkybox = 0,
+    kDrawableObjectTypeMotorcycle,
+    // and add other kDrawableObjectType... here
+} drawableObjectType_t;
+
 class Drawable {
+    
+public:
     
     /*
      * Abstract class as protocol for all drawable on-screen objects
      *
-     * Note: nothing is implemented; all methods must be implemented in
-     * all subclasses of Drawable
+     * All methods here are public and serve as an outline to the
+     * functionalities of all Drawable objects in the game; 
+     * implementation detail is deferred to its subclasses
+     *
+     * Note: All methods MUST BE IMPLEMENTED in all subclasses
      *
      */
     
-public:
-    
     Drawable();
-    virtual ~Drawable();
+    virtual ~Drawable() = 0;
     
     /*
      * void draw()
      *
-     * Draws the object on screen
+     * Draws the object on screen with its correct
      *
      */
     virtual void draw() = 0;
     
     /*
-     * public variables for program and shader used to
+     * drawableObjectType_t type()
+     *
+     * Performs inflection on the Drawable object; returns the corresponding
+     * enum defined at the beginning of this header file
      *
      */
-    
-    GLuint program;
-    
+    virtual drawableObjectType_t type() = 0;
     
 };
 
