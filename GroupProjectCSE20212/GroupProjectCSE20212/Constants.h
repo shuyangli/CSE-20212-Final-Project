@@ -13,4 +13,11 @@
 #define STARTING_WINDOW_HEIGHT  650
 #define WINDOW_TITLE "CSE 20212 Group Project"
 
+#pragma mark - GLSL Programs
+#define MY_VERTEX_SHADER_PATH "./GLSL/vertex.glsl"
+#define MY_FRAGMENT_SHADER_PATH "./GLSL/fragment.glsl"
+
+#pragma mark - Objects
+#define WHEEL_PATH "./Resource/Model/Wheel.obj"
+
 #endif

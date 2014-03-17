@@ -22,6 +22,7 @@
 // Helpers
 #include "Constants.h"
 #include "Helper/ProgramCreator.h"
+#include "Helper/ObjLoader.h"
 
 // GLM headers
 #define GLM_FORCE_RADIANS
@@ -79,25 +80,30 @@ int main(int argc, const char * argv[])
     if (!initSDL()) quit(1);
     setupOpenGL();
     
-    myMenuSelection_t sel = kMyMenuSelectionDefault;
+//    myMenuSelection_t sel = kMyMenuSelectionDefault;
+//    
+//    while (sel != kMyMenuSelectionQuit) {
+//        
+//        sel = displayMainMenu();
+//        
+//        switch (sel) {
+//            case kMyMenuSelectionMainGame:
+//                newGame();
+//                break;
+//                
+//            case kMyMenuSelectionSetting:
+//                displaySetting();
+//                break;
+//                
+//            default:
+//                break;
+//        }
+//    }
     
-    while (sel != kMyMenuSelectionQuit) {
-        
-        sel = displayMainMenu();
-        
-        switch (sel) {
-            case kMyMenuSelectionMainGame:
-                newGame();
-                break;
-                
-            case kMyMenuSelectionSetting:
-                displaySetting();
-                break;
-                
-            default:
-                break;
-        }
-    }
+    while (true) {              // temporary
+        processEvents();        // temporary
+        redrawGameScreen();     // temporary
+    }                           // temporary
     
     quit(0);
     
@@ -145,15 +151,33 @@ bool initSDL() {
     return true;
 }
 
-void setupOpenGL(int width, int height) {
+GLuint wheelObjectBuffer;       // temporary
+GLuint wheelIndiceBuffer;       // temporary
+ObjLoader loader;               // temporary
+
+void setupOpenGL() {
     
 #warning Initialize buffer objects and feed data
     
+    loader.loadObj(WHEEL_PATH);
+    
+    glGenBuffers(1, &wheelObjectBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, wheelObjectBuffer);
+    glBufferData(GL_ARRAY_BUFFER, loader.getVertices().size() * sizeof(GLfloat), &loader.getVertices()[0], GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    
+    glGenBuffers(1, &wheelIndiceBuffer);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, wheelIndiceBuffer);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, loader.getIndices().size() * sizeof(GLuint), &loader.getIndices()[0], GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    
+    
+#warning Create program and load shaders
     // create program
     ProgramCreator myProgramCreator;
     
-#warning Load shaders
-//    myProgramCreator.loadShader(GL_VERTEX_SHADER, MY_VERTEX_SHADER_PATH);
+    myProgramCreator.loadShader(GL_VERTEX_SHADER, MY_VERTEX_SHADER_PATH);
+    myProgramCreator.loadShader(GL_FRAGMENT_SHADER, MY_FRAGMENT_SHADER_PATH);
     
     // link program
     globalProgram = myProgramCreator.linkProgram();
@@ -232,4 +256,15 @@ void newGame() {
 
 void redrawGameScreen() {
 #warning TODO
+    
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
+    glUseProgram(globalProgram);
+    
+    glDrawElements(GL_TRIANGLES, loader.getIndices().size(), GL_UNSIGNED_INT, 0);
+    
+    glUseProgram(0);
+    
+    SDL_GL_SwapWindow(mainWindow);
 }

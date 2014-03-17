@@ -11,6 +11,8 @@
 		880BCF5518C78B4000EA9760 /* GroupProjectCSE20212.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 880BCF5418C78B4000EA9760 /* GroupProjectCSE20212.1 */; };
 		880BCF5E18C78C6100EA9760 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 880BCF5D18C78C6100EA9760 /* OpenGL.framework */; };
 		8813E7DB18CA109800F357D6 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8813E7DA18CA109800F357D6 /* SDL2.framework */; };
+		88276C0418D69405005FB674 /* ObjLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88276C0018D69405005FB674 /* ObjLoader.cpp */; };
+		88276C0518D69405005FB674 /* tiny_obj_loader.cc in Sources */ = {isa = PBXBuildFile; fileRef = 88276C0218D69405005FB674 /* tiny_obj_loader.cc */; };
 		88BB807E18CA8FF10036728A /* ProgramCreator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88BB807C18CA8FF10036728A /* ProgramCreator.cpp */; };
 /* End PBXBuildFile section */
 
@@ -33,6 +35,13 @@
 		880BCF5418C78B4000EA9760 /* GroupProjectCSE20212.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = GroupProjectCSE20212.1; sourceTree = "<group>"; };
 		880BCF5D18C78C6100EA9760 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		8813E7DA18CA109800F357D6 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDL2.framework; sourceTree = "<group>"; };
+		88276C0018D69405005FB674 /* ObjLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ObjLoader.cpp; path = Helper/ObjLoader.cpp; sourceTree = "<group>"; };
+		88276C0118D69405005FB674 /* ObjLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ObjLoader.h; path = Helper/ObjLoader.h; sourceTree = "<group>"; };
+		88276C0218D69405005FB674 /* tiny_obj_loader.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tiny_obj_loader.cc; path = Helper/tiny_obj_loader.cc; sourceTree = "<group>"; };
+		88276C0318D69405005FB674 /* tiny_obj_loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tiny_obj_loader.h; path = Helper/tiny_obj_loader.h; sourceTree = "<group>"; };
+		88276C0618D6944B005FB674 /* fragment.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; name = fragment.glsl; path = glsl/fragment.glsl; sourceTree = "<group>"; };
+		88276C0718D6944B005FB674 /* vertex.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; name = vertex.glsl; path = glsl/vertex.glsl; sourceTree = "<group>"; };
+		88276C0918D69DAB005FB674 /* Wheel.obj */ = {isa = PBXFileReference; lastKnownFileType = text; name = Wheel.obj; path = GroupProjectCSE20212/Resource/Model/Wheel.obj; sourceTree = "<group>"; };
 		88BB807C18CA8FF10036728A /* ProgramCreator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ProgramCreator.cpp; path = Helper/ProgramCreator.cpp; sourceTree = "<group>"; };
 		88BB807D18CA8FF10036728A /* ProgramCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProgramCreator.h; path = Helper/ProgramCreator.h; sourceTree = "<group>"; };
 		88BB808118CA90450036728A /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
@@ -306,6 +315,7 @@
 		880BCF4618C78B4000EA9760 = {
 			isa = PBXGroup;
 			children = (
+				88276C0818D69DA0005FB674 /* Resources */,
 				88BB808218CA90580036728A /* glm */,
 				8813E7DA18CA109800F357D6 /* SDL2.framework */,
 				880BCF5D18C78C6100EA9760 /* OpenGL.framework */,
@@ -338,6 +348,10 @@
 		8813E7DC18CA10A200F357D6 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				88276C0118D69405005FB674 /* ObjLoader.h */,
+				88276C0018D69405005FB674 /* ObjLoader.cpp */,
+				88276C0318D69405005FB674 /* tiny_obj_loader.h */,
+				88276C0218D69405005FB674 /* tiny_obj_loader.cc */,
 				88BB807D18CA8FF10036728A /* ProgramCreator.h */,
 				88BB807C18CA8FF10036728A /* ProgramCreator.cpp */,
 			);
@@ -347,8 +361,26 @@
 		8813E7DD18CA10AC00F357D6 /* GLSL */ = {
 			isa = PBXGroup;
 			children = (
+				88276C0618D6944B005FB674 /* fragment.glsl */,
+				88276C0718D6944B005FB674 /* vertex.glsl */,
 			);
 			name = GLSL;
+			sourceTree = "<group>";
+		};
+		88276C0818D69DA0005FB674 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				88276C0A18D69DAE005FB674 /* Model */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		88276C0A18D69DAE005FB674 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				88276C0918D69DAB005FB674 /* Wheel.obj */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 		88BB808218CA90580036728A /* glm */ = {
@@ -703,6 +735,8 @@
 			files = (
 				880BCF5318C78B4000EA9760 /* main.cpp in Sources */,
 				88BB807E18CA8FF10036728A /* ProgramCreator.cpp in Sources */,
+				88276C0518D69405005FB674 /* tiny_obj_loader.cc in Sources */,
+				88276C0418D69405005FB674 /* ObjLoader.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
