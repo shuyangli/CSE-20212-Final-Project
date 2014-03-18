@@ -161,6 +161,8 @@ void setupOpenGL() {
     
     loader.loadObj(WHEEL_PATH);
     
+    // temporary
+    
     glGenBuffers(1, &wheelObjectBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, wheelObjectBuffer);
     glBufferData(GL_ARRAY_BUFFER, loader.getVertices().size() * sizeof(GLfloat), &loader.getVertices()[0], GL_STATIC_DRAW);
@@ -171,8 +173,8 @@ void setupOpenGL() {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, loader.getIndices().size() * sizeof(unsigned int), &loader.getIndices()[0], GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     
-    
 #warning Create program and load shaders
+    
     // create program
     ProgramCreator myProgramCreator;
     
@@ -181,6 +183,8 @@ void setupOpenGL() {
     
     // link program
     globalProgram = myProgramCreator.linkProgram();
+    
+    // temporary up to here
 
 }
 
@@ -265,20 +269,22 @@ void redrawGameScreen() {
     
     glUseProgram(globalProgram);
     
-    
     GLuint wheelAttribIndex = glGetAttribLocation(globalProgram, "inputCoords");
-    size_t indiceCount = loader.getIndices().size();
+    int vertexCount = (int) loader.getVertices().size();
+    int indiceCount = (int) loader.getIndices().size();
+    int triangleCount = indiceCount / 3;
     
     glEnableVertexAttribArray(wheelAttribIndex);
     glBindBuffer(GL_ARRAY_BUFFER, wheelObjectBuffer);
-    glVertexAttribPointer(wheelAttribIndex, loader.getVertices().size(), GL_FLOAT, GL_FALSE, 0, 0);
+    glVertexAttribPointer(wheelAttribIndex, vertexCount, GL_FLOAT, GL_FALSE, 0, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
     
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, wheelIndiceBuffer);
-    glDrawElements(GL_TRIANGLES, indiceCount, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, triangleCount, GL_UNSIGNED_INT, 0);
+//    glDrawArrays(GL_TRIANGLES, 0, triangleCount);
     
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glDisableVertexAttribArray(wheelAttribIndex);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
     
     glUseProgram(0);
     
