@@ -35,8 +35,8 @@ public:
      *
      */
     
-    Drawable();
-    virtual ~Drawable() = 0;
+    Drawable() { };
+    virtual ~Drawable() { };
     
     /*
      * void draw()

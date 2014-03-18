@@ -168,7 +168,7 @@ void setupOpenGL() {
     
     glGenBuffers(1, &wheelIndiceBuffer);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, wheelIndiceBuffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, loader.getIndices().size() * sizeof(GLuint), &loader.getIndices()[0], GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, loader.getIndices().size() * sizeof(unsigned int), &loader.getIndices()[0], GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     
     
@@ -260,11 +260,29 @@ void redrawGameScreen() {
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
+    
+    // all temporary here
+    
     glUseProgram(globalProgram);
     
-    glDrawElements(GL_TRIANGLES, loader.getIndices().size(), GL_UNSIGNED_INT, 0);
+    
+    GLuint wheelAttribIndex = glGetAttribLocation(globalProgram, "inputCoords");
+    size_t indiceCount = loader.getIndices().size();
+    
+    glEnableVertexAttribArray(wheelAttribIndex);
+    glBindBuffer(GL_ARRAY_BUFFER, wheelObjectBuffer);
+    glVertexAttribPointer(wheelAttribIndex, loader.getVertices().size(), GL_FLOAT, GL_FALSE, 0, 0);
+    
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, wheelIndiceBuffer);
+    glDrawElements(GL_TRIANGLES, indiceCount, GL_UNSIGNED_INT, 0);
+    
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glDisableVertexAttribArray(wheelAttribIndex);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
     
     glUseProgram(0);
+    
+    // all temporary up to here
     
     SDL_GL_SwapWindow(mainWindow);
 }
