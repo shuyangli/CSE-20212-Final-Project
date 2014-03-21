@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0F888C6218DC794C00E59248 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 880BCF5D18C78C6100EA9760 /* OpenGL.framework */; };
-		0FC2320518DC79CA00098CAF /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FC2320418DC79CA00098CAF /* SDL2.framework */; };
 		880BCF5318C78B4000EA9760 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 880BCF5218C78B4000EA9760 /* main.cpp */; };
 		880BCF5518C78B4000EA9760 /* GroupProjectCSE20212.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 880BCF5418C78B4000EA9760 /* GroupProjectCSE20212.1 */; };
 		880BCF5E18C78C6100EA9760 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 880BCF5D18C78C6100EA9760 /* OpenGL.framework */; };
@@ -32,8 +30,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0F5C972118DC7FE400915074 /* Wheel.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Wheel.obj; path = ../../../../../../../../Wheel.obj; sourceTree = "<group>"; };
-		0FC2320418DC79CA00098CAF /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../../../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
 		880BCF4F18C78B4000EA9760 /* GroupProjectCSE20212 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GroupProjectCSE20212; sourceTree = BUILT_PRODUCTS_DIR; };
 		880BCF5218C78B4000EA9760 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		880BCF5418C78B4000EA9760 /* GroupProjectCSE20212.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = GroupProjectCSE20212.1; sourceTree = "<group>"; };
@@ -318,7 +314,6 @@
 		880BCF4618C78B4000EA9760 = {
 			isa = PBXGroup;
 			children = (
-				0FC2320418DC79CA00098CAF /* SDL2.framework */,
 				88276C0818D69DA0005FB674 /* Resources */,
 				88BB808218CA90580036728A /* glm */,
 				880BCF5D18C78C6100EA9760 /* OpenGL.framework */,
@@ -373,7 +368,6 @@
 		88276C0A18D69DAE005FB674 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				0F5C972118DC7FE400915074 /* Wheel.obj */,
 			);
 			name = Model;
 			sourceTree = "<group>";
