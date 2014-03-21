@@ -142,6 +142,8 @@ bool initSDL() {
     glDepthFunc(GL_LESS);
     glEnable(GL_CULL_FACE);
     
+    glEnableClientState(GL_INDEX_ARRAY);
+    
     // error checking
     if (mainWindow == 0) {
         std::cerr << "Video mode set failed: " << SDL_GetError() << std::endl;
@@ -170,7 +172,7 @@ void setupOpenGL() {
     
     glGenBuffers(1, &wheelIndiceBuffer);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, wheelIndiceBuffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, loader.getIndices().size() * sizeof(unsigned int), &loader.getIndices()[0], GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, loader.getIndices().size() * sizeof(GLuint), &loader.getIndices()[0], GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     
 #warning Create program and load shaders
@@ -188,7 +190,15 @@ void setupOpenGL() {
 
 }
 
+void deleteBuffers() {
+    glDeleteBuffers(1, &wheelObjectBuffer);
+    glDeleteBuffers(1, &wheelIndiceBuffer);
+}
+
 static void quit(int exitCode) {
+    
+    deleteBuffers();
+    
     SDL_GL_DeleteContext(mainContext);
     SDL_DestroyWindow(mainWindow);
     SDL_Quit();
@@ -277,12 +287,12 @@ void redrawGameScreen() {
     glEnableVertexAttribArray(wheelAttribIndex);
     glBindBuffer(GL_ARRAY_BUFFER, wheelObjectBuffer);
     glVertexAttribPointer(wheelAttribIndex, vertexCount, GL_FLOAT, GL_FALSE, 0, 0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
     
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, wheelIndiceBuffer);
-    glDrawElements(GL_TRIANGLES, triangleCount, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, triangleCount, GL_SHORT, 0);
 //    glDrawArrays(GL_TRIANGLES, 0, triangleCount);
     
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glDisableVertexAttribArray(wheelAttribIndex);
     
