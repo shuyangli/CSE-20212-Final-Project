@@ -74,6 +74,11 @@ GLuint globalProgram = 0;
 
 #pragma mark - Main
 
+GLuint vaoObject;               // temporary
+GLuint wheelObjectBuffer;       // temporary
+GLuint wheelIndexBuffer;        // temporary
+ObjLoader loader;               // temporary
+
 int main(int argc, const char * argv[])
 {
 
@@ -100,8 +105,12 @@ int main(int argc, const char * argv[])
 //        }
 //    }
     
+    
+    
+    
     while (true) {              // temporary
-//        processEvents();        // temporary
+        myGameStatus_t temp;
+        processEvents(temp);        // temporary
         redrawGameScreen();     // temporary
     }                           // temporary
     
@@ -153,12 +162,6 @@ bool initSDL() {
     return true;
 }
 
-GLuint wheelObjectBuffer;       // temporary
-GLuint wheelIndiceBuffer;       // temporary
-ObjLoader loader;               // temporary
-
-GLuint vaoObject;
-
 void setupOpenGL() {
     
 #warning Initialize buffer objects and feed data
@@ -169,17 +172,31 @@ void setupOpenGL() {
     
     glGenBuffers(1, &wheelObjectBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, wheelObjectBuffer);
-    glBufferData(GL_ARRAY_BUFFER, loader.getVertices().size() * sizeof(GLfloat), &loader.getVertices()[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, loader.getVertices().size() * sizeof(GLfloat), loader.getVertices().data(), GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     
-    glGenBuffers(1, &wheelIndiceBuffer);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, wheelIndiceBuffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, loader.getIndices().size() * sizeof(GLuint), &loader.getIndices()[0], GL_STATIC_DRAW);
+    glGenBuffers(1, &wheelIndexBuffer);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, wheelIndexBuffer);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, loader.getIndices().size() * sizeof(GLuint), loader.getIndices().data(), GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     
 #warning Initiate vertex array object
     glGenVertexArraysAPPLE(1, &vaoObject);
     glBindVertexArrayAPPLE(vaoObject);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, wheelObjectBuffer);
+    
+    GLuint wheelAttribIndex = glGetAttribLocation(globalProgram, "inputCoords");
+    glEnableVertexAttribArray(wheelAttribIndex);
+    
+    int vertexCount = (int) loader.getVertices().size();
+    int indiceCount = (int) loader.getIndices().size();
+    int triangleCount = indiceCount / 3;
+    
+    glVertexAttribPointer(wheelAttribIndex, vertexCount, GL_FLOAT, GL_FALSE, 0, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, wheelIndexBuffer);
+    
+    glBindVertexArrayAPPLE(0);
     
     
 #warning Create program and load shaders
@@ -199,7 +216,7 @@ void setupOpenGL() {
 
 void deleteBuffers() {
     glDeleteBuffers(1, &wheelObjectBuffer);
-    glDeleteBuffers(1, &wheelIndiceBuffer);
+    glDeleteBuffers(1, &wheelIndexBuffer);
 }
 
 static void quit(int exitCode) {
@@ -224,6 +241,7 @@ static void processEvents(myGameStatus_t &status) {
                 
             case SDL_QUIT:
                 status = kMyGameStatusEnd;
+//                quit(5);
                 break;
                 
             default:
@@ -233,6 +251,8 @@ static void processEvents(myGameStatus_t &status) {
 }
 
 static void keyDownFunc(SDL_Keysym * keysym) {
+    
+    std::cout << "key down" << std::endl;
     
     switch (keysym -> sym) {
         case SDLK_ESCAPE:
@@ -285,23 +305,9 @@ void redrawGameScreen() {
     
     glUseProgram(globalProgram);
     
-    GLuint wheelAttribIndex = glGetAttribLocation(globalProgram, "inputCoords");
-    int vertexCount = (int) loader.getVertices().size();
-    int indiceCount = (int) loader.getIndices().size();
-    int triangleCount = indiceCount / 3;
-    
-    glBindBuffer(GL_ARRAY_BUFFER, wheelObjectBuffer);
-    glEnableVertexAttribArray(wheelAttribIndex);
-    glVertexAttribPointer(wheelAttribIndex, vertexCount, GL_FLOAT, GL_FALSE, 0, 0);
-    
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, wheelIndiceBuffer);
-    glDrawElements(GL_TRIANGLES, triangleCount, GL_UNSIGNED_INT, 0);
-//    glDrawArrays(GL_TRIANGLES, 0, triangleCount);
-    
-    
-    glDisableVertexAttribArray(wheelAttribIndex);
-//    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glBindVertexArrayAPPLE(vaoObject);
+    glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
+    glBindVertexArrayAPPLE(0);
     
     glUseProgram(0);
     
