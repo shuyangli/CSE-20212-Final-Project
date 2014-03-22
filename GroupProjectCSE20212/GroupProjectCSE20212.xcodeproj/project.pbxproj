@@ -30,6 +30,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0F0A799918DE2996008FF5A7 /* Wheel.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Wheel.mtl; sourceTree = "<group>"; };
 		880BCF4F18C78B4000EA9760 /* GroupProjectCSE20212 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GroupProjectCSE20212; sourceTree = BUILT_PRODUCTS_DIR; };
 		880BCF5218C78B4000EA9760 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		880BCF5418C78B4000EA9760 /* GroupProjectCSE20212.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = GroupProjectCSE20212.1; sourceTree = "<group>"; };
@@ -317,6 +318,7 @@
 		880BCF4618C78B4000EA9760 = {
 			isa = PBXGroup;
 			children = (
+				0F0A799918DE2996008FF5A7 /* Wheel.mtl */,
 				889A0E7718DE1FD50033AF9A /* Resource */,
 				880BCF5D18C78C6100EA9760 /* OpenGL.framework */,
 				889A0E6B18DC909F0033AF9A /* SDL2.framework */,
