@@ -53,7 +53,7 @@ void setupOpenGL();
 static void quit(int exitCode);
 
 
-static void processEvents();
+static void processEvents(myGameStatus_t &status);
 static void keyDownFunc(SDL_Keysym *keysym);
 //static void resizeFunc(SDL_Event *resizeEvent);   // currently disabled window resize
 
@@ -101,7 +101,7 @@ int main(int argc, const char * argv[])
 //    }
     
     while (true) {              // temporary
-        processEvents();        // temporary
+//        processEvents();        // temporary
         redrawGameScreen();     // temporary
     }                           // temporary
     
@@ -157,11 +157,13 @@ GLuint wheelObjectBuffer;       // temporary
 GLuint wheelIndiceBuffer;       // temporary
 ObjLoader loader;               // temporary
 
+GLuint vaoObject;
+
 void setupOpenGL() {
     
 #warning Initialize buffer objects and feed data
     
-    loader.loadObj(WHEEL_PATH);
+    loader.loadObj(WHEEL_PATH, MTL_BASEPATH);
     
     // temporary
     
@@ -174,6 +176,11 @@ void setupOpenGL() {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, wheelIndiceBuffer);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, loader.getIndices().size() * sizeof(GLuint), &loader.getIndices()[0], GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    
+#warning Initiate vertex array object
+    glGenVertexArraysAPPLE(1, &vaoObject);
+    glBindVertexArrayAPPLE(vaoObject);
+    
     
 #warning Create program and load shaders
     
@@ -205,7 +212,7 @@ static void quit(int exitCode) {
     exit(exitCode);
 }
 
-static void processEvents() {
+static void processEvents(myGameStatus_t &status) {
     
     // Grab all the events off the event queue
     SDL_Event event;
@@ -216,7 +223,7 @@ static void processEvents() {
                 break;
                 
             case SDL_QUIT:
-                quit(0);
+                status = kMyGameStatusEnd;
                 break;
                 
             default:
@@ -261,7 +268,7 @@ void newGame() {
     
     // main event loop
     while (gameStatus != kMyGameStatusEnd) {
-        processEvents();
+        processEvents(gameStatus);
         redrawGameScreen();
     }
     
@@ -274,7 +281,6 @@ void redrawGameScreen() {
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-    
     // all temporary here
     
     glUseProgram(globalProgram);
@@ -284,17 +290,18 @@ void redrawGameScreen() {
     int indiceCount = (int) loader.getIndices().size();
     int triangleCount = indiceCount / 3;
     
-    glEnableVertexAttribArray(wheelAttribIndex);
     glBindBuffer(GL_ARRAY_BUFFER, wheelObjectBuffer);
+    glEnableVertexAttribArray(wheelAttribIndex);
     glVertexAttribPointer(wheelAttribIndex, vertexCount, GL_FLOAT, GL_FALSE, 0, 0);
     
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, wheelIndiceBuffer);
-    glDrawElements(GL_TRIANGLES, triangleCount, GL_SHORT, 0);
+    glDrawElements(GL_TRIANGLES, triangleCount, GL_UNSIGNED_INT, 0);
 //    glDrawArrays(GL_TRIANGLES, 0, triangleCount);
     
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    
     glDisableVertexAttribArray(wheelAttribIndex);
+//    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     
     glUseProgram(0);
     

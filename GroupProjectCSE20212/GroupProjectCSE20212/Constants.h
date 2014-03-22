@@ -18,6 +18,7 @@
 #define MY_FRAGMENT_SHADER_PATH "./GLSL/fragment.glsl"
 
 #pragma mark - Objects
-#define WHEEL_PATH "./Resource/Wheel.obj"
+#define WHEEL_PATH "./Resource/cube.obj"
+#define MTL_BASEPATH "./Resource/"
 
 #endif
