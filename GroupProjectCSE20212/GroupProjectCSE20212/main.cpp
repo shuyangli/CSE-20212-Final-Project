@@ -28,6 +28,8 @@
 #define GLM_FORCE_RADIANS
 #include "Helper/glm/glm.hpp"
 #include "Helper/glm/gtc/matrix_transform.hpp"      // GLM extensions
+#include "Helper/glm/gtc/constants.hpp"             // GLM constants
+#include "Helper/glm/gtc/type_ptr.hpp"              // glm::value_ptr()
 
 // Game objects
 #include "Drawable/Drawable.h"
@@ -215,6 +217,7 @@ void setupOpenGL() {
 }
 
 void deleteBuffers() {
+    glDeleteVertexArraysAPPLE(1, &vaoObject);
     glDeleteBuffers(1, &wheelObjectBuffer);
     glDeleteBuffers(1, &wheelIndexBuffer);
 }
@@ -304,6 +307,19 @@ void redrawGameScreen() {
     // all temporary here
     
     glUseProgram(globalProgram);
+    
+    glm::mat4 modelMat = glm::mat4(1.0f);
+    glm::mat4 viewMat = glm::lookAt(glm::vec3(3.0f, 3.0f, 3.0f),
+                                    glm::vec3(0.0f, 0.0f, 0.0f),
+                                    glm::vec3(0.0f, 1.0f, 0.0f));
+    glm::mat4 projMat = glm::perspective(glm::pi<GLfloat>() * 0.5f,
+                                         1.0f,
+                                         0.1f,
+                                         100.0f);
+    glm::mat4 mvpMat = projMat * viewMat * modelMat;
+    
+    GLint mvpMatLoc = glGetUniformLocation(globalProgram, "mvpMat");
+    glUniformMatrix4fv(mvpMatLoc, 1, GL_FALSE, glm::value_ptr(mvpMat));
     
     glBindVertexArrayAPPLE(vaoObject);
     glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
