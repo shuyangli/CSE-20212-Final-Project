@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0FDB3F7A18E232AF00ED7759 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FDB3F7918E232AF00ED7759 /* SDL2.framework */; };
 		880BCF5318C78B4000EA9760 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 880BCF5218C78B4000EA9760 /* main.cpp */; };
 		880BCF5518C78B4000EA9760 /* GroupProjectCSE20212.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 880BCF5418C78B4000EA9760 /* GroupProjectCSE20212.1 */; };
 		880BCF5E18C78C6100EA9760 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 880BCF5D18C78C6100EA9760 /* OpenGL.framework */; };
 		88276C0418D69405005FB674 /* ObjLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88276C0018D69405005FB674 /* ObjLoader.cpp */; };
 		88276C0518D69405005FB674 /* tiny_obj_loader.cc in Sources */ = {isa = PBXBuildFile; fileRef = 88276C0218D69405005FB674 /* tiny_obj_loader.cc */; };
-		889A0E6C18DC909F0033AF9A /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 889A0E6B18DC909F0033AF9A /* SDL2.framework */; };
 		88BB807E18CA8FF10036728A /* ProgramCreator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88BB807C18CA8FF10036728A /* ProgramCreator.cpp */; };
 /* End PBXBuildFile section */
 
@@ -30,6 +30,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0FDB3F7918E232AF00ED7759 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../../../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
 		880BCF4F18C78B4000EA9760 /* GroupProjectCSE20212 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GroupProjectCSE20212; sourceTree = BUILT_PRODUCTS_DIR; };
 		880BCF5218C78B4000EA9760 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		880BCF5418C78B4000EA9760 /* GroupProjectCSE20212.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = GroupProjectCSE20212.1; sourceTree = "<group>"; };
@@ -40,7 +41,6 @@
 		88276C0318D69405005FB674 /* tiny_obj_loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tiny_obj_loader.h; path = Helper/tiny_obj_loader.h; sourceTree = "<group>"; };
 		88276C1118D69E3B005FB674 /* fragment.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = fragment.glsl; sourceTree = "<group>"; };
 		88276C1218D69E3B005FB674 /* vertex.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = vertex.glsl; sourceTree = "<group>"; };
-		889A0E6B18DC909F0033AF9A /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
 		889A0E7818DE1FD50033AF9A /* Wheel.obj */ = {isa = PBXFileReference; lastKnownFileType = text; path = Wheel.obj; sourceTree = "<group>"; };
 		889A0E7918DE20000033AF9A /* cube.mtl */ = {isa = PBXFileReference; lastKnownFileType = text; path = cube.mtl; sourceTree = "<group>"; };
 		889A0E7A18DE20000033AF9A /* cube.obj */ = {isa = PBXFileReference; lastKnownFileType = text; path = cube.obj; sourceTree = "<group>"; };
@@ -307,7 +307,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				889A0E6C18DC909F0033AF9A /* SDL2.framework in Frameworks */,
+				0FDB3F7A18E232AF00ED7759 /* SDL2.framework in Frameworks */,
 				880BCF5E18C78C6100EA9760 /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -318,9 +318,9 @@
 		880BCF4618C78B4000EA9760 = {
 			isa = PBXGroup;
 			children = (
+				0FDB3F7918E232AF00ED7759 /* SDL2.framework */,
 				889A0E7718DE1FD50033AF9A /* Resource */,
 				880BCF5D18C78C6100EA9760 /* OpenGL.framework */,
-				889A0E6B18DC909F0033AF9A /* SDL2.framework */,
 				88BB808218CA90580036728A /* glm */,
 				880BCF5118C78B4000EA9760 /* GroupProjectCSE20212 */,
 				880BCF5018C78B4000EA9760 /* Products */,
