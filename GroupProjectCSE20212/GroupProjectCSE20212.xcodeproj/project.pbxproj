@@ -319,7 +319,6 @@
 			isa = PBXGroup;
 			children = (
 				0FDB3F7918E232AF00ED7759 /* SDL2.framework */,
-				889A0E7718DE1FD50033AF9A /* Resource */,
 				880BCF5D18C78C6100EA9760 /* OpenGL.framework */,
 				88BB808218CA90580036728A /* glm */,
 				880BCF5118C78B4000EA9760 /* GroupProjectCSE20212 */,
@@ -338,6 +337,7 @@
 		880BCF5118C78B4000EA9760 /* GroupProjectCSE20212 */ = {
 			isa = PBXGroup;
 			children = (
+				889A0E7718DE1FD50033AF9A /* Resource */,
 				88276C1018D69E3B005FB674 /* GLSL */,
 				88DBB60618D23AFC00DBF2B4 /* Drawable */,
 				88BB808118CA90450036728A /* Constants.h */,
@@ -378,8 +378,7 @@
 				889A0E7A18DE20000033AF9A /* cube.obj */,
 				889A0E7818DE1FD50033AF9A /* Wheel.obj */,
 			);
-			name = Resource;
-			path = GroupProjectCSE20212/Resource;
+			path = Resource;
 			sourceTree = "<group>";
 		};
 		88BB808218CA90580036728A /* glm */ = {
