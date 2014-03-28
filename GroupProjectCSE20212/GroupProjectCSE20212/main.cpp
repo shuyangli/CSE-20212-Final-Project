@@ -184,11 +184,16 @@ void setupOpenGL() {
     
 #warning Initiate vertex array object
     glGenVertexArraysAPPLE(1, &vaoObject);
+    std::cout << "glGenVertexArraysAPPLE " << vaoObject << " " << glGetError() << std::endl;
     glBindVertexArrayAPPLE(vaoObject);
+    std::cout << "glBindVertexArrayAPPLE " << glGetError() << std::endl;
     
-    GLuint wheelAttribIndex = glGetAttribLocation(globalProgram, "inputCoords");
+    GLint wheelAttribIndex = glGetAttribLocation(globalProgram, "inputCoords");
+    std::cout << "glGetAttribLocation: " << wheelAttribIndex << " " << glGetError() << std::endl;
     glEnableVertexAttribArray(wheelAttribIndex);
+    std::cout << "glEnableVertexAttribArray " << glGetError() << std::endl;
     glBindBuffer(GL_ARRAY_BUFFER, wheelObjectBuffer);
+    std::cout << "glBindBuffer " << glGetError() << std::endl;
     
     int vertexCount = (int) loader.getVertices().size();
     int indiceCount = (int) loader.getIndices().size();
@@ -200,7 +205,7 @@ void setupOpenGL() {
                           GL_FALSE,
                           0,
                           0);               // this call changes vao state
-    std::cout << glGetError() << std::endl;
+    std::cout <<  "glVertexAttribPointer " << glGetError() << std::endl;
     
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, wheelIndexBuffer);
     glBindVertexArrayAPPLE(0);
@@ -311,45 +316,10 @@ void redrawGameScreen() {
     
     glUseProgram(globalProgram);
     
-    
-//    /*
-     
-     // camera angle
-     // query mouse position
-     int mouseX, mouseY, windowWidth, windowHeight;
-     SDL_GetMouseState(&mouseX, &mouseY);
-     SDL_GetWindowSize(mainWindow, &windowWidth, &windowHeight);
-     SDL_WarpMouseInWindow(mainWindow, windowWidth / 2, windowHeight / 2);
-     
-     // figure out view angle
-     static GLfloat horizontalAngle = 0.0f, verticalAngle = 0.0f;
-     static float mouseSpeed = 0.005f;
-     
-     horizontalAngle += mouseSpeed * (float)(windowWidth / 2 - mouseX);
-     verticalAngle += mouseSpeed * (float)(windowHeight / 2 - mouseY);
-     
-     // get direction vector
-     glm::vec3 directionVec(cos(verticalAngle) * sin(horizontalAngle),
-     sin(verticalAngle),
-     cos(verticalAngle) * cos(horizontalAngle));
-     glm::vec3 rightVec(sin(horizontalAngle - (glm::pi<GLfloat>() / 2.0f)),
-     0.0f,
-     cos(horizontalAngle - (glm::pi<GLfloat>() / 2.0f)));
-     glm::vec3 upVec = glm::cross(rightVec, directionVec);
-
-     
-//     */
-    
     glm::mat4 modelMat = glm::mat4(1.0f);
-//    glm::mat4 viewMat = glm::lookAt(glm::vec3(3.0f, 3.0f, 3.0f),
-//                                    glm::vec3(0.0f, 0.0f, 0.0f),
-//                                    glm::vec3(0.0f, 1.0f, 0.0f));
-    glm::vec3 lookingAtVec = glm::vec3(1.5f, 1.5f, 1.5f) + directionVec;
-    std::cout << lookingAtVec.x << " " << lookingAtVec.y << " " << lookingAtVec.z << std::endl;
-    glm::mat4 viewMat = glm::lookAt(glm::vec3(1.5f, 1.5f, 1.5f),
-                                       lookingAtVec,
-                                       upVec);
-
+    glm::mat4 viewMat = glm::lookAt(glm::vec3(3.0f, 3.0f, 3.0f),
+                                    glm::vec3(0.0f, 0.0f, 0.0f),
+                                    glm::vec3(0.0f, 1.0f, 0.0f));
     glm::mat4 projMat = glm::perspective(glm::pi<GLfloat>() * 0.5f,     // fov
                                          1.0f,                          // width / height ratio
                                          0.1f,                          // near cutoff point
