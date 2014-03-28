@@ -186,20 +186,18 @@ void setupOpenGL() {
     glGenVertexArraysAPPLE(1, &vaoObject);
     glBindVertexArrayAPPLE(vaoObject);
     
-    glBindBuffer(GL_ARRAY_BUFFER, wheelObjectBuffer);
-    
     GLuint wheelAttribIndex = glGetAttribLocation(globalProgram, "inputCoords");
     glEnableVertexAttribArray(wheelAttribIndex);
+    glBindBuffer(GL_ARRAY_BUFFER, wheelObjectBuffer);
     
     int vertexCount = (int) loader.getVertices().size();
     int indiceCount = (int) loader.getIndices().size();
     int triangleCount = indiceCount / 3;
     
     glVertexAttribPointer(wheelAttribIndex, vertexCount, GL_FLOAT, GL_FALSE, 0, 0);
+    
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, wheelIndexBuffer);
-    
     glBindVertexArrayAPPLE(0);
-    
     
 #warning Create program and load shaders
     
@@ -213,7 +211,6 @@ void setupOpenGL() {
     globalProgram = myProgramCreator.linkProgram();
     
     // temporary up to here
-
 }
 
 void deleteBuffers() {
@@ -319,10 +316,11 @@ void redrawGameScreen() {
     glm::mat4 mvpMat = projMat * viewMat * modelMat;
     
     GLint mvpMatLoc = glGetUniformLocation(globalProgram, "mvpMat");
-    glUniformMatrix4fv(mvpMatLoc, 1, GL_FALSE, glm::value_ptr(mvpMat));
+    glUniformMatrix4fv(mvpMatLoc, 1, GL_FALSE, glm::value_ptr(mvpMat)); // this correctly happen in rendering step
     
+    // actual drawing
     glBindVertexArrayAPPLE(vaoObject);
-    glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
     glBindVertexArrayAPPLE(0);
     
     glUseProgram(0);
