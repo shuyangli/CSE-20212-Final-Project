@@ -194,7 +194,13 @@ void setupOpenGL() {
     int indiceCount = (int) loader.getIndices().size();
     int triangleCount = indiceCount / 3;
     
-    glVertexAttribPointer(wheelAttribIndex, vertexCount, GL_FLOAT, GL_FALSE, 0, 0);
+    glVertexAttribPointer(wheelAttribIndex,
+                          3,                // number of components per vertex
+                          GL_FLOAT,
+                          GL_FALSE,
+                          0,
+                          0);               // this call changes vao state
+    std::cout << glGetError() << std::endl;
     
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, wheelIndexBuffer);
     glBindVertexArrayAPPLE(0);
@@ -338,9 +344,9 @@ void redrawGameScreen() {
 //    glm::mat4 viewMat = glm::lookAt(glm::vec3(3.0f, 3.0f, 3.0f),
 //                                    glm::vec3(0.0f, 0.0f, 0.0f),
 //                                    glm::vec3(0.0f, 1.0f, 0.0f));
-    glm::vec3 lookingAtVec = glm::vec3(3.0f, 3.0f, 3.0f) + directionVec;
+    glm::vec3 lookingAtVec = glm::vec3(1.5f, 1.5f, 1.5f) + directionVec;
     std::cout << lookingAtVec.x << " " << lookingAtVec.y << " " << lookingAtVec.z << std::endl;
-    glm::mat4 viewMat = glm::lookAt(glm::vec3(3.0f, 3.0f, 3.0f),
+    glm::mat4 viewMat = glm::lookAt(glm::vec3(1.5f, 1.5f, 1.5f),
                                        lookingAtVec,
                                        upVec);
 
