@@ -309,10 +309,10 @@ void redrawGameScreen() {
     glm::mat4 viewMat = glm::lookAt(glm::vec3(3.0f, 3.0f, 3.0f),
                                     glm::vec3(0.0f, 0.0f, 0.0f),
                                     glm::vec3(0.0f, 1.0f, 0.0f));
-    glm::mat4 projMat = glm::perspective(glm::pi<GLfloat>() * 0.5f,
-                                         1.0f,
-                                         0.1f,
-                                         100.0f);
+    glm::mat4 projMat = glm::perspective(glm::pi<GLfloat>() * 0.5f,     // fov
+                                         1.0f,                          // width / height ratio
+                                         0.1f,                          // near cutoff point
+                                         100.0f);                       // far cutoff point
     glm::mat4 mvpMat = projMat * viewMat * modelMat;
     
     GLint mvpMatLoc = glGetUniformLocation(globalProgram, "mvpMat");
@@ -320,7 +320,10 @@ void redrawGameScreen() {
     
     // actual drawing
     glBindVertexArrayAPPLE(vaoObject);
-    glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES,
+                   36,                                                  // *** number of VERTICES ***
+                   GL_UNSIGNED_INT,
+                   0);
     glBindVertexArrayAPPLE(0);
     
     glUseProgram(0);

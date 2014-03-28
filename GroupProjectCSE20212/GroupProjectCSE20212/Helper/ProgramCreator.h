@@ -15,72 +15,66 @@
 
 #include <OpenGL/gl.h>
 
+/**
+ * @class ProgramCreator
+ * Helper class to load and compile shaders, and to link program
+ */
 class ProgramCreator {
     
 public:
-    /*
-     * default constructor and destructor
-     * 
-     * Description:
-     * create or destroy empty ProgramCreator object
-     *
+    /**
+     * Create empty ProgramCreator object
      */
     ProgramCreator();
+    
+    /**
+     * Destroy ProgramCreator object
+     */
     ~ProgramCreator();
     
-    /*
-     * void loadShader(GLenum shaderType, const std::string &shaderFilePath) THROWS std::invalid_argument
+    /**
+     * Load one shader from file path; throws std::invalid_argument when shader is not correctly compiled
+     * 
+     * @throws std::invalid_argument
      *
-     * Load one shader from file path
+     * @param shaderType
+     *      valid values: GL_VERTEX_SHADER, GL_FRAGMENT_SHADER, GL_GEOMETRY_SHADER
      *
-     * Arguments:
-     * shaderType: GL_VERTEX_SHADER, GL_FRAGMENT_SHADER, GL_GEOMETRY_SHADER
-     * shaderFileName: file path represented by std::string
-     *
-     * THROWS std::invalid_argument when shader is not correctly compiled
-     *
+     * @param shaderFileName
+     *      file path
      */
     void loadShader(GLenum shaderType, const std::string &shaderFilePath);
     
-    /*
-     * void loadShader(GLenum shaderType, const std::vector<std::string> &shaderFileList) THROWS std::invalid_argument
+    /**
+     * Load multiple shaders from file path list; throws std::invalid_argument when any shader is not correctly compiled
      *
-     * Load multiple shaders from file path
+     * @throws std::invalid_argument
      *
-     * Arguments:
-     * shaderType: GL_VERTEX_SHADER, GL_FRAGMENT_SHADER, GL_GEOMETRY_SHADER
-     * shaderFileList: file paths represented by std::string contained in a std::vector
+     * @param shaderType
+     *      valid values: GL_VERTEX_SHADER, GL_FRAGMENT_SHADER, GL_GEOMETRY_SHADER
      *
-     * THROWS std::invalid_argument when loadShader(string) throws
-     *
+     * @param shaderFileName
+     *      a std::vector of file paths; must all be the same type of shader
      */
     void loadShader(GLenum shaderType, const std::vector<std::string> &shaderFileList);
     
-    /*
-     * GLuint compileProgram() THROWS std::runtime_error
+    /**
+     * Compile program with given shaders; throws std::runtime_error when program is not correctly linked
+     * @warning all shaders are deleted when the program is compiled, therefore it's not possible to reuse a ProgramCreator
      *
-     * Compile program with given shaders
-     * Caution: all shaders are deleted when the program is compiled!
-     * Therefore it's not possible to reuse a ProgramCreator
+     * @throws std::runtime_error
      *
-     * Return value:
-     * Program handle returned by glCreateProgram()
-     *
-     * THROWS std::runtime_error when program is not correctly linked
-     *
+     * @return program handle returned by glCreateProgram()
      */
     GLuint linkProgram();
     
-    /*
-     * GLuint getProgramHandle() THROWS std::runtime_error
+    /**
+     * Return compiled program handle; throws std::runtime_error when program is not yet linked or is already destroyed
+     * @warning all shaders are deleted when the program is compiled, therefore it's not possible to reuse a ProgramCreator
      *
-     * Return compiled program handle
+     * @throws std::runtime_error
      *
-     * Return value:
-     * Program handle returned by glCreateProgram()
-     *
-     * THROWS std::runtime_error when program is not yet linked or is already destroyed
-     *
+     * @return program handle returned by glCreateProgram()
      */
     GLuint getProgramHandle();
     

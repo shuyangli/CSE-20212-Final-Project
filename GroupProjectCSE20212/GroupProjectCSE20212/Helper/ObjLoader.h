@@ -18,41 +18,66 @@
 
 #include "tiny_obj_loader.h"
 
-
-// OO wrapper around tiny_obj_loader loadObject function
+/**
+ * @class ObjLoader
+ * Object-oriented wrapper around tiny_obj_loader
+ */
 class ObjLoader {
     
 public:
     ObjLoader();
     ~ObjLoader();
     
-    /*
-     * void loadObj(std::string& filePath) THROWS std::runtime_error
-     * void loadObj(std::string& filePath, std::string& mtlBasePath) THROWS std::runtime_error
+    /**
+     * Load one .obj file from file path; throws std::runtime_error when .obj file or .mtl path cannot be resolved, or file is corrupted
+     * @warning If the .obj file references a .mtl file, @c loadObj(filePath, mtlBasePath) should be used
      *
-     * Description:
-     * Load one .obj file from file path
+     * @throws std::runtime_error
      *
-     * Arguments:
-     * filePath: .obj file path
-     * mtlBasePath: path to directory containing .mtl files
-     *
-     * THROWS std::runtime_error when .obj file or .mtl path cannot be resolved, or file is corrupted
-     *
+     * @param filePath
+     *      .obj file path
      */
     void loadObj(std::string filePath);
+    
+    /**
+     * Load one .obj file from file path; throws std::runtime_error when .obj file or .mtl path cannot be resolved, or file is corrupted
+     *
+     * @throws std::runtime_error
+     *
+     * @param filePath
+     *      .obj file path
+     *
+     * @param mtlBasePath
+     *      path to directory containing .mtl files
+     */
     void loadObj(std::string filePath, std::string mtlBasePath);
     
-    /*
-     * getter methods
+    /**
+     * Return a vector of vertices
      *
-     * Description:
-     * Return reference to different attributes in the shape
-     *
+     * @return vector of vertices
      */
     std::vector<GLfloat>& getVertices(size_t index = 0);
+    
+    /**
+     * Return a vector of UVs
+     *
+     * @return vector of UVs
+     */
     std::vector<GLfloat>& getUVs(size_t index = 0);
+    
+    /**
+     * Return a vector of normals
+     *
+     * @return vector of normals
+     */
     std::vector<GLfloat>& getNormals(size_t index = 0);
+    
+    /**
+     * Return a vector of indices
+     *
+     * @return vector of indices
+     */
     std::vector<unsigned int>& getIndices(size_t index = 0);
     
 private:
