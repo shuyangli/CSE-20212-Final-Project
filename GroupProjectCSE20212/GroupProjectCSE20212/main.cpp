@@ -371,7 +371,7 @@ void redrawGameScreen() {
     
     GLint mvpMatLoc = glGetUniformLocation(globalProgram, "mvpMat");
     
-    glUniformMatrix4fv(mvpMatLoc, 1, GL_FALSE, glm::value_ptr(mvpMat)); // this correctly happen in rendering step
+    glUniformMatrix4fv(mvpMatLoc, 1, GL_FALSE, glm::value_ptr(mvpMat)); // this correctly happen in rendering step as part of program state
     
     // actual drawing
     glBindVertexArrayAPPLE(vaoObject);
