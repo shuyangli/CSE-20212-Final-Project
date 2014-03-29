@@ -54,6 +54,8 @@ void initSDL();
 void setupOpenGL();
 static void quit(int exitCode);
 
+void deleteBuffers();
+void deletePrograms();
 
 static void processEvents(myGameStatus_t &status);
 static void keyDownFunc(SDL_Keysym *keysym);
@@ -73,6 +75,9 @@ SDL_GLContext mainContext;
 
 GLuint globalProgram = 0;
 
+std::vector<Drawable *> allDrawableObjects;
+std::vector<GLuint> allBuffers;
+
 
 #pragma mark - Main
 
@@ -87,28 +92,26 @@ int main(int argc, const char * argv[])
 
     initSDL();
     setupOpenGL();
-//    myMenuSelection_t sel = kMyMenuSelectionDefault;
-//    
-//    while (sel != kMyMenuSelectionQuit) {
-//        
-//        sel = displayMainMenu();
-//        
-//        switch (sel) {
-//            case kMyMenuSelectionMainGame:
-//                newGame();
-//                break;
-//                
-//            case kMyMenuSelectionSetting:
-//                displaySetting();
-//                break;
-//                
-//            default:
-//                break;
-//        }
-//    }
+/*    myMenuSelection_t sel = kMyMenuSelectionDefault;
     
-    
-    
+    while (sel != kMyMenuSelectionQuit) {
+        
+        sel = displayMainMenu();
+        
+        switch (sel) {
+            case kMyMenuSelectionMainGame:
+                newGame();
+                break;
+                
+            case kMyMenuSelectionSetting:
+                displaySetting();
+                break;
+                
+            default:
+                break;
+        }
+    }
+ */
     
     while (true) {              // temporary
         myGameStatus_t temp;
@@ -162,24 +165,20 @@ void initSDL() {
 
 void setupOpenGL() {
     
-#warning Setup buffer objects
-    
+    // setup all buffer objects used
     loader.loadObj(WHEEL_PATH, MTL_BASEPATH);
-    
-    // temporary
     
     glGenBuffers(1, &wheelObjectBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, wheelObjectBuffer);
     glBufferData(GL_ARRAY_BUFFER, loader.getVertices().size() * sizeof(GLfloat), loader.getVertices().data(), GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+    allBuffers.push_back(wheelObjectBuffer);
     
     glGenBuffers(1, &wheelIndexBuffer);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, wheelIndexBuffer);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, loader.getIndices().size() * sizeof(GLuint), loader.getIndices().data(), GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    
-    
-#warning Create program
+    allBuffers.push_back(wheelIndexBuffer);
     
     // create program
     ProgramCreator myProgramCreator;
@@ -190,37 +189,34 @@ void setupOpenGL() {
     // link program
     globalProgram = myProgramCreator.linkProgram();
     
+    GLint vertexBufferLoc = glGetAttribLocation(globalProgram, "inputCoords");
+    if (vertexBufferLoc == -1) {
+        std::cerr << "Cannot bind attribute: inputCoords!" << std::endl;
+        quit(0);
+    }
     
-#warning Initiate vertex array object
-    glGenVertexArraysAPPLE(1, &vaoObject);
-    glBindVertexArrayAPPLE(vaoObject);
-    
-    GLint inputCoordsLoc = glGetAttribLocation(globalProgram, "inputCoords");
-    glEnableVertexAttribArray(inputCoordsLoc);
-    glBindBuffer(GL_ARRAY_BUFFER, wheelObjectBuffer);
-    glVertexAttribPointer(inputCoordsLoc,
-                          3,                // number of components per vertex
-                          GL_FLOAT,
-                          GL_FALSE,
-                          0,
-                          0);               // this call changes vao state
-    
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, wheelIndexBuffer);
-    glBindVertexArrayAPPLE(0);
-    
-    // temporary up to here
+    Sample * mySampleObject = new Sample(globalProgram,
+                                         wheelObjectBuffer,
+                                         vertexBufferLoc,
+                                         (unsigned int) loader.getIndices().size(),
+                                         wheelIndexBuffer);
+    allDrawableObjects.push_back(mySampleObject);
 }
 
 void deleteBuffers() {
-    glDeleteVertexArraysAPPLE(1, &vaoObject);
-    glDeleteBuffers(1, &wheelObjectBuffer);
-    glDeleteBuffers(1, &wheelIndexBuffer);
+    std::for_each(allBuffers.begin(), allBuffers.end(), [](GLuint buffer) {
+        glDeleteBuffers(1, &buffer);
+    });
+}
+
+void deletePrograms() {
+    glDeleteProgram(globalProgram);
 }
 
 static void quit(int exitCode) {
     
+    deletePrograms();
     deleteBuffers();
-    
     SDL_GL_DeleteContext(mainContext);
     SDL_DestroyWindow(mainWindow);
     SDL_Quit();
@@ -239,7 +235,6 @@ static void processEvents(myGameStatus_t &status) {
                 
             case SDL_QUIT:
                 status = kMyGameStatusEnd;
-//                quit(5);
                 break;
                 
             default:
@@ -299,8 +294,7 @@ void redrawGameScreen() {
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-    glUseProgram(globalProgram);
-    
+    // set up program state
     glm::mat4 modelMat = glm::mat4(1.0f);
     glm::mat4 viewMat = glm::lookAt(glm::vec3(8, 5, 5),
                                     glm::vec3(0, 0, 0),
@@ -315,17 +309,10 @@ void redrawGameScreen() {
     GLint mvpMatLoc = glGetUniformLocation(globalProgram, "mvpMatrix");
     glUniformMatrix4fv(mvpMatLoc, 1, GL_FALSE, glm::value_ptr(mvpMat));
     
-    // actual drawing
-    glBindVertexArrayAPPLE(vaoObject);
-    glDrawElements(GL_TRIANGLES,
-                   4608,                                                  // *** number of VERTICES, NOT TRIANGLES ***
-                   GL_UNSIGNED_INT,
-                   0);
-    glBindVertexArrayAPPLE(0);
-    
-    glUseProgram(0);
-    
-    // all temporary up to here
+    // actual drawing (not very efficient, but works)
+    std::for_each(allDrawableObjects.begin(), allDrawableObjects.end(), [](Drawable * obj){
+        obj -> draw();
+    });
     
     SDL_GL_SwapWindow(mainWindow);
 }

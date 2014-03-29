@@ -35,16 +35,24 @@ Sample::Sample(GLuint       givenProgram,
     glBindVertexArrayAPPLE(0);
 }
 
-Sample::~Sample() { }
+Sample::~Sample() {
+    
+    // clean up vertex array, which is generated in the constructor
+    glDeleteVertexArraysAPPLE(1, &vertexArrayObjectHandle);
+}
 
 void Sample::draw() {
     
+    std::cout << "Calling sample's draw method" << std::endl;
+    
+    glUseProgram(getProgram());
     glBindVertexArrayAPPLE(vertexArrayObjectHandle);
     glDrawElements(GL_TRIANGLES,
                    vertexCount,
                    GL_UNSIGNED_INT,
                    0);
     glBindVertexArrayAPPLE(0);
+    glUseProgram(0);
 }
 
 drawableObjectType_t Sample::type() {

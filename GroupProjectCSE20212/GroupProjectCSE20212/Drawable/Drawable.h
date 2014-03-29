@@ -50,6 +50,12 @@ public:
      */
     void changeProgram(GLuint newProgram) { program = newProgram; }
     
+    /**
+     * Get program used to render the object
+     * @return program handle
+     */
+    GLuint getProgram() { return program; }
+    
 private:
     GLuint program;
     
