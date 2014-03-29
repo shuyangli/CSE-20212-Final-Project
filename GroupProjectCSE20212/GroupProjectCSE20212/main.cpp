@@ -32,7 +32,7 @@
 #include "Helper/glm/gtc/type_ptr.hpp"              // glm::value_ptr()
 
 // Game objects
-#include "Drawable/Drawable.h"
+#include "DrawableList.h"
 
 
 #pragma mark - Declarations

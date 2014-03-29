@@ -11,9 +11,11 @@
 
 #include <iostream>
 #include <OpenGL/gl.h>
+#include "ObjLoader.h"
 
 #warning Part of an attempt to add introspection to Drawable objects; this enum list must be updated with all new subclasses of Drawable
 typedef enum _drawableObjectType_t {
+    kDrawableObjectTypeSample = -1,
     kDrawableObjectTypeSkybox = 0,
     kDrawableObjectTypeMotorcycle,
     // and add other kDrawableObjectType... here
@@ -29,7 +31,7 @@ class Drawable {
     
 public:
     
-    Drawable() { };
+    Drawable(GLuint givenProgram) : program(givenProgram) { };
     virtual ~Drawable() { };
     
     /**
@@ -42,6 +44,14 @@ public:
      * @return corresponding enum
      */
     virtual drawableObjectType_t type() = 0;
+    
+    /**
+     * Changes program used to render the object
+     */
+    void changeProgram(GLuint newProgram) { program = newProgram; }
+    
+private:
+    GLuint program;
     
 };
 

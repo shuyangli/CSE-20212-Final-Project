@@ -20,7 +20,20 @@ class Sample : public Drawable {
     
 public:
     
-    Sample(GLuint program);
+    /**
+     * Constructor with already created buffer objects
+     * @warning need to make sure provided vertex count matches
+     * @param givenProgram          handle to program used to render the object on screen
+     * @param givenVertexBuffer     handle to vertex buffer object
+     * @param givenVertexBufferLoc  attrib location for vertex buffer
+     * @param givenVertexCount      count of vertices of object
+     * @param givenIndexBuffer      handle to buffer object containing indices
+     */
+    Sample(GLuint       givenProgram,
+           GLuint       givenVertexBuffer,
+           GLint        givenVertexBufferLoc,
+           unsigned int givenVertexCount,
+           GLuint       givenIndexBuffer);
     ~Sample();
     
     /**
@@ -33,6 +46,10 @@ public:
      * @return corresponding enum
      */
     drawableObjectType_t type();
+    
+private:
+    GLuint vertexArrayObjectHandle;
+    unsigned int vertexCount;
 };
 
 #endif /* defined(__GroupProjectCSE20212__Sample__) */
