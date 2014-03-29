@@ -299,12 +299,10 @@ void redrawGameScreen() {
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-    // all temporary here
-    
     glUseProgram(globalProgram);
     
     glm::mat4 modelMat = glm::mat4(1.0f);
-    glm::mat4 viewMat = glm::lookAt(glm::vec3(6, 3, 3),
+    glm::mat4 viewMat = glm::lookAt(glm::vec3(8, 5, 5),
                                     glm::vec3(0, 0, 0),
                                     glm::vec3(0, 1, 0));
     glm::mat4 projMat = glm::perspective(glm::radians(45.0f),           // fov
@@ -320,7 +318,7 @@ void redrawGameScreen() {
     // actual drawing
     glBindVertexArrayAPPLE(vaoObject);
     glDrawElements(GL_TRIANGLES,
-                   36,                                                  // *** number of VERTICES, NOT TRIANGLES ***
+                   4608,                                                  // *** number of VERTICES, NOT TRIANGLES ***
                    GL_UNSIGNED_INT,
                    0);
     glBindVertexArrayAPPLE(0);

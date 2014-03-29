@@ -19,38 +19,27 @@ typedef enum _drawableObjectType_t {
     // and add other kDrawableObjectType... here
 } drawableObjectType_t;
 
+
+/**
+ * @class Drawable
+ * Abstract class as protocol for all drawable on-screen objects
+ */
+
 class Drawable {
     
 public:
     
-    /*
-     * Abstract class as protocol for all drawable on-screen objects
-     *
-     * All methods here are public and serve as an outline to the
-     * functionalities of all Drawable objects in the game; 
-     * implementation detail is deferred to its subclasses
-     *
-     * Note: All methods MUST BE IMPLEMENTED in all subclasses
-     *
-     */
-    
     Drawable() { };
     virtual ~Drawable() { };
     
-    /*
-     * void draw()
-     *
-     * Draws the object on screen with its correct
-     *
+    /**
+     * Draws the object on screen
      */
     virtual void draw() = 0;
     
-    /*
-     * drawableObjectType_t type()
-     *
-     * Performs reflection on the Drawable object; returns the corresponding
-     * enum defined at the beginning of this header file
-     *
+    /**
+     * Performs introspection on the Drawable object
+     * @return corresponding enum
      */
     virtual drawableObjectType_t type() = 0;
     

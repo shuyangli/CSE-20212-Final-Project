@@ -21,6 +21,7 @@
 		88276C0418D69405005FB674 /* ObjLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88276C0018D69405005FB674 /* ObjLoader.cpp */; };
 		88276C0518D69405005FB674 /* tiny_obj_loader.cc in Sources */ = {isa = PBXBuildFile; fileRef = 88276C0218D69405005FB674 /* tiny_obj_loader.cc */; };
 		88A361DF18E743540044D0F4 /* Car.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88A361DD18E743540044D0F4 /* Car.cpp */; };
+		88A361E618E76C2D0044D0F4 /* Sample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88A361E418E76C2D0044D0F4 /* Sample.cpp */; };
 		88BB807E18CA8FF10036728A /* ProgramCreator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88BB807C18CA8FF10036728A /* ProgramCreator.cpp */; };
 /* End PBXBuildFile section */
 
@@ -697,9 +698,12 @@
 		88DBB60618D23AFC00DBF2B4 /* Drawable */ = {
 			isa = PBXGroup;
 			children = (
+				88A361E318E76BFD0044D0F4 /* DrawableList.h */,
+				0FE8C82E18E5BB95006F9FA0 /* Drawable.h */,
+				88A361E518E76C2D0044D0F4 /* Sample.h */,
+				88A361E418E76C2D0044D0F4 /* Sample.cpp */,
 				88A361DD18E743540044D0F4 /* Car.cpp */,
 				88A361DE18E743540044D0F4 /* Car.h */,
-				0FE8C82E18E5BB95006F9FA0 /* Drawable.h */,
 				0FE8C82F18E5BB95006F9FA0 /* Motorcycle.cpp */,
 				0FE8C83018E5BB95006F9FA0 /* Motorcycle.h */,
 				0FE8C83118E5BB95006F9FA0 /* Motorcyclist.cpp */,
@@ -772,6 +776,7 @@
 				880BCF5318C78B4000EA9760 /* main.cpp in Sources */,
 				88BB807E18CA8FF10036728A /* ProgramCreator.cpp in Sources */,
 				0FE8C83F18E5BB95006F9FA0 /* Obstacle.cpp in Sources */,
+				88A361E618E76C2D0044D0F4 /* Sample.cpp in Sources */,
 				0FE8C83E18E5BB95006F9FA0 /* Motorcyclist.cpp in Sources */,
 				0FE8C84318E5BB95006F9FA0 /* Vehicle.cpp in Sources */,
 				0FE8C84118E5BB95006F9FA0 /* Player.cpp in Sources */,
