@@ -12,8 +12,7 @@
 #include <iostream>
 #include <OpenGL/gl.h>
 
-#warning Part of an attempt to add reflection to Drawable objects; this enum list must be updated with all new subclasses of Drawable
-// Shuyang: Reflection could be very helpful in my mind; I'm not entierly sure what we're going to do with it yet, but it should be a good thing to know at debug time
+#warning Part of an attempt to add introspection to Drawable objects; this enum list must be updated with all new subclasses of Drawable
 typedef enum _drawableObjectType_t {
     kDrawableObjectTypeSkybox = 0,
     kDrawableObjectTypeMotorcycle,
@@ -56,7 +55,5 @@ public:
     virtual drawableObjectType_t type() = 0;
     
 };
-
-// should #include all drawable classes here to minimize main.cpp overhead
 
 #endif /* defined(__Learn_OpenGL__Drawable__) */
