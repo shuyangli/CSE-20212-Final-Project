@@ -50,7 +50,7 @@ typedef enum _myGameStatus_t {
 } myGameStatus_t;
 
 
-bool initSDL();
+void initSDL();
 void setupOpenGL();
 static void quit(int exitCode);
 
@@ -81,37 +81,11 @@ GLuint wheelObjectBuffer;       // temporary
 GLuint wheelIndexBuffer;        // temporary
 ObjLoader loader;               // temporary
 
-// temp
-const GLfloat vertexPositions[] = {
-    1.0f, -1.0f, 1.0f,
-    1.0f, 1.0f, 1.0f,
-    -1.0f, 1.0f, 1.0f,
-    -1.0f, -1.0f, 1.0f,
-    -1.0f, 1.0f, -1.0f,
-    -1.0f, -1.0f, -1.0f,
-    1.0f, 1.0f, -1.0f,
-    1.0f, -1.0f, -1.0f
-};
-
-const GLuint indexPositions[] = {
-    0, 1, 2,
-    0, 2, 3,
-    3, 2, 4,
-    3, 4, 5,
-    6, 4, 2,
-    6, 2, 1,
-    0, 7, 6,
-    0, 6, 1,
-    5, 7, 0,
-    5, 0, 3,
-    5, 4, 6,
-    5, 6, 7
-};
 
 int main(int argc, const char * argv[])
 {
 
-    if (!initSDL()) quit(1);
+    initSDL();
     setupOpenGL();
 //    myMenuSelection_t sel = kMyMenuSelectionDefault;
 //    
@@ -151,12 +125,12 @@ int main(int argc, const char * argv[])
 
 #pragma mark - Setup and event processing functions
 
-bool initSDL() {
+void initSDL() {
     
     // init SDL
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         std::cerr << "SDL failed to initialize: " << SDL_GetError() << std::endl;
-        return false;
+        quit(1);
     }
     
     // create window with OpenGL context
@@ -182,10 +156,8 @@ bool initSDL() {
     // error checking
     if (mainWindow == 0) {
         std::cerr << "Video mode set failed: " << SDL_GetError() << std::endl;
-        return false;
+        quit(1);
     }
-    
-    return true;
 }
 
 void setupOpenGL() {
@@ -198,14 +170,12 @@ void setupOpenGL() {
     
     glGenBuffers(1, &wheelObjectBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, wheelObjectBuffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertexPositions), vertexPositions, GL_STATIC_DRAW);
-//    glBufferData(GL_ARRAY_BUFFER, loader.getVertices().size() * sizeof(GLfloat), loader.getVertices().data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, loader.getVertices().size() * sizeof(GLfloat), loader.getVertices().data(), GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     
     glGenBuffers(1, &wheelIndexBuffer);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, wheelIndexBuffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexPositions), indexPositions, GL_STATIC_DRAW);
-//    glBufferData(GL_ELEMENT_ARRAY_BUFFER, loader.getIndices().size() * sizeof(GLuint), loader.getIndices().data(), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, loader.getIndices().size() * sizeof(GLuint), loader.getIndices().data(), GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     
     
@@ -225,11 +195,10 @@ void setupOpenGL() {
     glGenVertexArraysAPPLE(1, &vaoObject);
     glBindVertexArrayAPPLE(vaoObject);
     
-    GLint wheelAttribIndex = glGetAttribLocation(globalProgram, "inputCoords");
-    glEnableVertexAttribArray(wheelAttribIndex);
+    GLint inputCoordsLoc = glGetAttribLocation(globalProgram, "inputCoords");
+    glEnableVertexAttribArray(inputCoordsLoc);
     glBindBuffer(GL_ARRAY_BUFFER, wheelObjectBuffer);
-    
-    glVertexAttribPointer(wheelAttribIndex,
+    glVertexAttribPointer(inputCoordsLoc,
                           3,                // number of components per vertex
                           GL_FLOAT,
                           GL_FALSE,
@@ -333,45 +302,20 @@ void redrawGameScreen() {
     // all temporary here
     
     glUseProgram(globalProgram);
-  
-    // camera angle
-    // query mouse position
-    int mouseX, mouseY, windowWidth, windowHeight;
-    SDL_GetMouseState(&mouseX, &mouseY);
-    SDL_GetWindowSize(mainWindow, &windowWidth, &windowHeight);
-    SDL_WarpMouseInWindow(mainWindow, windowWidth / 2, windowHeight / 2);
-    
-    // figure out view angle
-    static GLfloat horizontalAngle = 0.0f, verticalAngle = 0.0f;
-    static float mouseSpeed = 0.005f;
-    
-    horizontalAngle += mouseSpeed * (float)(windowWidth / 2 - mouseX);
-    verticalAngle += mouseSpeed * (float)(windowHeight / 2 - mouseY);
-    
-    // get direction vector
-    glm::vec3 directionVec(cos(verticalAngle) * sin(horizontalAngle),
-                           sin(verticalAngle),
-                           cos(verticalAngle) * cos(horizontalAngle));
-    glm::vec3 rightVec(sin(horizontalAngle - (glm::pi<GLfloat>() / 2.0f)),
-                       0.0f,
-                       cos(horizontalAngle - (glm::pi<GLfloat>() / 2.0f)));
-    glm::vec3 upVec = glm::cross(rightVec, directionVec);
-    
-    static glm::vec3 position(6, 3, 3);
     
     glm::mat4 modelMat = glm::mat4(1.0f);
-    glm::mat4 viewMat = glm::lookAt(position,  // position is unchanged
-                                    position + directionVec,
-                                    upVec);
+    glm::mat4 viewMat = glm::lookAt(glm::vec3(6, 3, 3),
+                                    glm::vec3(0, 0, 0),
+                                    glm::vec3(0, 1, 0));
     glm::mat4 projMat = glm::perspective(glm::radians(45.0f),           // fov
                                          1.0f,                          // width / height ratio
                                          0.1f,                          // near cutoff point
                                          100.0f);                       // far cutoff point
     glm::mat4 mvpMat = projMat * viewMat * modelMat;
     
-    GLint mvpMatLoc = glGetUniformLocation(globalProgram, "mvpMat");
-    
-    glUniformMatrix4fv(mvpMatLoc, 1, GL_FALSE, glm::value_ptr(mvpMat)); // this correctly happen in rendering step as part of program state
+    // this correctly happen in rendering step as part of program state
+    GLint mvpMatLoc = glGetUniformLocation(globalProgram, "mvpMatrix");
+    glUniformMatrix4fv(mvpMatLoc, 1, GL_FALSE, glm::value_ptr(mvpMat));
     
     // actual drawing
     glBindVertexArrayAPPLE(vaoObject);
