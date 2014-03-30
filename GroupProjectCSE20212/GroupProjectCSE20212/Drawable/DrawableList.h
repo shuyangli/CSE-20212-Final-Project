@@ -12,5 +12,4 @@
 #include "Drawable.h"
 #include "Sample.h"
 
-
 #endif
