@@ -31,7 +31,8 @@ class Drawable {
     
 public:
     
-    Drawable(GLuint givenProgram) : program(givenProgram) { };
+    Drawable(GLuint givenProgram) : program(givenProgram) {
+    };
     virtual ~Drawable() { };
     
     /**
@@ -54,7 +55,34 @@ public:
      * Get program used to render the object
      * @return program handle
      */
-    GLuint getProgram() { return program; }
+    GLuint getProgram() {
+        return program;
+    }
+    
+    /**
+     * Perform introspection
+     * @param 
+     * @return
+     */
+    static const char * getTypeString(drawableObjectType_t type) {
+        switch (type) {
+            case kDrawableObjectTypeSample:
+                return "Sample";
+                break;
+                
+            case kDrawableObjectTypeMotorcycle:
+                return "Motorcycle";
+                break;
+            
+            case kDrawableObjectTypeSkybox:
+                return "Skybox";
+                break;
+                
+            default:
+                return "Error";
+                break;
+        }
+    }
     
 private:
     GLuint program;

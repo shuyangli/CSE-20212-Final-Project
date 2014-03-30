@@ -9,16 +9,22 @@
 #ifndef GroupProjectCSE20212_Constants_h
 #define GroupProjectCSE20212_Constants_h
 
-#define STARTING_WINDOW_WIDTH   650
-#define STARTING_WINDOW_HEIGHT  650
-#define WINDOW_TITLE "CSE 20212 Group Project"
+/* Window Configuration */
+#define STARTING_WINDOW_WIDTH       650
+#define STARTING_WINDOW_HEIGHT      650
+#define WINDOW_TITLE                "CSE 20212 Group Project"
 
+/* GLSL Programs */
 #pragma mark - GLSL Programs
-#define MY_VERTEX_SHADER_PATH "./GLSL/vertex.glsl"
-#define MY_FRAGMENT_SHADER_PATH "./GLSL/fragment.glsl"
+#define VERTEX_SHADER_PATH          "./GLSL/vertex.glsl"
+#define FRAGMENT_SHADER_PATH        "./GLSL/fragment.glsl"
+#define ATTRIB_NAME_INPUT_VERTEX    "inputCoords"
+#define UNIFORM_NAME_MVP_MATRIX     "mvpMatrix"
 
+/* Objects */
 #pragma mark - Objects
-#define WHEEL_PATH "./Resource/Wheel.obj"
-#define MTL_BASEPATH "./Resource/"
+#define WHEEL_PATH                  "./Resource/Wheel.obj"
+#define CUBE_PATH                   "./Resource/Cube.obj"
+#define MTL_BASEPATH                "./Resource/"
 
 #endif

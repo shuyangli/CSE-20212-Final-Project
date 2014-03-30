@@ -54,13 +54,12 @@ void initSDL();
 void setupOpenGL();
 static void quit(int exitCode);
 
+void deleteObjects();
 void deleteBuffers();
 void deletePrograms();
 
 static void processEvents(myGameStatus_t &status);
 static void keyDownFunc(SDL_Keysym *keysym);
-//static void resizeFunc(SDL_Event *resizeEvent);   // currently disabled window resize
-
 
 myMenuSelection_t displayMainMenu();
 void displaySetting();
@@ -78,17 +77,9 @@ GLuint globalProgram = 0;
 std::vector<Drawable *> allDrawableObjects;
 std::vector<GLuint> allBuffers;
 
-
 #pragma mark - Main
 
-GLuint vaoObject;               // temporary
-GLuint wheelObjectBuffer;       // temporary
-GLuint wheelIndexBuffer;        // temporary
-ObjLoader loader;               // temporary
-
-
-int main(int argc, const char * argv[])
-{
+int main(int argc, const char * argv[]) {
 
     initSDL();
     setupOpenGL();
@@ -113,13 +104,13 @@ int main(int argc, const char * argv[])
     }
  */
     
-    while (true) {              // temporary
-        myGameStatus_t temp;
+    while (true) {                  // temporary
+        myGameStatus_t temp;        // temporary
         processEvents(temp);        // temporary
-        redrawGameScreen();     // temporary
-    }                           // temporary
+        redrawGameScreen();         // temporary
+    }                               // temporary
     
-    quit(0);
+    quit(0);                        // temporary
     
     // never reached
     return 0;
@@ -140,7 +131,8 @@ void initSDL() {
     mainWindow = SDL_CreateWindow(WINDOW_TITLE,
                                   SDL_WINDOWPOS_UNDEFINED,
                                   SDL_WINDOWPOS_UNDEFINED,
-                                  STARTING_WINDOW_WIDTH, STARTING_WINDOW_HEIGHT,
+                                  STARTING_WINDOW_WIDTH,
+                                  STARTING_WINDOW_HEIGHT,
                                   SDL_WINDOW_OPENGL);
     mainContext = SDL_GL_CreateContext(mainWindow);
     
@@ -165,45 +157,61 @@ void initSDL() {
 
 void setupOpenGL() {
     
-    // setup all buffer objects used
-    loader.loadObj(WHEEL_PATH, MTL_BASEPATH);
-    
-    glGenBuffers(1, &wheelObjectBuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, wheelObjectBuffer);
-    glBufferData(GL_ARRAY_BUFFER, loader.getVertices().size() * sizeof(GLfloat), loader.getVertices().data(), GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    allBuffers.push_back(wheelObjectBuffer);
-    
-    glGenBuffers(1, &wheelIndexBuffer);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, wheelIndexBuffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, loader.getIndices().size() * sizeof(GLuint), loader.getIndices().data(), GL_STATIC_DRAW);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    allBuffers.push_back(wheelIndexBuffer);
-    
     // create program
     ProgramCreator myProgramCreator;
+    myProgramCreator.loadShader(GL_VERTEX_SHADER, VERTEX_SHADER_PATH);
+    myProgramCreator.loadShader(GL_FRAGMENT_SHADER, FRAGMENT_SHADER_PATH);
     
-    myProgramCreator.loadShader(GL_VERTEX_SHADER, MY_VERTEX_SHADER_PATH);
-    myProgramCreator.loadShader(GL_FRAGMENT_SHADER, MY_FRAGMENT_SHADER_PATH);
-    
-    // link program
     globalProgram = myProgramCreator.linkProgram();
     
-    GLint vertexBufferLoc = glGetAttribLocation(globalProgram, "inputCoords");
-    if (vertexBufferLoc == -1) {
-        std::cerr << "Cannot bind attribute: inputCoords!" << std::endl;
-        quit(0);
-    }
+    // bind buffer location
+    GLint vertexBufferLoc = glGetAttribLocation(globalProgram, ATTRIB_NAME_INPUT_VERTEX);
     
+    
+    // setup all buffer objects
+    // we don't wrap loader into drawable classes because we need to keep track of allocated buffers on gpu memory, and free them when they're out of scope
+    ObjLoader loader;
+    loader.loadObj(WHEEL_PATH, MTL_BASEPATH);
+    
+    GLuint vertexBuffer;
+    glGenBuffers(1, &vertexBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+    glBufferData(GL_ARRAY_BUFFER,
+                 loader.getVertices().size() * sizeof(GLfloat),
+                 loader.getVertices().data(),
+                 GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    allBuffers.push_back(vertexBuffer);
+    
+    GLuint indexBuffer;
+    glGenBuffers(1, &indexBuffer);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+                 loader.getIndices().size() * sizeof(GLuint),
+                 loader.getIndices().data(),
+                 GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    allBuffers.push_back(indexBuffer);
+    
+    
+    // create drawable objects
     Sample * mySampleObject = new Sample(globalProgram,
-                                         wheelObjectBuffer,
+                                         vertexBuffer,
                                          vertexBufferLoc,
                                          (unsigned int) loader.getIndices().size(),
-                                         wheelIndexBuffer);
+                                         indexBuffer);
     allDrawableObjects.push_back(mySampleObject);
 }
 
+void deleteObjects() {
+    std::for_each(allDrawableObjects.begin(), allDrawableObjects.end(), [](Drawable * obj) {
+        delete obj;
+    });
+    allDrawableObjects.clear();
+}
+
 void deleteBuffers() {
+    std::cout << "deleting buffers" << std::endl;
     std::for_each(allBuffers.begin(), allBuffers.end(), [](GLuint buffer) {
         glDeleteBuffers(1, &buffer);
     });
@@ -215,6 +223,7 @@ void deletePrograms() {
 
 static void quit(int exitCode) {
     
+    deleteObjects();
     deletePrograms();
     deleteBuffers();
     SDL_GL_DeleteContext(mainContext);
@@ -244,8 +253,6 @@ static void processEvents(myGameStatus_t &status) {
 }
 
 static void keyDownFunc(SDL_Keysym * keysym) {
-    
-    std::cout << "key down" << std::endl;
     
     switch (keysym -> sym) {
         case SDLK_ESCAPE:
@@ -305,13 +312,18 @@ void redrawGameScreen() {
                                          100.0f);                       // far cutoff point
     glm::mat4 mvpMat = projMat * viewMat * modelMat;
     
-    // this correctly happen in rendering step as part of program state
-    GLint mvpMatLoc = glGetUniformLocation(globalProgram, "mvpMatrix");
-    glUniformMatrix4fv(mvpMatLoc, 1, GL_FALSE, glm::value_ptr(mvpMat));
-    
     // actual drawing (not very efficient, but works)
-    std::for_each(allDrawableObjects.begin(), allDrawableObjects.end(), [](Drawable * obj){
+    std::for_each(allDrawableObjects.begin(), allDrawableObjects.end(), [&mvpMat](Drawable * obj){
+        
+        glUseProgram(obj -> getProgram());
+        
+        // bind uniform matrices: this corresponds to program state
+#warning this is buggy, since we are giving the objects flexibility to specify program they want to use, we don't know how many or what uniform vars they need in the program
+        GLint mvpMatLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_MVP_MATRIX);
+        glUniformMatrix4fv(mvpMatLoc, 1, GL_FALSE, glm::value_ptr(mvpMat));
+        
         obj -> draw();
+        glUseProgram(0);
     });
     
     SDL_GL_SwapWindow(mainWindow);
