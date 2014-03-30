@@ -195,8 +195,7 @@ void setupOpenGL() {
     
     
     // create drawable objects
-    Sample * mySampleObject = new Sample(globalProgram,
-                                         vertexBuffer,
+    Sample * mySampleObject = new Sample(vertexBuffer,
                                          vertexBufferLoc,
                                          (unsigned int) loader.getIndices().size(),
                                          indexBuffer);
@@ -296,7 +295,6 @@ void newGame() {
 
 
 void redrawGameScreen() {
-#warning TODO
     
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -312,19 +310,16 @@ void redrawGameScreen() {
                                          100.0f);                       // far cutoff point
     glm::mat4 mvpMat = projMat * viewMat * modelMat;
     
+    glUseProgram(globalProgram);
+    GLint mvpMatLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_MVP_MATRIX);
+    glUniformMatrix4fv(mvpMatLoc, 1, GL_FALSE, glm::value_ptr(mvpMat));
+    
     // actual drawing (not very efficient, but works)
     std::for_each(allDrawableObjects.begin(), allDrawableObjects.end(), [&mvpMat](Drawable * obj){
-        
-        glUseProgram(obj -> getProgram());
-        
-        // bind uniform matrices: this corresponds to program state
-#warning this is buggy, since we are giving the objects flexibility to specify program they want to use, we don't know how many or what uniform vars they need in the program
-        GLint mvpMatLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_MVP_MATRIX);
-        glUniformMatrix4fv(mvpMatLoc, 1, GL_FALSE, glm::value_ptr(mvpMat));
-        
         obj -> draw();
-        glUseProgram(0);
     });
+    
+    glUseProgram(0);
     
     SDL_GL_SwapWindow(mainWindow);
 }

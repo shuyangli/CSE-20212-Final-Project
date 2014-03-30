@@ -8,11 +8,10 @@
 
 #include "Sample.h"
 
-Sample::Sample(GLuint       givenProgram,
-               GLuint       givenVertexBuffer,
+Sample::Sample(GLuint       givenVertexBuffer,
                GLint        givenVertexBufferLoc,
                unsigned int givenVertexCount,
-               GLuint       givenIndexBuffer) : Drawable(givenProgram), vertexCount(givenVertexCount) {
+               GLuint       givenIndexBuffer) : vertexCount(givenVertexCount) {
     
     // wrap states using vao
     glGenVertexArraysAPPLE(1, &vertexArrayObjectHandle);

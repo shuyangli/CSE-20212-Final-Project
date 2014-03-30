@@ -31,9 +31,10 @@ class Drawable {
     
 public:
     
-    Drawable(GLuint givenProgram) : program(givenProgram) {
-    };
-    virtual ~Drawable() { };
+//    Drawable(GLuint givenProgram) : program(givenProgram) {
+//    }
+    Drawable() { }
+    virtual ~Drawable() { }
     
     /**
      * Draws the object on screen
@@ -46,18 +47,18 @@ public:
      */
     virtual drawableObjectType_t type() = 0;
     
-    /**
-     * Changes program used to render the object
-     */
-    void changeProgram(GLuint newProgram) { program = newProgram; }
-    
-    /**
-     * Get program used to render the object
-     * @return program handle
-     */
-    GLuint getProgram() {
-        return program;
-    }
+////    /**
+////     * Changes program used to render the object
+////     */
+////    void changeProgram(GLuint newProgram) { program = newProgram; }
+//    
+//    /**
+//     * Get program used to render the object
+//     * @return program handle
+//     */
+//    GLuint getProgram() {
+//        return program;
+//    }
     
     /**
      * Perform introspection
@@ -84,8 +85,8 @@ public:
         }
     }
     
-private:
-    GLuint program;
+//private:
+//    GLuint program;
     
 };
 
