@@ -10,8 +10,8 @@
 #define GroupProjectCSE20212_Constants_h
 
 /* Window Configuration */
-#define STARTING_WINDOW_WIDTH       650
-#define STARTING_WINDOW_HEIGHT      650
+#define STARTING_WINDOW_WIDTH       800
+#define STARTING_WINDOW_HEIGHT      800
 #define WINDOW_TITLE                "CSE 20212 Group Project"
 
 /* GLSL Programs */

@@ -13,6 +13,9 @@ Sample::Sample(GLuint       givenVertexBuffer,
                unsigned int givenVertexCount,
                GLuint       givenIndexBuffer) : vertexCount(givenVertexCount) {
     
+    // setup initial model matrix as identity matrix
+    setModelMatrix(glm::mat4(1.0f));
+    
     // wrap states using vao
     glGenVertexArraysAPPLE(1, &vertexArrayObjectHandle);
     glBindVertexArrayAPPLE(vertexArrayObjectHandle);

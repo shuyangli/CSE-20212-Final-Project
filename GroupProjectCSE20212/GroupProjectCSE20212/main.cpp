@@ -69,13 +69,13 @@ void redrawGameScreen();
 
 #pragma mark - Global variables
 
-SDL_Window * mainWindow = NULL;
-SDL_GLContext mainContext;
+SDL_Window * globalWindow = NULL;
+SDL_GLContext globalGLContext;
 
 GLuint globalProgram = 0;
 
-std::vector<Drawable *> allDrawableObjects;
-std::vector<GLuint> allBuffers;
+std::vector<Drawable *> globalDrawableObjects;
+std::vector<GLuint> globalBuffers;
 
 #pragma mark - Main
 
@@ -128,13 +128,13 @@ void initSDL() {
     }
     
     // create window with OpenGL context
-    mainWindow = SDL_CreateWindow(WINDOW_TITLE,
+    globalWindow = SDL_CreateWindow(WINDOW_TITLE,
                                   SDL_WINDOWPOS_UNDEFINED,
                                   SDL_WINDOWPOS_UNDEFINED,
                                   STARTING_WINDOW_WIDTH,
                                   STARTING_WINDOW_HEIGHT,
                                   SDL_WINDOW_OPENGL);
-    mainContext = SDL_GL_CreateContext(mainWindow);
+    globalGLContext = SDL_GL_CreateContext(globalWindow);
     
     SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
@@ -147,9 +147,10 @@ void initSDL() {
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
     glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
     
     // error checking
-    if (mainWindow == 0) {
+    if (globalWindow == 0) {
         std::cerr << "Video mode set failed: " << SDL_GetError() << std::endl;
         quit(1);
     }
@@ -181,7 +182,7 @@ void setupOpenGL() {
                  loader.getVertices().data(),
                  GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-    allBuffers.push_back(vertexBuffer);
+    globalBuffers.push_back(vertexBuffer);
     
     GLuint indexBuffer;
     glGenBuffers(1, &indexBuffer);
@@ -191,7 +192,7 @@ void setupOpenGL() {
                  loader.getIndices().data(),
                  GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    allBuffers.push_back(indexBuffer);
+    globalBuffers.push_back(indexBuffer);
     
     
     // create drawable objects
@@ -199,19 +200,19 @@ void setupOpenGL() {
                                          vertexBufferLoc,
                                          (unsigned int) loader.getIndices().size(),
                                          indexBuffer);
-    allDrawableObjects.push_back(mySampleObject);
+    globalDrawableObjects.push_back(mySampleObject);
 }
 
 void deleteObjects() {
-    std::for_each(allDrawableObjects.begin(), allDrawableObjects.end(), [](Drawable * obj) {
+    std::for_each(globalDrawableObjects.begin(), globalDrawableObjects.end(), [](Drawable * obj) {
         delete obj;
     });
-    allDrawableObjects.clear();
+    globalDrawableObjects.clear();
 }
 
 void deleteBuffers() {
     std::cout << "deleting buffers" << std::endl;
-    std::for_each(allBuffers.begin(), allBuffers.end(), [](GLuint buffer) {
+    std::for_each(globalBuffers.begin(), globalBuffers.end(), [](GLuint buffer) {
         glDeleteBuffers(1, &buffer);
     });
 }
@@ -225,8 +226,8 @@ static void quit(int exitCode) {
     deleteObjects();
     deletePrograms();
     deleteBuffers();
-    SDL_GL_DeleteContext(mainContext);
-    SDL_DestroyWindow(mainWindow);
+    SDL_GL_DeleteContext(globalGLContext);
+    SDL_DestroyWindow(globalWindow);
     SDL_Quit();
     exit(exitCode);
 }
@@ -299,27 +300,29 @@ void redrawGameScreen() {
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-    // set up program state
-    glm::mat4 modelMat = glm::mat4(1.0f);
-    glm::mat4 viewMat = glm::lookAt(glm::vec3(8, 5, 5),
-                                    glm::vec3(0, 0, 0),
-                                    glm::vec3(0, 1, 0));
-    glm::mat4 projMat = glm::perspective(glm::radians(45.0f),           // fov
-                                         1.0f,                          // width / height ratio
-                                         0.1f,                          // near cutoff point
-                                         100.0f);                       // far cutoff point
-    glm::mat4 mvpMat = projMat * viewMat * modelMat;
-    
+    // get uniform location
     glUseProgram(globalProgram);
     GLint mvpMatLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_MVP_MATRIX);
-    glUniformMatrix4fv(mvpMatLoc, 1, GL_FALSE, glm::value_ptr(mvpMat));
+    
+    // static, not changing proj matrix
+    static glm::mat4 projMat = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 100.0f);
     
     // actual drawing (not very efficient, but works)
-    std::for_each(allDrawableObjects.begin(), allDrawableObjects.end(), [&mvpMat](Drawable * obj){
+    std::for_each(globalDrawableObjects.begin(), globalDrawableObjects.end(), [=](Drawable * obj){
+        
+        glm::mat4 modelMat = obj -> getModelMatrix();
+        glm::mat4 viewMat = glm::lookAt(glm::vec3(8, 5, 5),
+                                        glm::vec3(0, 0, 0),
+                                        glm::vec3(0, 1, 0));
+        glm::mat4 mvpMat = projMat * viewMat * modelMat;
+        
+        // bind uniforms using object's model matrix, and global view and perspective matrix
+        glUniformMatrix4fv(mvpMatLoc, 1, GL_FALSE, glm::value_ptr(mvpMat));
+        
         obj -> draw();
     });
     
     glUseProgram(0);
     
-    SDL_GL_SwapWindow(mainWindow);
+    SDL_GL_SwapWindow(globalWindow);
 }
