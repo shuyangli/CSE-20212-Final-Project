@@ -10,6 +10,19 @@
 #define GroupProjectCSE20212_DrawableList_h
 
 #include "Drawable.h"
+
+#warning temporary: sample object
 #include "Sample.h"
+
+#include "Skybox.h"
+#include "Track.h"
+
+// basically boxes for now
+#include "Obstacle.h"
+
+#include "Motorcycle.h"
+
+// we're not rendering a person; it's a subclass of Motorcycle and we can control its position, direction vector, etc
+#include "Player.h"
 
 #endif

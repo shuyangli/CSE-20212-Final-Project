@@ -17,6 +17,7 @@
 		880BCF5E18C78C6100EA9760 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 880BCF5D18C78C6100EA9760 /* OpenGL.framework */; };
 		88276C0418D69405005FB674 /* ObjLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88276C0018D69405005FB674 /* ObjLoader.cpp */; };
 		88276C0518D69405005FB674 /* tiny_obj_loader.cc in Sources */ = {isa = PBXBuildFile; fileRef = 88276C0218D69405005FB674 /* tiny_obj_loader.cc */; };
+		883C317718E9CF0C00F4F7F0 /* Skybox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 883C317518E9CF0C00F4F7F0 /* Skybox.cpp */; };
 		88A361E618E76C2D0044D0F4 /* Sample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88A361E418E76C2D0044D0F4 /* Sample.cpp */; };
 		88BB807E18CA8FF10036728A /* ProgramCreator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88BB807C18CA8FF10036728A /* ProgramCreator.cpp */; };
 /* End PBXBuildFile section */
@@ -55,6 +56,8 @@
 		88276C0318D69405005FB674 /* tiny_obj_loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tiny_obj_loader.h; path = Helper/tiny_obj_loader.h; sourceTree = "<group>"; };
 		88276C1118D69E3B005FB674 /* fragment.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = fragment.glsl; sourceTree = "<group>"; };
 		88276C1218D69E3B005FB674 /* vertex.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = vertex.glsl; sourceTree = "<group>"; };
+		883C317518E9CF0C00F4F7F0 /* Skybox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Skybox.cpp; path = Drawable/Skybox.cpp; sourceTree = "<group>"; };
+		883C317618E9CF0C00F4F7F0 /* Skybox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Skybox.h; path = Drawable/Skybox.h; sourceTree = "<group>"; };
 		889A0E7818DE1FD50033AF9A /* Wheel.obj */ = {isa = PBXFileReference; lastKnownFileType = text; path = Wheel.obj; sourceTree = "<group>"; };
 		889A0E7918DE20000033AF9A /* cube.mtl */ = {isa = PBXFileReference; lastKnownFileType = text; path = cube.mtl; sourceTree = "<group>"; };
 		889A0E7A18DE20000033AF9A /* cube.obj */ = {isa = PBXFileReference; lastKnownFileType = text; path = cube.obj; sourceTree = "<group>"; };
@@ -693,6 +696,8 @@
 			children = (
 				88A361E318E76BFD0044D0F4 /* DrawableList.h */,
 				0FE8C82E18E5BB95006F9FA0 /* Drawable.h */,
+				883C317618E9CF0C00F4F7F0 /* Skybox.h */,
+				883C317518E9CF0C00F4F7F0 /* Skybox.cpp */,
 				88A361E518E76C2D0044D0F4 /* Sample.h */,
 				88A361E418E76C2D0044D0F4 /* Sample.cpp */,
 				0FE8C82F18E5BB95006F9FA0 /* Motorcycle.cpp */,
@@ -761,6 +766,7 @@
 				880BCF5318C78B4000EA9760 /* main.cpp in Sources */,
 				88BB807E18CA8FF10036728A /* ProgramCreator.cpp in Sources */,
 				0FE8C83F18E5BB95006F9FA0 /* Obstacle.cpp in Sources */,
+				883C317718E9CF0C00F4F7F0 /* Skybox.cpp in Sources */,
 				88A361E618E76C2D0044D0F4 /* Sample.cpp in Sources */,
 				0FE8C84118E5BB95006F9FA0 /* Player.cpp in Sources */,
 				88276C0518D69405005FB674 /* tiny_obj_loader.cc in Sources */,
