@@ -31,12 +31,16 @@
 #include "Helper/glm/gtc/constants.hpp"             // GLM constants
 #include "Helper/glm/gtc/type_ptr.hpp"              // glm::value_ptr()
 
-// Game objects
+// Drawable game objects
 #include "DrawableList.h"
 
 
 #pragma mark - Declarations
 
+/**
+ * @typedef myMenuSelection_t
+ * enum for selections in game menu
+ */
 typedef enum _myMenuSelection_t {
     kMyMenuSelectionDefault = -1,
     kMyMenuSelectionQuit = 0,
@@ -44,6 +48,10 @@ typedef enum _myMenuSelection_t {
     kMyMenuSelectionSetting
 } myMenuSelection_t;
 
+/**
+ * @typedef myGameStatus_t
+ * enum for current game status
+ */
 typedef enum _myGameStatus_t {
     kMyGameStatusEnd,
     kMyGameStatusOngoing
@@ -51,15 +59,15 @@ typedef enum _myGameStatus_t {
 
 
 void initSDL();
-void setupOpenGL();
-static void quit(int exitCode);
+void initOpenGL();
+void quit(int exitCode);
 
 void deleteObjects();
 void deleteBuffers();
 void deletePrograms();
 
-static void processEvents(myGameStatus_t &status);
-static void keyDownFunc(SDL_Keysym *keysym);
+void processEvents(myGameStatus_t &status);
+void keyDownFunc(SDL_Keysym *keysym);
 
 myMenuSelection_t displayMainMenu();
 void displaySetting();
@@ -82,7 +90,7 @@ std::vector<GLuint> globalBuffers;
 int main(int argc, const char * argv[]) {
 
     initSDL();
-    setupOpenGL();
+    initOpenGL();
 /*    myMenuSelection_t sel = kMyMenuSelectionDefault;
     
     while (sel != kMyMenuSelectionQuit) {
@@ -143,9 +151,11 @@ void initSDL() {
     
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     
-    // enable depth test, backface culling
     glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
+    glDepthMask(GL_TRUE);       // writing to depth buffer
+    glDepthFunc(GL_LESS);       // incoming fragment < depth buffer
+    glDepthRange(0.0f, 1.0f);   // all accepted depth range
+    
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
     
@@ -156,7 +166,7 @@ void initSDL() {
     }
 }
 
-void setupOpenGL() {
+void initOpenGL() {
     
     // create program
     ProgramCreator myProgramCreator;
@@ -221,7 +231,7 @@ void deletePrograms() {
     glDeleteProgram(globalProgram);
 }
 
-static void quit(int exitCode) {
+void quit(int exitCode) {
     
     deleteObjects();
     deletePrograms();
@@ -232,7 +242,7 @@ static void quit(int exitCode) {
     exit(exitCode);
 }
 
-static void processEvents(myGameStatus_t &status) {
+void processEvents(myGameStatus_t &status) {
     
     // Grab all the events off the event queue
     SDL_Event event;
@@ -252,7 +262,7 @@ static void processEvents(myGameStatus_t &status) {
     }
 }
 
-static void keyDownFunc(SDL_Keysym * keysym) {
+void keyDownFunc(SDL_Keysym * keysym) {
     
     switch (keysym -> sym) {
         case SDLK_ESCAPE:
@@ -298,17 +308,18 @@ void newGame() {
 void redrawGameScreen() {
     
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glClearDepth(1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     // get uniform location
     glUseProgram(globalProgram);
     GLint mvpMatLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_MVP_MATRIX);
     
-    // static, not changing proj matrix
-    static glm::mat4 projMat = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 100.0f);
+    // proj matrix only changes when fov or aspect ratio changes, so we don't modify it
+    static const glm::mat4 projMat = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 100.0f);
     
     // actual drawing (not very efficient, but works)
-    std::for_each(globalDrawableObjects.begin(), globalDrawableObjects.end(), [=](Drawable * obj){
+    std::for_each(globalDrawableObjects.begin(), globalDrawableObjects.end(), [&](Drawable * obj){
         
         glm::mat4 modelMat = obj -> getModelMatrix();
         glm::mat4 viewMat = glm::lookAt(glm::vec3(8, 5, 5),
