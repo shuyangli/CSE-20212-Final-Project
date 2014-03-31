@@ -31,12 +31,16 @@
 #include "Helper/glm/gtc/constants.hpp"             // GLM constants
 #include "Helper/glm/gtc/type_ptr.hpp"              // glm::value_ptr()
 
-// Game objects
+// Drawable game objects
 #include "DrawableList.h"
 
 
 #pragma mark - Declarations
 
+/**
+ * @typedef myMenuSelection_t
+ * enum for selections in game menu
+ */
 typedef enum _myMenuSelection_t {
     kMyMenuSelectionDefault = -1,
     kMyMenuSelectionQuit = 0,
@@ -44,6 +48,10 @@ typedef enum _myMenuSelection_t {
     kMyMenuSelectionSetting
 } myMenuSelection_t;
 
+/**
+ * @typedef myGameStatus_t
+ * enum for current game status
+ */
 typedef enum _myGameStatus_t {
     kMyGameStatusEnd,
     kMyGameStatusOngoing
@@ -51,15 +59,15 @@ typedef enum _myGameStatus_t {
 
 
 void initSDL();
-void setupOpenGL();
-static void quit(int exitCode);
+void initOpenGL();
+void quit(int exitCode);
 
 void deleteObjects();
 void deleteBuffers();
 void deletePrograms();
 
-static void processEvents(myGameStatus_t &status);
-static void keyDownFunc(SDL_Keysym *keysym);
+void processEvents(myGameStatus_t &status);
+void keyDownFunc(SDL_Keysym *keysym);
 
 myMenuSelection_t displayMainMenu();
 void displaySetting();
@@ -69,20 +77,20 @@ void redrawGameScreen();
 
 #pragma mark - Global variables
 
-SDL_Window * mainWindow = NULL;
-SDL_GLContext mainContext;
+SDL_Window * globalWindow = NULL;
+SDL_GLContext globalGLContext;
 
 GLuint globalProgram = 0;
 
-std::vector<Drawable *> allDrawableObjects;
-std::vector<GLuint> allBuffers;
+std::vector<Drawable *> globalDrawableObjects;
+std::vector<GLuint> globalBuffers;
 
 #pragma mark - Main
 
 int main(int argc, const char * argv[]) {
 
     initSDL();
-    setupOpenGL();
+    initOpenGL();
 /*    myMenuSelection_t sel = kMyMenuSelectionDefault;
     
     while (sel != kMyMenuSelectionQuit) {
@@ -128,13 +136,13 @@ void initSDL() {
     }
     
     // create window with OpenGL context
-    mainWindow = SDL_CreateWindow(WINDOW_TITLE,
+    globalWindow = SDL_CreateWindow(WINDOW_TITLE,
                                   SDL_WINDOWPOS_UNDEFINED,
                                   SDL_WINDOWPOS_UNDEFINED,
                                   STARTING_WINDOW_WIDTH,
                                   STARTING_WINDOW_HEIGHT,
                                   SDL_WINDOW_OPENGL);
-    mainContext = SDL_GL_CreateContext(mainWindow);
+    globalGLContext = SDL_GL_CreateContext(globalWindow);
     
     SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
@@ -143,19 +151,22 @@ void initSDL() {
     
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     
-    // enable depth test, backface culling
     glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
+    glDepthMask(GL_TRUE);       // writing to depth buffer
+    glDepthFunc(GL_LESS);       // incoming fragment < depth buffer
+    glDepthRange(0.0f, 1.0f);   // all accepted depth range
+    
     glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
     
     // error checking
-    if (mainWindow == 0) {
+    if (globalWindow == 0) {
         std::cerr << "Video mode set failed: " << SDL_GetError() << std::endl;
         quit(1);
     }
 }
 
-void setupOpenGL() {
+void initOpenGL() {
     
     // create program
     ProgramCreator myProgramCreator;
@@ -181,7 +192,7 @@ void setupOpenGL() {
                  loader.getVertices().data(),
                  GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-    allBuffers.push_back(vertexBuffer);
+    globalBuffers.push_back(vertexBuffer);
     
     GLuint indexBuffer;
     glGenBuffers(1, &indexBuffer);
@@ -191,28 +202,27 @@ void setupOpenGL() {
                  loader.getIndices().data(),
                  GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    allBuffers.push_back(indexBuffer);
+    globalBuffers.push_back(indexBuffer);
     
     
     // create drawable objects
-    Sample * mySampleObject = new Sample(globalProgram,
-                                         vertexBuffer,
+    Sample * mySampleObject = new Sample(vertexBuffer,
                                          vertexBufferLoc,
                                          (unsigned int) loader.getIndices().size(),
                                          indexBuffer);
-    allDrawableObjects.push_back(mySampleObject);
+    globalDrawableObjects.push_back(mySampleObject);
 }
 
 void deleteObjects() {
-    std::for_each(allDrawableObjects.begin(), allDrawableObjects.end(), [](Drawable * obj) {
+    std::for_each(globalDrawableObjects.begin(), globalDrawableObjects.end(), [](Drawable * obj) {
         delete obj;
     });
-    allDrawableObjects.clear();
+    globalDrawableObjects.clear();
 }
 
 void deleteBuffers() {
     std::cout << "deleting buffers" << std::endl;
-    std::for_each(allBuffers.begin(), allBuffers.end(), [](GLuint buffer) {
+    std::for_each(globalBuffers.begin(), globalBuffers.end(), [](GLuint buffer) {
         glDeleteBuffers(1, &buffer);
     });
 }
@@ -221,18 +231,18 @@ void deletePrograms() {
     glDeleteProgram(globalProgram);
 }
 
-static void quit(int exitCode) {
+void quit(int exitCode) {
     
     deleteObjects();
     deletePrograms();
     deleteBuffers();
-    SDL_GL_DeleteContext(mainContext);
-    SDL_DestroyWindow(mainWindow);
+    SDL_GL_DeleteContext(globalGLContext);
+    SDL_DestroyWindow(globalWindow);
     SDL_Quit();
     exit(exitCode);
 }
 
-static void processEvents(myGameStatus_t &status) {
+void processEvents(myGameStatus_t &status) {
     
     // Grab all the events off the event queue
     SDL_Event event;
@@ -252,7 +262,7 @@ static void processEvents(myGameStatus_t &status) {
     }
 }
 
-static void keyDownFunc(SDL_Keysym * keysym) {
+void keyDownFunc(SDL_Keysym * keysym) {
     
     switch (keysym -> sym) {
         case SDLK_ESCAPE:
@@ -296,35 +306,34 @@ void newGame() {
 
 
 void redrawGameScreen() {
-#warning TODO
     
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glClearDepth(1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-    // set up program state
-    glm::mat4 modelMat = glm::mat4(1.0f);
-    glm::mat4 viewMat = glm::lookAt(glm::vec3(8, 5, 5),
-                                    glm::vec3(0, 0, 0),
-                                    glm::vec3(0, 1, 0));
-    glm::mat4 projMat = glm::perspective(glm::radians(45.0f),           // fov
-                                         1.0f,                          // width / height ratio
-                                         0.1f,                          // near cutoff point
-                                         100.0f);                       // far cutoff point
-    glm::mat4 mvpMat = projMat * viewMat * modelMat;
+    // get uniform location
+    glUseProgram(globalProgram);
+    GLint mvpMatLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_MVP_MATRIX);
+    
+    // proj matrix only changes when fov or aspect ratio changes, so we don't modify it
+    static const glm::mat4 projMat = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 100.0f);
     
     // actual drawing (not very efficient, but works)
-    std::for_each(allDrawableObjects.begin(), allDrawableObjects.end(), [&mvpMat](Drawable * obj){
+    std::for_each(globalDrawableObjects.begin(), globalDrawableObjects.end(), [&](Drawable * obj){
         
-        glUseProgram(obj -> getProgram());
+        glm::mat4 modelMat = obj -> getModelMatrix();
+        glm::mat4 viewMat = glm::lookAt(glm::vec3(8, 5, 5),
+                                        glm::vec3(0, 0, 0),
+                                        glm::vec3(0, 1, 0));
+        glm::mat4 mvpMat = projMat * viewMat * modelMat;
         
-        // bind uniform matrices: this corresponds to program state
-#warning this is buggy, since we are giving the objects flexibility to specify program they want to use, we don't know how many or what uniform vars they need in the program
-        GLint mvpMatLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_MVP_MATRIX);
+        // bind uniforms using object's model matrix, and global view and perspective matrix
         glUniformMatrix4fv(mvpMatLoc, 1, GL_FALSE, glm::value_ptr(mvpMat));
         
         obj -> draw();
-        glUseProgram(0);
     });
     
-    SDL_GL_SwapWindow(mainWindow);
+    glUseProgram(0);
+    
+    SDL_GL_SwapWindow(globalWindow);
 }

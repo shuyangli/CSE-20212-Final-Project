@@ -31,9 +31,8 @@ class Drawable {
     
 public:
     
-    Drawable(GLuint givenProgram) : program(givenProgram) {
-    };
-    virtual ~Drawable() { };
+    Drawable() { }
+    virtual ~Drawable() { }
     
     /**
      * Draws the object on screen
@@ -42,27 +41,28 @@ public:
     
     /**
      * Performs introspection on the Drawable object
-     * @return corresponding enum
+     * @return  corresponding enum
      */
     virtual drawableObjectType_t type() = 0;
     
     /**
-     * Changes program used to render the object
+     * Returns a model matrix used in translation to draw this object
+     * @return model matrix
      */
-    void changeProgram(GLuint newProgram) { program = newProgram; }
+    glm::mat4 getModelMatrix() { return modelMatrix; }
     
     /**
-     * Get program used to render the object
-     * @return program handle
+     * Modify model matrix used in translation to draw this object
+     * @param newModelMatrix    new model matrix
      */
-    GLuint getProgram() {
-        return program;
+    void setModelMatrix(glm::mat4 newModelMatrix) {
+        modelMatrix = newModelMatrix;
     }
     
     /**
      * Perform introspection
-     * @param 
-     * @return
+     * @param   type    enum of drawable object type
+     * @return  string of drawable object type
      */
     static const char * getTypeString(drawableObjectType_t type) {
         switch (type) {
@@ -85,7 +85,7 @@ public:
     }
     
 private:
-    GLuint program;
+    glm::mat4 modelMatrix;
     
 };
 

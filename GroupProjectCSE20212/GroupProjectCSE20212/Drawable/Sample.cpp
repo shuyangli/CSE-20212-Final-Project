@@ -8,11 +8,13 @@
 
 #include "Sample.h"
 
-Sample::Sample(GLuint       givenProgram,
-               GLuint       givenVertexBuffer,
+Sample::Sample(GLuint       givenVertexBuffer,
                GLint        givenVertexBufferLoc,
                unsigned int givenVertexCount,
-               GLuint       givenIndexBuffer) : Drawable(givenProgram), vertexCount(givenVertexCount) {
+               GLuint       givenIndexBuffer) : vertexCount(givenVertexCount) {
+    
+    // setup initial model matrix as identity matrix
+    setModelMatrix(glm::mat4(1.0f));
     
     // wrap states using vao
     glGenVertexArraysAPPLE(1, &vertexArrayObjectHandle);
