@@ -73,6 +73,7 @@ myMenuSelection_t displayMainMenu();
 void displaySetting();
 void newGame();
 void redrawGameScreen();
+void calculateObjects();
 
 
 #pragma mark - Global variables
@@ -84,6 +85,8 @@ GLuint globalProgram = 0;
 
 std::vector<Drawable *> globalDrawableObjects;
 std::vector<GLuint> globalBuffers;
+
+Sample * sampleObj; // controllable object
 
 #pragma mark - Main
 
@@ -115,6 +118,7 @@ int main(int argc, const char * argv[]) {
     while (true) {                  // temporary
         myGameStatus_t temp;        // temporary
         processEvents(temp);        // temporary
+        calculateObjects();         // temporary
         redrawGameScreen();         // temporary
     }                               // temporary
     
@@ -224,6 +228,7 @@ void initOpenGL() {
                                          normalBuffer,
                                          normalBufferLoc,
                                          indexBuffer);
+    sampleObj = mySampleObject;
     globalDrawableObjects.push_back(mySampleObject);
 }
 
@@ -277,11 +282,19 @@ void processEvents(myGameStatus_t &status) {
 }
 
 void keyDownFunc(SDL_Keysym * keysym) {
+    std::cout << "key down" << std::endl;
     
     switch (keysym -> sym) {
         case SDLK_ESCAPE:
 #warning Ideally this should display an in-game menu instead of quitting directly
             quit(0);
+            break;
+            
+        case SDLK_a:
+            sampleObj -> decreaseTurn();
+            break;
+        case SDLK_d:
+            sampleObj -> increaseTurn();
             break;
             
         default:
@@ -313,9 +326,17 @@ void newGame() {
     // main event loop
     while (gameStatus != kMyGameStatusEnd) {
         processEvents(gameStatus);
+        calculateObjects();
         redrawGameScreen();
     }
     
+}
+
+void calculateObjects() {
+    std::cout << "calculate" << std::endl;
+    std::for_each(globalDrawableObjects.begin(), globalDrawableObjects.end(), [](Drawable * obj){
+        obj -> calculateModelMatrix();
+    });
 }
 
 
@@ -343,14 +364,13 @@ void redrawGameScreen() {
                                         glm::vec3(0, 0, 0),
                                         glm::vec3(0, 1, 0));
         glm::mat4 mvpMat = projMat * viewMat * modelMat;
-#warning this is buggy
         glm::mat3 mvMat = glm::transpose(glm::inverse(glm::mat3(viewMat * modelMat)));
         
         // bind uniforms
         glUniformMatrix4fv(mvpMatLoc, 1, GL_FALSE, glm::value_ptr(mvpMat));
         glUniformMatrix3fv(normalModelViewMatLoc, 1, GL_FALSE, glm::value_ptr(mvMat));
         
-        glUniform3fv(directionToLightLoc, 1, glm::value_ptr(glm::vec3(0.0f, 2.0f, 0.0f)));
+        glUniform3fv(directionToLightLoc, 1, glm::value_ptr(glm::vec3(0.0f, 0.0f, -1.0f)));
         glUniform4fv(lightIntensityLoc, 1, glm::value_ptr(glm::vec4(1.0f)));
         
         obj -> draw();

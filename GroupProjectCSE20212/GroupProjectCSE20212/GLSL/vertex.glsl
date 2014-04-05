@@ -22,4 +22,8 @@ void main() {
     
     lightWithoutColor = lightIntensity * incidence;
     
+    // fundamental idea:
+    // interpColor = (diffuseColor * lightIntensity * cosAngIncidence)
+    // + (diffuseColor * ambientIntensity);
+    
 }

@@ -12,6 +12,9 @@
 #include <iostream>
 #include <OpenGL/gl.h>
 #include "ObjLoader.h"
+#define GLM_FORCE_RADIANS
+#include "../Helper/glm/glm.hpp"
+#include "../Helper/glm/gtc/matrix_transform.hpp"
 
 #warning Part of an attempt to add introspection to Drawable objects; this enum list must be updated with all new subclasses of Drawable
 typedef enum _drawableObjectType_t {
@@ -55,9 +58,12 @@ public:
      * Modify model matrix used in translation to draw this object
      * @param newModelMatrix    new model matrix
      */
-    void setModelMatrix(glm::mat4 newModelMatrix) {
-        modelMatrix = newModelMatrix;
-    }
+    void setModelMatrix(glm::mat4 newModelMatrix) { modelMatrix = newModelMatrix; }
+    
+    /**
+     * Calculate new model matrix, called once each frame
+     */
+    virtual void calculateModelMatrix() { }
     
     /**
      * Perform introspection
