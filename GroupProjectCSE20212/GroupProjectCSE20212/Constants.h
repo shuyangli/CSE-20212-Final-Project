@@ -25,7 +25,8 @@
 #define UNIFORM_NAME_MVP_MATRIX     "mvpMatrix"
 #define UNIFORM_NAME_NORMAL_MV_MATRIX   "normalModelViewMatrix"
 #define UNIFORM_NAME_DIRECTION_TO_LIGHT "directionToLight"
-#define UNIFORM_NAME_LIGHT_INTENSITY    "lightIntensity"
+#define UNIFORM_NAME_LIGHT_INTENSITY    "directionalLightIntensity"
+#define UNIFORM_NAME_AMBIENT_INTENSITY  "ambientLightIntensity"
 
 /* Objects */
 #pragma mark - Objects

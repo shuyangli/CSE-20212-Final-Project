@@ -352,8 +352,9 @@ void redrawGameScreen() {
     GLint normalModelViewMatLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_NORMAL_MV_MATRIX);
     GLint directionToLightLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_DIRECTION_TO_LIGHT);
     GLint lightIntensityLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_LIGHT_INTENSITY);
+    GLint ambientLightIntensityLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_AMBIENT_INTENSITY);
     
-    // proj matrix only changes when fov or aspect ratio changes, so we don't modify it
+    // proj matrix (clip space) only changes when fov or aspect ratio changes, so we don't modify it
     static const glm::mat4 projMat = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 100.0f);
     
     // actual drawing (not very efficient, but works)
@@ -371,7 +372,8 @@ void redrawGameScreen() {
         glUniformMatrix3fv(normalModelViewMatLoc, 1, GL_FALSE, glm::value_ptr(mvMat));
         
         glUniform3fv(directionToLightLoc, 1, glm::value_ptr(glm::vec3(0.0f, 0.0f, -1.0f)));
-        glUniform4fv(lightIntensityLoc, 1, glm::value_ptr(glm::vec4(1.0f)));
+        glUniform4f(lightIntensityLoc, 0.8f, 0.8f, 0.8f, 1.0f);
+        glUniform4f(ambientLightIntensityLoc, 0.2f, 0.2f, 0.2f, 1.0f);
         
         obj -> draw();
     });

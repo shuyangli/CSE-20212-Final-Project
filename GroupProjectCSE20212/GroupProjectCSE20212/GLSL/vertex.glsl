@@ -10,7 +10,8 @@ uniform mat3 normalModelViewMatrix;
 
 // for lighting
 uniform vec3 directionToLight;
-uniform vec4 lightIntensity;
+uniform vec4 directionalLightIntensity;
+uniform vec4 ambientLightIntensity;
 
 void main() {
     
@@ -20,7 +21,7 @@ void main() {
     float incidence = dot(normalCamSpace, directionToLight);
     incidence = clamp(incidence, 0, 1);
     
-    lightWithoutColor = lightIntensity * incidence;
+    lightWithoutColor = directionalLightIntensity * incidence + ambientLightIntensity;
     
     // fundamental idea:
     // interpColor = (diffuseColor * lightIntensity * cosAngIncidence)
