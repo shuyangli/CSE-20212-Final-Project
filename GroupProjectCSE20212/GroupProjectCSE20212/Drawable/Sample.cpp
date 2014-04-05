@@ -11,6 +11,8 @@
 Sample::Sample(GLuint       givenVertexBuffer,
                GLint        givenVertexBufferLoc,
                unsigned int givenVertexCount,
+               GLuint       givenNormalBuffer,
+               GLint        givenNormalBufferLoc,
                GLuint       givenIndexBuffer) : vertexCount(givenVertexCount) {
     
     // setup initial model matrix as identity matrix
@@ -28,6 +30,15 @@ Sample::Sample(GLuint       givenVertexBuffer,
                           GL_FLOAT,     // type of elements in vertex buffer is GLfloat
                           GL_FALSE,     // not normalized
                           0,            // to simplify program, we keep each object in a homogeneous buffer
+                          0);
+    
+    glEnableVertexAttribArray(givenNormalBufferLoc);
+    glBindBuffer(GL_ARRAY_BUFFER, givenNormalBuffer);
+    glVertexAttribPointer(givenNormalBufferLoc,
+                          3,
+                          GL_FLOAT,
+                          GL_FALSE,
+                          0,
                           0);
     
     // bind index array

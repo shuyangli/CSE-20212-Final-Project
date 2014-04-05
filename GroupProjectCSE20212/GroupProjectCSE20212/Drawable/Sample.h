@@ -31,6 +31,8 @@ public:
     Sample(GLuint       givenVertexBuffer,
            GLint        givenVertexBufferLoc,
            unsigned int givenVertexCount,
+           GLuint       givenNormalBuffer,
+           GLint        givenNormalBufferLoc,
            GLuint       givenIndexBuffer);
     ~Sample();
     

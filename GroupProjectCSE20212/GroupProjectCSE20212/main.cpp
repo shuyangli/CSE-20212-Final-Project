@@ -177,12 +177,14 @@ void initOpenGL() {
     
     // bind buffer location
     GLint vertexBufferLoc = glGetAttribLocation(globalProgram, ATTRIB_NAME_INPUT_VERTEX);
-    
+    if (vertexBufferLoc == -1) quit(9);
+    GLint normalBufferLoc = glGetAttribLocation(globalProgram, ATTRIB_NAME_INPUT_NORMAL);
+    if (normalBufferLoc == -1) quit(9);
     
     // setup all buffer objects
     // we don't wrap loader into drawable classes because we need to keep track of allocated buffers on gpu memory, and free them when they're out of scope
     ObjLoader loader;
-    loader.loadObj(WHEEL_PATH, MTL_BASEPATH);
+    loader.loadObj(CUBE_PATH, MTL_BASEPATH);
     
     GLuint vertexBuffer;
     glGenBuffers(1, &vertexBuffer);
@@ -193,6 +195,16 @@ void initOpenGL() {
                  GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     globalBuffers.push_back(vertexBuffer);
+    
+    GLuint normalBuffer;
+    glGenBuffers(1, &normalBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
+    glBufferData(GL_ARRAY_BUFFER,
+                 loader.getNormals().size() * sizeof(GLfloat),
+                 loader.getNormals().data(),
+                 GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    globalBuffers.push_back(normalBuffer);
     
     GLuint indexBuffer;
     glGenBuffers(1, &indexBuffer);
@@ -209,6 +221,8 @@ void initOpenGL() {
     Sample * mySampleObject = new Sample(vertexBuffer,
                                          vertexBufferLoc,
                                          (unsigned int) loader.getIndices().size(),
+                                         normalBuffer,
+                                         normalBufferLoc,
                                          indexBuffer);
     globalDrawableObjects.push_back(mySampleObject);
 }
@@ -314,6 +328,9 @@ void redrawGameScreen() {
     // get uniform location
     glUseProgram(globalProgram);
     GLint mvpMatLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_MVP_MATRIX);
+    GLint normalModelViewMatLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_NORMAL_MV_MATRIX);
+    GLint directionToLightLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_DIRECTION_TO_LIGHT);
+    GLint lightIntensityLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_LIGHT_INTENSITY);
     
     // proj matrix only changes when fov or aspect ratio changes, so we don't modify it
     static const glm::mat4 projMat = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 100.0f);
@@ -326,9 +343,15 @@ void redrawGameScreen() {
                                         glm::vec3(0, 0, 0),
                                         glm::vec3(0, 1, 0));
         glm::mat4 mvpMat = projMat * viewMat * modelMat;
+#warning this is buggy
+        glm::mat3 mvMat = glm::transpose(glm::inverse(glm::mat3(viewMat * modelMat)));
         
-        // bind uniforms using object's model matrix, and global view and perspective matrix
+        // bind uniforms
         glUniformMatrix4fv(mvpMatLoc, 1, GL_FALSE, glm::value_ptr(mvpMat));
+        glUniformMatrix3fv(normalModelViewMatLoc, 1, GL_FALSE, glm::value_ptr(mvMat));
+        
+        glUniform3fv(directionToLightLoc, 1, glm::value_ptr(glm::vec3(0.0f, 2.0f, 0.0f)));
+        glUniform4fv(lightIntensityLoc, 1, glm::value_ptr(glm::vec4(1.0f)));
         
         obj -> draw();
     });

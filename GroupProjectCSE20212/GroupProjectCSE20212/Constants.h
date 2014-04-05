@@ -18,8 +18,14 @@
 #pragma mark - GLSL Programs
 #define VERTEX_SHADER_PATH          "./GLSL/vertex.glsl"
 #define FRAGMENT_SHADER_PATH        "./GLSL/fragment.glsl"
+
 #define ATTRIB_NAME_INPUT_VERTEX    "inputCoords"
+#define ATTRIB_NAME_INPUT_NORMAL    "inputNormal"
+
 #define UNIFORM_NAME_MVP_MATRIX     "mvpMatrix"
+#define UNIFORM_NAME_NORMAL_MV_MATRIX   "normalModelViewMatrix"
+#define UNIFORM_NAME_DIRECTION_TO_LIGHT "directionToLight"
+#define UNIFORM_NAME_LIGHT_INTENSITY    "lightIntensity"
 
 /* Objects */
 #pragma mark - Objects
