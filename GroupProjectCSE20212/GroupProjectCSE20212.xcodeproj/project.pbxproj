@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0FB170AB18F2E212004CE328 /* Sample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0FB170A718F2E212004CE328 /* Sample.cpp */; };
+		0FB170AC18F2E212004CE328 /* Skybox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0FB170A918F2E212004CE328 /* Skybox.cpp */; };
 		0FDB3F7A18E232AF00ED7759 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FDB3F7918E232AF00ED7759 /* SDL2.framework */; };
 		0FE8C83D18E5BB95006F9FA0 /* Motorcycle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0FE8C82F18E5BB95006F9FA0 /* Motorcycle.cpp */; };
 		0FE8C83F18E5BB95006F9FA0 /* Obstacle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0FE8C83318E5BB95006F9FA0 /* Obstacle.cpp */; };
@@ -17,8 +19,8 @@
 		880BCF5E18C78C6100EA9760 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 880BCF5D18C78C6100EA9760 /* OpenGL.framework */; };
 		88276C0418D69405005FB674 /* ObjLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88276C0018D69405005FB674 /* ObjLoader.cpp */; };
 		88276C0518D69405005FB674 /* tiny_obj_loader.cc in Sources */ = {isa = PBXBuildFile; fileRef = 88276C0218D69405005FB674 /* tiny_obj_loader.cc */; };
-		883C317718E9CF0C00F4F7F0 /* Skybox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 883C317518E9CF0C00F4F7F0 /* Skybox.cpp */; };
-		88A361E618E76C2D0044D0F4 /* Sample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88A361E418E76C2D0044D0F4 /* Sample.cpp */; };
+		883C317718E9CF0C00F4F7F0 /* (null) in Sources */ = {isa = PBXBuildFile; };
+		88A361E618E76C2D0044D0F4 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		88BB807E18CA8FF10036728A /* ProgramCreator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88BB807C18CA8FF10036728A /* ProgramCreator.cpp */; };
 /* End PBXBuildFile section */
 
@@ -36,6 +38,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0FB170A618F2E212004CE328 /* DrawableList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DrawableList.h; path = Drawable/DrawableList.h; sourceTree = "<group>"; };
+		0FB170A718F2E212004CE328 /* Sample.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Sample.cpp; path = Drawable/Sample.cpp; sourceTree = "<group>"; };
+		0FB170A818F2E212004CE328 /* Sample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Sample.h; path = Drawable/Sample.h; sourceTree = "<group>"; };
+		0FB170A918F2E212004CE328 /* Skybox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Skybox.cpp; path = Drawable/Skybox.cpp; sourceTree = "<group>"; };
+		0FB170AA18F2E212004CE328 /* Skybox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Skybox.h; path = Drawable/Skybox.h; sourceTree = "<group>"; };
 		0FDB3F7918E232AF00ED7759 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../../../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
 		0FE8C82E18E5BB95006F9FA0 /* Drawable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Drawable.h; path = Drawable/Drawable.h; sourceTree = "<group>"; };
 		0FE8C82F18E5BB95006F9FA0 /* Motorcycle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Motorcycle.cpp; path = Drawable/Motorcycle.cpp; sourceTree = "<group>"; };
@@ -46,8 +53,6 @@
 		0FE8C83818E5BB95006F9FA0 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Player.h; path = Drawable/Player.h; sourceTree = "<group>"; };
 		0FE8C83918E5BB95006F9FA0 /* Track.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Track.cpp; path = Drawable/Track.cpp; sourceTree = "<group>"; };
 		0FE8C83A18E5BB95006F9FA0 /* Track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Track.h; path = Drawable/Track.h; sourceTree = "<group>"; };
-		0FE8C83B18E5BB95006F9FA0 /* Vehicle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Vehicle.cpp; path = Drawable/Vehicle.cpp; sourceTree = "<group>"; };
-		0FE8C83C18E5BB95006F9FA0 /* Vehicle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Vehicle.h; path = Drawable/Vehicle.h; sourceTree = "<group>"; };
 		0FE8C85B18E72D6A006F9FA0 /* Wheel.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Wheel.mtl; sourceTree = "<group>"; };
 		0FE8C85C18E72D6A006F9FA0 /* Wheel.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Wheel.obj; sourceTree = "<group>"; };
 		880BCF4F18C78B4000EA9760 /* GroupProjectCSE20212 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GroupProjectCSE20212; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -691,12 +696,12 @@
 		88DBB60618D23AFC00DBF2B4 /* Drawable */ = {
 			isa = PBXGroup;
 			children = (
-				88A361E318E76BFD0044D0F4 /* DrawableList.h */,
+				0FB170A618F2E212004CE328 /* DrawableList.h */,
 				0FE8C82E18E5BB95006F9FA0 /* Drawable.h */,
-				883C317618E9CF0C00F4F7F0 /* Skybox.h */,
-				883C317518E9CF0C00F4F7F0 /* Skybox.cpp */,
-				88A361E518E76C2D0044D0F4 /* Sample.h */,
-				88A361E418E76C2D0044D0F4 /* Sample.cpp */,
+				0FB170A718F2E212004CE328 /* Sample.cpp */,
+				0FB170A818F2E212004CE328 /* Sample.h */,
+				0FB170A918F2E212004CE328 /* Skybox.cpp */,
+				0FB170AA18F2E212004CE328 /* Skybox.h */,
 				0FE8C82F18E5BB95006F9FA0 /* Motorcycle.cpp */,
 				0FE8C83018E5BB95006F9FA0 /* Motorcycle.h */,
 				0FE8C83318E5BB95006F9FA0 /* Obstacle.cpp */,
@@ -763,13 +768,15 @@
 				880BCF5318C78B4000EA9760 /* main.cpp in Sources */,
 				88BB807E18CA8FF10036728A /* ProgramCreator.cpp in Sources */,
 				0FE8C83F18E5BB95006F9FA0 /* Obstacle.cpp in Sources */,
-				883C317718E9CF0C00F4F7F0 /* Skybox.cpp in Sources */,
-				88A361E618E76C2D0044D0F4 /* Sample.cpp in Sources */,
+				883C317718E9CF0C00F4F7F0 /* (null) in Sources */,
+				88A361E618E76C2D0044D0F4 /* (null) in Sources */,
 				0FE8C84118E5BB95006F9FA0 /* Player.cpp in Sources */,
 				88276C0518D69405005FB674 /* tiny_obj_loader.cc in Sources */,
 				0FE8C83D18E5BB95006F9FA0 /* Motorcycle.cpp in Sources */,
 				0FE8C84218E5BB95006F9FA0 /* Track.cpp in Sources */,
 				88276C0418D69405005FB674 /* ObjLoader.cpp in Sources */,
+				0FB170AB18F2E212004CE328 /* Sample.cpp in Sources */,
+				0FB170AC18F2E212004CE328 /* Skybox.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

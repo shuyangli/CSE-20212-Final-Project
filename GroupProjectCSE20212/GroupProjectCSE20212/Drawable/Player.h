@@ -10,5 +10,10 @@
 #define __GroupProjectCSE20212__Player__
 
 #include <iostream>
+#include "Motorcycle.h"
+
+class Player : Motorcycle {
+
+};
 
 #endif /* defined(__GroupProjectCSE20212__Player__) */

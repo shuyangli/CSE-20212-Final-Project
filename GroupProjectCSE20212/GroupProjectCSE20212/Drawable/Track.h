@@ -10,5 +10,13 @@
 #define __GroupProjectCSE20212__Track__
 
 #include <iostream>
+#include "Drawable.h"
+
+class Track : Drawable {
+    
+    
+public:
+    
+};
 
 #endif /* defined(__GroupProjectCSE20212__Track__) */

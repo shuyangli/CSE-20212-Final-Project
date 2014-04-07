@@ -59,6 +59,7 @@ Sample::~Sample() {
 
 void Sample::increaseTurn() {
     rotateSpeed += 0.005;
+    
 }
 
 void Sample::decreaseTurn() {
