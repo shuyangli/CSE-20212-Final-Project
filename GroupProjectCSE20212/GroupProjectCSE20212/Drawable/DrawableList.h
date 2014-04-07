@@ -11,7 +11,6 @@
 
 #include "Drawable.h"
 
-#warning temporary: sample object
 #include "Sample.h"
 
 #include "Skybox.h"

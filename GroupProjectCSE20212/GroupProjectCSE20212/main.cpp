@@ -73,6 +73,7 @@ myMenuSelection_t displayMainMenu();
 void displaySetting();
 void newGame();
 void redrawGameScreen();
+void calculateObjects();
 
 
 #pragma mark - Global variables
@@ -84,6 +85,8 @@ GLuint globalProgram = 0;
 
 std::vector<Drawable *> globalDrawableObjects;
 std::vector<GLuint> globalBuffers;
+
+Sample * sampleObj; // controllable object
 
 #pragma mark - Main
 
@@ -115,6 +118,7 @@ int main(int argc, const char * argv[]) {
     while (true) {                  // temporary
         myGameStatus_t temp;        // temporary
         processEvents(temp);        // temporary
+        calculateObjects();         // temporary
         redrawGameScreen();         // temporary
     }                               // temporary
     
@@ -177,12 +181,14 @@ void initOpenGL() {
     
     // bind buffer location
     GLint vertexBufferLoc = glGetAttribLocation(globalProgram, ATTRIB_NAME_INPUT_VERTEX);
-    
+    if (vertexBufferLoc == -1) quit(9);
+    GLint normalBufferLoc = glGetAttribLocation(globalProgram, ATTRIB_NAME_INPUT_NORMAL);
+    if (normalBufferLoc == -1) quit(9);
     
     // setup all buffer objects
     // we don't wrap loader into drawable classes because we need to keep track of allocated buffers on gpu memory, and free them when they're out of scope
     ObjLoader loader;
-    loader.loadObj(WHEEL_PATH, MTL_BASEPATH);
+    loader.loadObj(CUBE_PATH, MTL_BASEPATH);
     
     GLuint vertexBuffer;
     glGenBuffers(1, &vertexBuffer);
@@ -193,6 +199,16 @@ void initOpenGL() {
                  GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     globalBuffers.push_back(vertexBuffer);
+    
+    GLuint normalBuffer;
+    glGenBuffers(1, &normalBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
+    glBufferData(GL_ARRAY_BUFFER,
+                 loader.getNormals().size() * sizeof(GLfloat),
+                 loader.getNormals().data(),
+                 GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    globalBuffers.push_back(normalBuffer);
     
     GLuint indexBuffer;
     glGenBuffers(1, &indexBuffer);
@@ -209,7 +225,10 @@ void initOpenGL() {
     Sample * mySampleObject = new Sample(vertexBuffer,
                                          vertexBufferLoc,
                                          (unsigned int) loader.getIndices().size(),
+                                         normalBuffer,
+                                         normalBufferLoc,
                                          indexBuffer);
+    sampleObj = mySampleObject;
     globalDrawableObjects.push_back(mySampleObject);
 }
 
@@ -263,11 +282,19 @@ void processEvents(myGameStatus_t &status) {
 }
 
 void keyDownFunc(SDL_Keysym * keysym) {
+    std::cout << "key down" << std::endl;
     
     switch (keysym -> sym) {
         case SDLK_ESCAPE:
 #warning Ideally this should display an in-game menu instead of quitting directly
             quit(0);
+            break;
+            
+        case SDLK_a:
+            sampleObj -> decreaseTurn();
+            break;
+        case SDLK_d:
+            sampleObj -> increaseTurn();
             break;
             
         default:
@@ -299,9 +326,17 @@ void newGame() {
     // main event loop
     while (gameStatus != kMyGameStatusEnd) {
         processEvents(gameStatus);
+        calculateObjects();
         redrawGameScreen();
     }
     
+}
+
+void calculateObjects() {
+    std::cout << "calculate" << std::endl;
+    std::for_each(globalDrawableObjects.begin(), globalDrawableObjects.end(), [](Drawable * obj){
+        obj -> calculateModelMatrix();
+    });
 }
 
 
@@ -314,8 +349,12 @@ void redrawGameScreen() {
     // get uniform location
     glUseProgram(globalProgram);
     GLint mvpMatLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_MVP_MATRIX);
+    GLint normalModelViewMatLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_NORMAL_MV_MATRIX);
+    GLint directionToLightLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_DIRECTION_TO_LIGHT);
+    GLint lightIntensityLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_LIGHT_INTENSITY);
+    GLint ambientLightIntensityLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_AMBIENT_INTENSITY);
     
-    // proj matrix only changes when fov or aspect ratio changes, so we don't modify it
+    // proj matrix (clip space) only changes when fov or aspect ratio changes, so we don't modify it
     static const glm::mat4 projMat = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 100.0f);
     
     // actual drawing (not very efficient, but works)
@@ -326,9 +365,15 @@ void redrawGameScreen() {
                                         glm::vec3(0, 0, 0),
                                         glm::vec3(0, 1, 0));
         glm::mat4 mvpMat = projMat * viewMat * modelMat;
+        glm::mat3 mvMat = glm::transpose(glm::inverse(glm::mat3(viewMat * modelMat)));
         
-        // bind uniforms using object's model matrix, and global view and perspective matrix
+        // bind uniforms
         glUniformMatrix4fv(mvpMatLoc, 1, GL_FALSE, glm::value_ptr(mvpMat));
+        glUniformMatrix3fv(normalModelViewMatLoc, 1, GL_FALSE, glm::value_ptr(mvMat));
+        
+        glUniform3fv(directionToLightLoc, 1, glm::value_ptr(glm::vec3(0.0f, 0.0f, -1.0f)));
+        glUniform4f(lightIntensityLoc, 0.8f, 0.8f, 0.8f, 1.0f);
+        glUniform4f(ambientLightIntensityLoc, 0.2f, 0.2f, 0.2f, 1.0f);
         
         obj -> draw();
     });

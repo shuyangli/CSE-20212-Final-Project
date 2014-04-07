@@ -31,6 +31,8 @@ public:
     Sample(GLuint       givenVertexBuffer,
            GLint        givenVertexBufferLoc,
            unsigned int givenVertexCount,
+           GLuint       givenNormalBuffer,
+           GLint        givenNormalBufferLoc,
            GLuint       givenIndexBuffer);
     ~Sample();
     
@@ -38,6 +40,21 @@ public:
      * Draws the object on screen
      */
     void draw();
+    
+    /**
+     * Increases the object's turn speed (to the right)
+     */
+    void increaseTurn();
+    
+    /**
+     * Decreases the object's turn speed
+     */
+    void decreaseTurn();
+    
+    /**
+     * Calculate model matrix
+     */
+    virtual void calculateModelMatrix();
     
     /**
      * Performs introspection on the Drawable object
@@ -48,6 +65,10 @@ public:
 private:
     GLuint vertexArrayObjectHandle;
     unsigned int vertexCount;
+    
+    float rotateSpeed;
+    float rotateAngle;
+    glm::mat4 scaleMatrix;
 };
 
 #endif /* defined(__GroupProjectCSE20212__Sample__) */
