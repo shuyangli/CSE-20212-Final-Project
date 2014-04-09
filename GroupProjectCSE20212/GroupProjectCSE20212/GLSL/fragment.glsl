@@ -4,5 +4,5 @@ varying vec4 lightWithoutColor;
 
 void main() {
     
-	gl_FragColor = lightWithoutColor * vec4(0.5f, 0.5f, 0.5f, 1.0f);
+	gl_FragColor = lightWithoutColor * vec4(0.6f, 0.6f, 0.6f, 1.0f);
 }
