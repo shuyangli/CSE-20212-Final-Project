@@ -40,7 +40,7 @@
 /* Begin PBXFileReference section */
 		0F39F20318F81ADC00A9C340 /* Skybox.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Skybox.mtl; sourceTree = "<group>"; };
 		0F39F20418F81ADC00A9C340 /* Skybox.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Skybox.obj; sourceTree = "<group>"; };
-		0F78870518F864AD0068EED6 /* skybox_texture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = skybox_texture.jpg; path = GroupProjectCSE20212/Resource/skybox_texture.jpg; sourceTree = "<group>"; };
+		0F78870518F864AD0068EED6 /* skybox_texture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = skybox_texture.jpg; sourceTree = "<group>"; };
 		0FB170A618F2E212004CE328 /* DrawableList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DrawableList.h; path = Drawable/DrawableList.h; sourceTree = "<group>"; };
 		0FB170A718F2E212004CE328 /* Sample.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Sample.cpp; path = Drawable/Sample.cpp; sourceTree = "<group>"; };
 		0FB170A818F2E212004CE328 /* Sample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Sample.h; path = Drawable/Sample.h; sourceTree = "<group>"; };
@@ -342,7 +342,6 @@
 		880BCF4618C78B4000EA9760 = {
 			isa = PBXGroup;
 			children = (
-				0F78870518F864AD0068EED6 /* skybox_texture.jpg */,
 				0FDB3F7918E232AF00ED7759 /* SDL2.framework */,
 				880BCF5D18C78C6100EA9760 /* OpenGL.framework */,
 				88BB808218CA90580036728A /* glm */,
@@ -398,6 +397,7 @@
 		889A0E7718DE1FD50033AF9A /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				0F78870518F864AD0068EED6 /* skybox_texture.jpg */,
 				0F39F20318F81ADC00A9C340 /* Skybox.mtl */,
 				0F39F20418F81ADC00A9C340 /* Skybox.obj */,
 				889A0E7918DE20000033AF9A /* cube.mtl */,
