@@ -92,7 +92,7 @@ public:
     
 private:
     glm::mat4 modelMatrix;
-    
+    glm::vec3 pos;          // Add a position vector 
 };
 
 #endif /* defined(__Learn_OpenGL__Drawable__) */

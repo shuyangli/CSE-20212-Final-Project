@@ -31,6 +31,7 @@ public:
     int isFinished();           // Determines if the motorcycle gets to the finish line
     
     // Getters and Setters
+    /*
     void setSpeedX(double);
     double getSpeedX() const;
     void setSpeedY(double);
@@ -43,22 +44,29 @@ public:
     double getPositionY() const;
     void setPositionZ(double);
     double getPositionZ() const;
+     */
+     
     void setTime(double);
     double getTime() const;
     
 private:
 
     /* Speed in different directions */
+    /*
     double speed_x;
     double speed_y;
     double speed_z;
+     */
     
     /* Position on the road */
+    /*
     double position_x;
     double position_y;
     double position_z;
+     */
     
     /* Record the time (unit: millisecond) from the start to the finish line */
+    glm::vec3 speed, pos;
     double time;
 };
 
