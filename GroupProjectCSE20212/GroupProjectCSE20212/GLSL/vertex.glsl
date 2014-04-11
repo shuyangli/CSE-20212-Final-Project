@@ -1,10 +1,17 @@
 #version 120
 
-attribute vec3 inputCoords;
-attribute vec3 inputNormal;
+// input attributes for each vertex
+attribute vec3 inputVertexPosModelSpace;
+attribute vec3 inputVertexUV
+attribute vec3 inputVertexNormalModelSpace;
 
-varying vec4 lightWithoutColor;
+// output data for each fragment
+varying vec2 varyUV;
+varying vec3 varyPosWorldSpace;
+varying vec3 varyNormalCameraSpace;
+varying vec4 varyLightWithoutColor;
 
+// uniforms
 uniform mat4 mvpMatrix;
 uniform mat3 normalModelViewMatrix;
 
