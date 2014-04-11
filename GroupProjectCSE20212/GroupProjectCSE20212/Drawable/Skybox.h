@@ -10,5 +10,13 @@
 #define __GroupProjectCSE20212__Skybox__
 
 #include <iostream>
+#include "Drawable.h"
+
+class Skybox : Drawable {
+    
+    
+public:
+    
+};
 
 #endif /* defined(__GroupProjectCSE20212__Skybox__) */

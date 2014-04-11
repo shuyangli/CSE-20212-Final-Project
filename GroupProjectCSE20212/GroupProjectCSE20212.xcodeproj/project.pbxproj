@@ -38,6 +38,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0F39F20318F81ADC00A9C340 /* Skybox.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Skybox.mtl; sourceTree = "<group>"; };
+		0F39F20418F81ADC00A9C340 /* Skybox.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Skybox.obj; sourceTree = "<group>"; };
 		0FB170A618F2E212004CE328 /* DrawableList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DrawableList.h; path = Drawable/DrawableList.h; sourceTree = "<group>"; };
 		0FB170A718F2E212004CE328 /* Sample.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Sample.cpp; path = Drawable/Sample.cpp; sourceTree = "<group>"; };
 		0FB170A818F2E212004CE328 /* Sample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Sample.h; path = Drawable/Sample.h; sourceTree = "<group>"; };
@@ -394,6 +396,8 @@
 		889A0E7718DE1FD50033AF9A /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				0F39F20318F81ADC00A9C340 /* Skybox.mtl */,
+				0F39F20418F81ADC00A9C340 /* Skybox.obj */,
 				889A0E7918DE20000033AF9A /* cube.mtl */,
 				889A0E7A18DE20000033AF9A /* cube.obj */,
 				0FE8C85B18E72D6A006F9FA0 /* Wheel.mtl */,
