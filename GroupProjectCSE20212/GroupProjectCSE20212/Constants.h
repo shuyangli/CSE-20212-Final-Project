@@ -33,5 +33,6 @@
 #define WHEEL_PATH                  "./Resource/Wheel.obj"
 #define CUBE_PATH                   "./Resource/Cube.obj"
 #define MTL_BASEPATH                "./Resource/"
+#define SKYBOX_TEXTURE_PATH         "./Resource/skybox_texture.jpg"
 
 #endif

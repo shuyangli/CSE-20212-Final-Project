@@ -13,10 +13,21 @@
 #include "Drawable.h"
 
 class Skybox : Drawable {
-    
-    
+
 public:
+    Skybox();
+    virtual ~Skybox();
     
+    /**
+     * Draws the object on screen
+     */
+    virtual void draw();
+    
+    /**
+     * Performs introspection on the Drawable object
+     * @return  corresponding enum
+     */
+    virtual drawableObjectType_t type();
 };
 
 #endif /* defined(__GroupProjectCSE20212__Skybox__) */
