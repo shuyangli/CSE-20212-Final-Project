@@ -46,6 +46,8 @@
 		0FB170A818F2E212004CE328 /* Sample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Sample.h; path = Drawable/Sample.h; sourceTree = "<group>"; };
 		0FB170A918F2E212004CE328 /* Skybox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Skybox.cpp; path = Drawable/Skybox.cpp; sourceTree = "<group>"; };
 		0FB170AA18F2E212004CE328 /* Skybox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Skybox.h; path = Drawable/Skybox.h; sourceTree = "<group>"; };
+		0FBB4C5C190170FE00FC9AEE /* Track.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Track.mtl; sourceTree = "<group>"; };
+		0FBB4C5D190170FE00FC9AEE /* Track.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Track.obj; sourceTree = "<group>"; };
 		0FDB3F7918E232AF00ED7759 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../../../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
 		0FE8C82E18E5BB95006F9FA0 /* Drawable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Drawable.h; path = Drawable/Drawable.h; sourceTree = "<group>"; };
 		0FE8C82F18E5BB95006F9FA0 /* Motorcycle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Motorcycle.cpp; path = Drawable/Motorcycle.cpp; sourceTree = "<group>"; };
@@ -414,6 +416,8 @@
 		889A0E7718DE1FD50033AF9A /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				0FBB4C5C190170FE00FC9AEE /* Track.mtl */,
+				0FBB4C5D190170FE00FC9AEE /* Track.obj */,
 				0F78870518F864AD0068EED6 /* skybox_texture.jpg */,
 				0F39F20318F81ADC00A9C340 /* Skybox.mtl */,
 				0F39F20418F81ADC00A9C340 /* Skybox.obj */,

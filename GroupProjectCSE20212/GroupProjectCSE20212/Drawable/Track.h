@@ -15,6 +15,30 @@
 class Track : Drawable {
     
 public:
+    Track(GLuint       givenVertexBuffer,
+           GLint        givenVertexBufferLoc,
+           unsigned int givenVertexCount,
+           GLuint       givenNormalBuffer,
+           GLint        givenNormalBufferLoc,
+           GLuint       givenIndexBuffer);
+    ~Track();
+    
+    /**
+     * Draws the object on screen
+     */
+    void draw();
+    
+    /**
+     * Performs introspection on the Drawable object
+     * @return corresponding enum
+     */
+    drawableObjectType_t type();
+    
+private:
+    GLuint vertexArrayObjectHandle;
+    unsigned int vertexCount;
+    
+    glm::mat4 scaleMatrix;
     
 };
 
