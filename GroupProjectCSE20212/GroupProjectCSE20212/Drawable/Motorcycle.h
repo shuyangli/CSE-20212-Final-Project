@@ -66,7 +66,15 @@ private:
      */
     
     /* Record the time (unit: millisecond) from the start to the finish line */
-    glm::vec3 speed, pos;
+    
+    GLuint vertexArrayObjectHandle;
+    unsigned int vertexCount;
+    
+    float rotateSpeed;
+    float rotateAngle;
+    
+    glm::vec3 speed;
+    glm::mat4 scaleMatrix;
     double time;
 };
 
