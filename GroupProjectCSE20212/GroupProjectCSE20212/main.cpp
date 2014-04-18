@@ -15,6 +15,9 @@
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
 
+// OpenGL Image Loader header
+#include "Helper/SOIL/SOIL.h"
+
 // SDL header
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
@@ -87,6 +90,7 @@ std::vector<Drawable *> globalDrawableObjects;
 std::vector<GLuint> globalBuffers;
 
 Sample * sampleObj; // controllable object
+GLuint skyboxTexture; // texture handle
 
 #pragma mark - Main
 
@@ -163,6 +167,8 @@ void initSDL() {
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
     
+    glEnable(GL_TEXTURE_2D);
+    
     // error checking
     if (globalWindow == 0) {
         std::cerr << "Video mode set failed: " << SDL_GetError() << std::endl;
@@ -219,6 +225,14 @@ void initOpenGL() {
                  GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     globalBuffers.push_back(indexBuffer);
+    
+    // load texture from images
+    skyboxTexture = SOIL_load_OGL_texture(SKYBOX_TEXTURE_PATH,
+                                          SOIL_LOAD_AUTO,
+                                          SOIL_CREATE_NEW_ID,
+                                          SOIL_FLAG_MIPMAPS | SOIL_FLAG_NTSC_SAFE_RGB);
+    if (skyboxTexture == 0) throw std::runtime_error("SOIL cannot load texture");
+    
     
     
     // create drawable objects

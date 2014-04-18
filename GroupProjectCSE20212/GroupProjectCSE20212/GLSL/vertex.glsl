@@ -2,11 +2,9 @@
 
 // input attributes for each vertex
 attribute vec3 inputVertexPosModelSpace;
-attribute vec3 inputVertexUV
 attribute vec3 inputVertexNormalModelSpace;
 
 // output data for each fragment
-varying vec2 varyUV;
 varying vec3 varyPosWorldSpace;
 varying vec3 varyNormalCameraSpace;
 varying vec4 varyLightWithoutColor;
@@ -28,7 +26,7 @@ void main() {
     float incidence = dot(normalCamSpace, directionToLight);
     incidence = clamp(incidence, 0, 1);
     
-    lightWithoutColor = directionalLightIntensity * incidence + ambientLightIntensity;
+    varyLightWithoutColor = directionalLightIntensity * incidence + ambientLightIntensity;
     
     // fundamental idea:
     // interpColor = (diffuseColor * lightIntensity * cosAngIncidence)

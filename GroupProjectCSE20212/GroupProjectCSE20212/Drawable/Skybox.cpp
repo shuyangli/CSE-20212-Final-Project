@@ -7,3 +7,19 @@
 //
 
 #include "Skybox.h"
+
+Skybox::Skybox() {
+    
+}
+
+Skybox::~Skybox() {
+    
+}
+
+void Skybox::draw() {
+    
+}
+    
+drawableObjectType_t Skybox::type() {
+    return kDrawableObjectTypeSkybox;
+}
