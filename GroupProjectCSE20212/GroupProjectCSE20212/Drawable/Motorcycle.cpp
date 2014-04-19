@@ -149,7 +149,7 @@ void Motorcycle::setTime()
 
 float Motorcycle::getTime() const
 {
-    return float(clock() - time)/CLOCKS_PER_SEC;
+    return float(clock() - time) / CLOCKS_PER_SEC;
 }
 
 void Motorcycle::setPosition(glm::vec3 pos)
