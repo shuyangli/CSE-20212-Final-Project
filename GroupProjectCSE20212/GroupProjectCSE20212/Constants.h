@@ -18,6 +18,8 @@
 #pragma mark - GLSL Programs
 #define VERTEX_SHADER_PATH          "./GLSL/vertex.glsl"
 #define FRAGMENT_SHADER_PATH        "./GLSL/fragment.glsl"
+#define TEXTURED_VERTEX_SHADER_PATH "./GLSL/vertexSkybox.glsl"
+#define TEXTURED_FRAGMENT_SHADER_PATH "./GLSL/fragmentSkybox.glsl"
 
 #define ATTRIB_NAME_INPUT_VERTEX    "inputCoords"
 #define ATTRIB_NAME_INPUT_NORMAL    "inputNormal"
@@ -33,6 +35,8 @@
 #define WHEEL_PATH                  "./Resource/Wheel.obj"
 #define CUBE_PATH                   "./Resource/Cube.obj"
 #define MTL_BASEPATH                "./Resource/"
+
+#define SKYBOX_PATH                 "./Resource/Skybox.obj"
 #define SKYBOX_TEXTURE_PATH         "./Resource/skybox_texture.jpg"
 
 #endif

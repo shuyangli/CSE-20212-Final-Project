@@ -10,7 +10,6 @@ varying vec2 varyUV;
 
 // uniforms
 uniform mat4 mvpMatrix;
-uniform sampler2D skyboxTextureSampler;
 
 void main() {
     varyUV = inputVertexUV;

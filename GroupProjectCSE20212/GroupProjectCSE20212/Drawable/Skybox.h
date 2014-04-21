@@ -12,10 +12,16 @@
 #include <iostream>
 #include "Drawable.h"
 
-class Skybox : Drawable {
+class Skybox : public Drawable {
 
 public:
-    Skybox();
+    Skybox(GLuint       givenVertexBuffer,
+           GLint        givenVertexBufferLoc,
+           unsigned int givenVertexCount,
+           GLuint       givenNormalBuffer,
+           GLint        givenNormalBufferLoc,
+           GLuint       givenIndexBuffer,
+           GLuint       givenTextureHandle);
     virtual ~Skybox();
     
     /**
@@ -28,6 +34,11 @@ public:
      * @return  corresponding enum
      */
     virtual drawableObjectType_t type();
+    
+private:
+    GLuint vertexArrayObjectHandle;
+    unsigned int vertexCount;
+    glm::mat4 scaleMatrix;
 };
 
 #endif /* defined(__GroupProjectCSE20212__Skybox__) */

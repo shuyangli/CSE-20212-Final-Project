@@ -15,9 +15,6 @@
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
 
-// OpenGL Image Loader header
-#include "Helper/SOIL/SOIL.h"
-
 // SDL header
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
@@ -89,7 +86,7 @@ GLuint globalProgram = 0;
 std::vector<Drawable *> globalDrawableObjects;
 std::vector<GLuint> globalBuffers;
 
-Sample * sampleObj; // controllable object
+//Sample * sampleObj; // controllable object
 GLuint skyboxTexture; // texture handle
 
 #pragma mark - Main
@@ -182,6 +179,8 @@ void initOpenGL() {
     ProgramCreator myProgramCreator;
     myProgramCreator.loadShader(GL_VERTEX_SHADER, VERTEX_SHADER_PATH);
     myProgramCreator.loadShader(GL_FRAGMENT_SHADER, FRAGMENT_SHADER_PATH);
+//    myProgramCreator.loadShader(GL_VERTEX_SHADER, TEXTURED_VERTEX_SHADER_PATH);
+//    myProgramCreator.loadShader(GL_FRAGMENT_SHADER, TEXTURED_FRAGMENT_SHADER_PATH);
     
     globalProgram = myProgramCreator.linkProgram();
     
@@ -194,6 +193,7 @@ void initOpenGL() {
     // setup all buffer objects
     // we don't wrap loader into drawable classes because we need to keep track of allocated buffers on gpu memory, and free them when they're out of scope
     ObjLoader loader;
+//    loader.loadObj(SKYBOX_PATH, MTL_BASEPATH);
     loader.loadObj(CUBE_PATH, MTL_BASEPATH);
     
     GLuint vertexBuffer;
@@ -226,14 +226,6 @@ void initOpenGL() {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     globalBuffers.push_back(indexBuffer);
     
-    // load texture from images
-    skyboxTexture = SOIL_load_OGL_texture(SKYBOX_TEXTURE_PATH,
-                                          SOIL_LOAD_AUTO,
-                                          SOIL_CREATE_NEW_ID,
-                                          SOIL_FLAG_MIPMAPS | SOIL_FLAG_NTSC_SAFE_RGB);
-    if (skyboxTexture == 0) throw std::runtime_error("SOIL cannot load texture");
-    
-    
     
     // create drawable objects
     Sample * mySampleObject = new Sample(vertexBuffer,
@@ -242,8 +234,17 @@ void initOpenGL() {
                                          normalBuffer,
                                          normalBufferLoc,
                                          indexBuffer);
-    sampleObj = mySampleObject;
+//    sampleObj = mySampleObject;
     globalDrawableObjects.push_back(mySampleObject);
+    
+//    Skybox * skyboxObject = new Skybox(vertexBuffer,
+//                                       vertexBufferLoc,
+//                                       (unsigned int) loader.getIndices().size(),
+//                                       normalBuffer,
+//                                       normalBufferLoc,
+//                                       indexBuffer,
+//                                       skyboxTexture);
+//    globalDrawableObjects.push_back(skyboxObject);
 }
 
 void deleteObjects() {
@@ -305,10 +306,10 @@ void keyDownFunc(SDL_Keysym * keysym) {
             break;
             
         case SDLK_a:
-            sampleObj -> decreaseTurn();
+//            sampleObj -> decreaseTurn();
             break;
         case SDLK_d:
-            sampleObj -> increaseTurn();
+//            sampleObj -> increaseTurn();
             break;
             
         default:
@@ -356,7 +357,7 @@ void calculateObjects() {
 
 void redrawGameScreen() {
     
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClearDepth(1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
@@ -383,6 +384,8 @@ void redrawGameScreen() {
         
         // bind uniforms
         glUniformMatrix4fv(mvpMatLoc, 1, GL_FALSE, glm::value_ptr(mvpMat));
+
+        // for untextured lit stuff
         glUniformMatrix3fv(normalModelViewMatLoc, 1, GL_FALSE, glm::value_ptr(mvMat));
         
         glUniform3fv(directionToLightLoc, 1, glm::value_ptr(glm::vec3(0.0f, 0.0f, -1.0f)));
