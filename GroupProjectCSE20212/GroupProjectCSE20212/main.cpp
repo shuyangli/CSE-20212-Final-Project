@@ -63,7 +63,6 @@ void initOpenGL();
 void quit(int exitCode);
 
 void deleteObjects();
-void deleteBuffers();
 void deletePrograms();
 
 void processEvents(myGameStatus_t &status);
@@ -188,60 +187,9 @@ void initOpenGL() {
     GLint normalBufferLoc = glGetAttribLocation(globalProgram, ATTRIB_NAME_INPUT_NORMAL);
     if (normalBufferLoc == -1) quit(9);
     
-    // setup all buffer objects
-    // we don't wrap loader into drawable classes because we need to keep track of allocated buffers on gpu memory, and free them when they're out of scope
-    ObjLoader loader;
-    loader.loadObj(CUBE_PATH, MTL_BASEPATH);
-    
-    GLuint vertexBuffer;
-    glGenBuffers(1, &vertexBuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-    glBufferData(GL_ARRAY_BUFFER,
-                 loader.getVertices().size() * sizeof(GLfloat),
-                 loader.getVertices().data(),
-                 GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    globalBuffers.push_back(vertexBuffer);
-    
-    GLuint normalBuffer;
-    glGenBuffers(1, &normalBuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
-    glBufferData(GL_ARRAY_BUFFER,
-                 loader.getNormals().size() * sizeof(GLfloat),
-                 loader.getNormals().data(),
-                 GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    globalBuffers.push_back(normalBuffer);
-    
-    GLuint indexBuffer;
-    glGenBuffers(1, &indexBuffer);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-                 loader.getIndices().size() * sizeof(GLuint),
-                 loader.getIndices().data(),
-                 GL_STATIC_DRAW);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    globalBuffers.push_back(indexBuffer);
-    
-    
-    // create drawable objects
-    Sample * mySampleObject = new Sample(vertexBuffer,
-                                         vertexBufferLoc,
-                                         (unsigned int) loader.getIndices().size(),
-                                         normalBuffer,
-                                         normalBufferLoc,
-                                         indexBuffer);
-//    sampleObj = mySampleObject;
-    globalDrawableObjects.push_back(mySampleObject);
-    
-//    Skybox * skyboxObject = new Skybox(vertexBuffer,
-//                                       vertexBufferLoc,
-//                                       (unsigned int) loader.getIndices().size(),
-//                                       normalBuffer,
-//                                       normalBufferLoc,
-//                                       indexBuffer,
-//                                       skyboxTexture);
-//    globalDrawableObjects.push_back(skyboxObject);
+    // setup all objects
+    Sample * sampleObject = new Sample(vertexBufferLoc, normalBufferLoc);
+    globalDrawableObjects.push_back(sampleObject);
 }
 
 void deleteObjects() {
@@ -249,13 +197,6 @@ void deleteObjects() {
         delete obj;
     });
     globalDrawableObjects.clear();
-}
-
-void deleteBuffers() {
-    std::cout << "deleting buffers" << std::endl;
-    std::for_each(globalBuffers.begin(), globalBuffers.end(), [](GLuint buffer) {
-        glDeleteBuffers(1, &buffer);
-    });
 }
 
 void deletePrograms() {
@@ -266,7 +207,6 @@ void quit(int exitCode) {
     
     deleteObjects();
     deletePrograms();
-    deleteBuffers();
     SDL_GL_DeleteContext(globalGLContext);
     SDL_DestroyWindow(globalWindow);
     SDL_Quit();

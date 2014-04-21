@@ -23,17 +23,11 @@ public:
     /**
      * Constructor with already created buffer objects
      * @warning need to make sure provided vertex count matches
-     * @param givenVertexBuffer     handle to vertex buffer object
      * @param givenVertexBufferLoc  attrib location for vertex buffer
-     * @param givenVertexCount      count of vertices of object
      * @param givenIndexBuffer      handle to buffer object containing indices
      */
-    Sample(GLuint       givenVertexBuffer,
-           GLint        givenVertexBufferLoc,
-           unsigned int givenVertexCount,
-           GLuint       givenNormalBuffer,
-           GLint        givenNormalBufferLoc,
-           GLuint       givenIndexBuffer);
+    Sample(GLint        givenVertexBufferLoc,
+           GLint        givenNormalBufferLoc);
     ~Sample();
     
     /**
@@ -65,6 +59,10 @@ public:
 private:
     GLuint vertexArrayObjectHandle;
     unsigned int vertexCount;
+    
+    GLuint vertexBuffer;
+    GLuint normalBuffer;
+    GLuint indexBuffer;
     
     float rotateSpeed;
     float rotateAngle;
