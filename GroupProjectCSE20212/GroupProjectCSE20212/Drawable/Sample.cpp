@@ -10,7 +10,7 @@
 #include "Constants.h"
 
 Sample::Sample(GLint        givenVertexBufferLoc,
-               GLint        givenNormalBufferLoc){
+               GLint        givenNormalBufferLoc) {
     
     // load objects
     ObjLoader loader;

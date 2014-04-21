@@ -289,12 +289,10 @@ void newGame() {
 }
 
 void calculateObjects() {
-    std::cout << "calculate" << std::endl;
     std::for_each(globalDrawableObjects.begin(), globalDrawableObjects.end(), [](Drawable * obj){
         obj -> calculateModelMatrix();
     });
 }
-
 
 void redrawGameScreen() {
     
@@ -304,6 +302,7 @@ void redrawGameScreen() {
     
     // get uniform location
     glUseProgram(globalProgram);
+    
     GLint mvpMatLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_MVP_MATRIX);
     GLint normalModelViewMatLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_NORMAL_MV_MATRIX);
     GLint directionToLightLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_DIRECTION_TO_LIGHT);
