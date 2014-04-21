@@ -12,20 +12,20 @@
 #include <iostream>
 #include "Drawable.h"
 
-class Motorcycle : Drawable {
+class Motorcycle : public Drawable {
     
 public:
-    
-    Motorcycle(GLuint       givenVertexBuffer,
-               GLint        givenVertexBufferLoc,
-               unsigned int givenVertexCount,
-               GLuint       givenNormalBuffer,
+    Motorcycle(GLint        givenVertexBufferLoc,
                GLint        givenNormalBufferLoc,
-               GLuint       givenIndexBuffer,
-               glm::vec3, glm::vec3, double, double);
+               glm::vec3    objPosition,
+               glm::vec3    objDirection,
+               double       objAcceleration,
+               double       objRotation);
     ~Motorcycle();
     
-    void draw(); // Draws the motorcycle
+    virtual drawableObjectType_t type();
+    
+    virtual void draw(); // Draws the motorcycle
     void move(); // Moves the motorcycle
     
     /* Controls for the motorcycle */
@@ -40,8 +40,6 @@ public:
     
     
     /* Getters and Setters */
-    void setTime(); // Set time to current system timestamp
-    float getTime() const; // Get elapsed time from last timestamp
     void setPosition(glm::vec3);
     glm::vec3 getPosition() const;
     void setDirection(glm::vec3);
@@ -55,10 +53,15 @@ public:
     
     
 private:
-
-    GLuint vertexArrayObjectHandle;
     
+    // drawing
+    GLuint vertexArrayObjectHandle;
     unsigned int vertexCount;
+    
+    GLuint vertexBuffer;
+    GLuint normalBuffer;
+    GLuint indexBuffer;
+    
     
     glm::vec3 position;
     
@@ -71,8 +74,6 @@ private:
     float rotation; // Change in direction angle when turning left or right(Unit: rad per centisecond)
     
     glm::mat4 scaleMatrix;
-    
-    clock_t time; // Timer (unit: millisecond)
 };
 
 #endif /* defined(__GroupProjectCSE20212__Motorcycle__) */

@@ -34,6 +34,7 @@
 #pragma mark - Objects
 #define WHEEL_PATH                  "./Resource/Wheel.obj"
 #define CUBE_PATH                   "./Resource/Cube.obj"
+#define MOTORCYCLE_PATH             "./Resource/Motorcycle.obj"
 #define MTL_BASEPATH                "./Resource/"
 
 #define SKYBOX_PATH                 "./Resource/Skybox.obj"

@@ -7,25 +7,54 @@
 //
 
 #include <iostream>
-#include <ctime>
 #include <unistd.h>
+#include "Constants.h"
 #include "Motorcycle.h"
 #include "Sample.h"
 #include "Obstacle.h"
 #include "Skybox.h"
 #include "Track.h"
 
-Motorcycle::Motorcycle(GLuint givenVertexBuffer,
-                       GLint        givenVertexBufferLoc,
-                       unsigned int givenVertexCount,
-                       GLuint       givenNormalBuffer,
+Motorcycle::Motorcycle(GLint        givenVertexBufferLoc,
                        GLint        givenNormalBufferLoc,
-                       GLuint       givenIndexBuffer,
-                       glm::vec3 objPosition,
-                       glm::vec3 objDirection,
-                       double objAcceleration,
-                       double objRotation)
+                       glm::vec3    objPosition,
+                       glm::vec3    objDirection,
+                       double       objAcceleration,
+                       double       objRotation)
 {
+    
+    // load objects
+    ObjLoader loader;
+    loader.loadObj(MOTORCYCLE_PATH, MTL_BASEPATH);
+    
+    glGenBuffers(1, &vertexBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+    glBufferData(GL_ARRAY_BUFFER,
+                 loader.getVertices().size() * sizeof(GLfloat),
+                 loader.getVertices().data(),
+                 GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    
+    glGenBuffers(1, &normalBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
+    glBufferData(GL_ARRAY_BUFFER,
+                 loader.getNormals().size() * sizeof(GLfloat),
+                 loader.getNormals().data(),
+                 GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    
+    glGenBuffers(1, &indexBuffer);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+                 loader.getIndices().size() * sizeof(GLuint),
+                 loader.getIndices().data(),
+                 GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    
+    
+    vertexCount = (unsigned int) loader.getIndices().size();
+    
+    
     // setup initial model matrix as identity matrix
     scaleMatrix = glm::mat4(1.0f);
     setModelMatrix(scaleMatrix);
@@ -36,7 +65,7 @@ Motorcycle::Motorcycle(GLuint givenVertexBuffer,
     
     // bind vertex array
     glEnableVertexAttribArray(givenVertexBufferLoc);
-    glBindBuffer(GL_ARRAY_BUFFER, givenVertexBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
     glVertexAttribPointer(givenVertexBufferLoc,
                           3,            // to simplify program, we always use triangles
                           GL_FLOAT,     // type of elements in vertex buffer is GLfloat
@@ -45,7 +74,7 @@ Motorcycle::Motorcycle(GLuint givenVertexBuffer,
                           0);
     
     glEnableVertexAttribArray(givenNormalBufferLoc);
-    glBindBuffer(GL_ARRAY_BUFFER, givenNormalBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
     glVertexAttribPointer(givenNormalBufferLoc,
                           3,
                           GL_FLOAT,
@@ -54,13 +83,12 @@ Motorcycle::Motorcycle(GLuint givenVertexBuffer,
                           0);
     
     // bind index array
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, givenIndexBuffer);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
     
     // finished: unbind vao to clear state
     glBindVertexArrayAPPLE(0);
     
     // Reset everything
-    setTime();
     setPosition(objPosition);
     setDirection(objDirection);
     setAcceleration(objAcceleration);
@@ -72,6 +100,13 @@ Motorcycle::~Motorcycle()
 {
     // clean up vertex array, which is generated in the constructor
     glDeleteVertexArraysAPPLE(1, &vertexArrayObjectHandle);
+    glDeleteBuffers(1, &vertexBuffer);
+    glDeleteBuffers(1, &normalBuffer);
+    glDeleteBuffers(1, &indexBuffer);
+}
+
+drawableObjectType_t Motorcycle::type() {
+    return kDrawableObjectTypeMotorcycle;
 }
     
 void Motorcycle::draw() // Draws the motorcycle
@@ -86,6 +121,7 @@ void Motorcycle::draw() // Draws the motorcycle
 
 void Motorcycle::move() // Moves the motorcycle
 {
+#warning all of the usleeps in this class should be changed
     // Add speed to the position
     setPosition(getPosition() + getDirection() * getSpeed());
     usleep(100);
@@ -140,16 +176,6 @@ int Motorcycle::isInCollision()        // Determines if the motorcycle collides 
 int Motorcycle::isFinished()           // Determines if the motorcycle gets to the finish line
 {
     return 0;
-}
- 
-void Motorcycle::setTime()
-{
-    time = clock();
-}
-
-float Motorcycle::getTime() const
-{
-    return float(clock() - time) / CLOCKS_PER_SEC;
 }
 
 void Motorcycle::setPosition(glm::vec3 pos)

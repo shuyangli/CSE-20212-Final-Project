@@ -85,8 +85,7 @@ GLuint globalProgram = 0;
 std::vector<Drawable *> globalDrawableObjects;
 std::vector<GLuint> globalBuffers;
 
-//Sample * sampleObj; // controllable object
-GLuint skyboxTexture; // texture handle
+Motorcycle * motorcycle; // controllable object
 
 #pragma mark - Main
 
@@ -188,8 +187,15 @@ void initOpenGL() {
     if (normalBufferLoc == -1) quit(9);
     
     // setup all objects
-    Sample * sampleObject = new Sample(vertexBufferLoc, normalBufferLoc);
-    globalDrawableObjects.push_back(sampleObject);
+//    Sample * sampleObject = new Sample(vertexBufferLoc, normalBufferLoc);
+//    globalDrawableObjects.push_back(sampleObject)
+    motorcycle = new Motorcycle(vertexBufferLoc,
+                                normalBufferLoc,
+                                glm::vec3(0, 0, 0),
+                                glm::vec3(1, 0, 0),
+                                0.0f,
+                                0.0f);
+    globalDrawableObjects.push_back(motorcycle);
 }
 
 void deleteObjects() {
@@ -243,10 +249,8 @@ void keyDownFunc(SDL_Keysym * keysym) {
             break;
             
         case SDLK_a:
-//            sampleObj -> decreaseTurn();
             break;
         case SDLK_d:
-//            sampleObj -> increaseTurn();
             break;
             
         default:

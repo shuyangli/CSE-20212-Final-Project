@@ -41,7 +41,7 @@ Sample::Sample(GLint        givenVertexBufferLoc,
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     
     
-    vertexCount = loader.getVertices().size();
+    vertexCount = (unsigned int) loader.getIndices().size();
     
     // setup initial model matrix as identity matrix
     scaleMatrix = glm::mat4(1.0f);
