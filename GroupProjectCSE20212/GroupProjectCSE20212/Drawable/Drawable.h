@@ -21,6 +21,7 @@ typedef enum _drawableObjectType_t {
     kDrawableObjectTypeSample = -1,
     kDrawableObjectTypeSkybox = 0,
     kDrawableObjectTypeMotorcycle,
+    kDrawableObjectTypeTrack
     // and add other kDrawableObjectType... here
 } drawableObjectType_t;
 

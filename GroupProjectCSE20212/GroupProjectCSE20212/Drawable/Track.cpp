@@ -10,11 +10,11 @@
 #include "Drawable.h"
 
 Track::Track(GLuint       givenVertexBuffer,
-               GLint        givenVertexBufferLoc,
-               unsigned int givenVertexCount,
-               GLuint       givenNormalBuffer,
-               GLint        givenNormalBufferLoc,
-               GLuint       givenIndexBuffer) : vertexCount(givenVertexCount) {
+             GLint        givenVertexBufferLoc,
+             unsigned int givenVertexCount,
+             GLuint       givenNormalBuffer,
+             GLint        givenNormalBufferLoc,
+             GLuint       givenIndexBuffer) : vertexCount(givenVertexCount) {
     
     // setup initial model matrix as identity matrix
     scaleMatrix = glm::mat4(1.0f);

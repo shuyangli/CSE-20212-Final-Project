@@ -142,11 +142,11 @@ void initSDL() {
     
     // create window with OpenGL context
     globalWindow = SDL_CreateWindow(WINDOW_TITLE,
-                                  SDL_WINDOWPOS_UNDEFINED,
-                                  SDL_WINDOWPOS_UNDEFINED,
-                                  STARTING_WINDOW_WIDTH,
-                                  STARTING_WINDOW_HEIGHT,
-                                  SDL_WINDOW_OPENGL);
+                                    SDL_WINDOWPOS_UNDEFINED,
+                                    SDL_WINDOWPOS_UNDEFINED,
+                                    STARTING_WINDOW_WIDTH,
+                                    STARTING_WINDOW_HEIGHT,
+                                    SDL_WINDOW_OPENGL);
     globalGLContext = SDL_GL_CreateContext(globalWindow);
     
     SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
@@ -179,8 +179,6 @@ void initOpenGL() {
     ProgramCreator myProgramCreator;
     myProgramCreator.loadShader(GL_VERTEX_SHADER, VERTEX_SHADER_PATH);
     myProgramCreator.loadShader(GL_FRAGMENT_SHADER, FRAGMENT_SHADER_PATH);
-//    myProgramCreator.loadShader(GL_VERTEX_SHADER, TEXTURED_VERTEX_SHADER_PATH);
-//    myProgramCreator.loadShader(GL_FRAGMENT_SHADER, TEXTURED_FRAGMENT_SHADER_PATH);
     
     globalProgram = myProgramCreator.linkProgram();
     
@@ -193,7 +191,6 @@ void initOpenGL() {
     // setup all buffer objects
     // we don't wrap loader into drawable classes because we need to keep track of allocated buffers on gpu memory, and free them when they're out of scope
     ObjLoader loader;
-//    loader.loadObj(SKYBOX_PATH, MTL_BASEPATH);
     loader.loadObj(CUBE_PATH, MTL_BASEPATH);
     
     GLuint vertexBuffer;
