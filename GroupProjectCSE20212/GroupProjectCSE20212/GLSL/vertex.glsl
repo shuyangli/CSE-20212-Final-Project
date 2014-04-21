@@ -20,9 +20,9 @@ uniform vec4 ambientLightIntensity;
 
 void main() {
     
-	gl_Position = mvpMatrix * vec4(inputCoords, 1.0f);
+	gl_Position = mvpMatrix * vec4(inputVertexPosModelSpace, 1.0f);
     
-    vec3 normalCamSpace = normalize(normalModelViewMatrix * inputNormal);
+    vec3 normalCamSpace = normalize(normalModelViewMatrix * inputVertexNormalModelSpace);
     float incidence = dot(normalCamSpace, directionToLight);
     incidence = clamp(incidence, 0, 1);
     

@@ -21,8 +21,8 @@
 #define TEXTURED_VERTEX_SHADER_PATH "./GLSL/vertexSkybox.glsl"
 #define TEXTURED_FRAGMENT_SHADER_PATH "./GLSL/fragmentSkybox.glsl"
 
-#define ATTRIB_NAME_INPUT_VERTEX    "inputCoords"
-#define ATTRIB_NAME_INPUT_NORMAL    "inputNormal"
+#define ATTRIB_NAME_INPUT_VERTEX    "inputVertexPosModelSpace"
+#define ATTRIB_NAME_INPUT_NORMAL    "inputVertexNormalModelSpace"
 
 #define UNIFORM_NAME_MVP_MATRIX     "mvpMatrix"
 #define UNIFORM_NAME_NORMAL_MV_MATRIX   "normalModelViewMatrix"
