@@ -13,7 +13,11 @@
 #include "Motorcycle.h"
 
 class Player : Motorcycle {
-
+public:
+    
+private:
+    
+    
 };
 
 #endif /* defined(__GroupProjectCSE20212__Player__) */

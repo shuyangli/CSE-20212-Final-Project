@@ -21,61 +21,58 @@ public:
                unsigned int givenVertexCount,
                GLuint       givenNormalBuffer,
                GLint        givenNormalBufferLoc,
-               GLuint       givenIndexBuffer);
+               GLuint       givenIndexBuffer,
+               glm::vec3, glm::vec3, double, double);
     ~Motorcycle();
     
     void draw(); // Draws the motorcycle
     void move(); // Moves the motorcycle
+    
+    /* Controls for the motorcycle */
+    void turnLeft();
+    void turnRight();
+    void incSpeed();
+    void decSpeed();
+    
     int isInBounds();           // Determines if the motorcycle is in on the road
     int isInCollision();        // Determines if the motorcycle collides with something
     int isFinished();           // Determines if the motorcycle gets to the finish line
     
-    // Getters and Setters
-    /*
-    void setSpeedX(double);
-    double getSpeedX() const;
-    void setSpeedY(double);
-    double getSpeedY() const;
-    void setSpeedZ(double);
-    double getSpeedZ() const;
-    void setPositionX(double);
-    double getPositionX() const;
-    void setPositionY(double);
-    double getPositionY() const;
-    void setPositionZ(double);
-    double getPositionZ() const;
-     */
-     
-    void setTime(double);
-    double getTime() const;
+    
+    /* Getters and Setters */
+    void setTime(); // Set time to current system timestamp
+    float getTime() const; // Get elapsed time from last timestamp
+    void setPosition(glm::vec3);
+    glm::vec3 getPosition() const;
+    void setDirection(glm::vec3);
+    glm::vec3 getDirection() const;
+    void setSpeed(double);
+    float getSpeed() const;
+    void setAcceleration(double);
+    float getAcceleration() const;
+    void setRotation(double);
+    float getRotation() const;
+    
     
 private:
 
-    /* Speed in different directions */
-    /*
-    double speed_x;
-    double speed_y;
-    double speed_z;
-     */
-    
-    /* Position on the road */
-    /*
-    double position_x;
-    double position_y;
-    double position_z;
-     */
-    
-    /* Record the time (unit: millisecond) from the start to the finish line */
-    
     GLuint vertexArrayObjectHandle;
+    
     unsigned int vertexCount;
     
-    float rotateSpeed;
-    float rotateAngle;
+    glm::vec3 position;
     
-    glm::vec3 speed;
+    glm::vec3 direction;
+    
+    float speed; // (Unit: unit length per centisecond)
+    
+    float acceleration; // Acceleration for speed increase and/or decrease (Unit: unit length per centisecond squared)
+    
+    float rotation; // Change in direction angle when turning left or right(Unit: rad per centisecond)
+    
     glm::mat4 scaleMatrix;
-    double time;
+    
+    clock_t time; // Timer (unit: millisecond)
 };
 
 #endif /* defined(__GroupProjectCSE20212__Motorcycle__) */
