@@ -20,8 +20,6 @@
 		88276C0418D69405005FB674 /* ObjLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88276C0018D69405005FB674 /* ObjLoader.cpp */; };
 		88276C0518D69405005FB674 /* tiny_obj_loader.cc in Sources */ = {isa = PBXBuildFile; fileRef = 88276C0218D69405005FB674 /* tiny_obj_loader.cc */; };
 		88BB807E18CA8FF10036728A /* ProgramCreator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88BB807C18CA8FF10036728A /* ProgramCreator.cpp */; };
-		88D2D3FB1905A8D6002DD9FC /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88D2D3F91905A8D6002DD9FC /* CoreFoundation.framework */; };
-		88D2D3FC1905A8D6002DD9FC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88D2D3FA1905A8D6002DD9FC /* CoreGraphics.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -341,8 +339,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				88D2D3FB1905A8D6002DD9FC /* CoreFoundation.framework in Frameworks */,
-				88D2D3FC1905A8D6002DD9FC /* CoreGraphics.framework in Frameworks */,
 				0FDB3F7A18E232AF00ED7759 /* SDL2.framework in Frameworks */,
 				880BCF5E18C78C6100EA9760 /* OpenGL.framework in Frameworks */,
 			);
