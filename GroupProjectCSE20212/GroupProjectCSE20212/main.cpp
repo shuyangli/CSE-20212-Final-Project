@@ -189,13 +189,17 @@ void initOpenGL() {
     // setup all objects
 //    Sample * sampleObject = new Sample(vertexBufferLoc, normalBufferLoc);
 //    globalDrawableObjects.push_back(sampleObject)
-    motorcycle = new Motorcycle(vertexBufferLoc,
-                                normalBufferLoc,
-                                glm::vec3(0, 0, 0),
-                                glm::vec3(1, 0, 0),
-                                0.0f,
-                                0.0f);
-    globalDrawableObjects.push_back(motorcycle);
+//    
+//    motorcycle = new Motorcycle(vertexBufferLoc,
+//                                normalBufferLoc,
+//                                glm::vec3(0, 0, 0),
+//                                glm::vec3(1, 0, 0),
+//                                0.0f,
+//                                0.0f);
+//    globalDrawableObjects.push_back(motorcycle);
+    
+    Track * myTrack = new Track(vertexBufferLoc, normalBufferLoc);
+    globalDrawableObjects.push_back(myTrack);
 }
 
 void deleteObjects() {

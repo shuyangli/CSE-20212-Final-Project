@@ -12,15 +12,11 @@
 #include <iostream>
 #include "Drawable.h"
 
-class Track : Drawable {
+class Track : public Drawable {
     
 public:
-    Track(GLuint       givenVertexBuffer,
-           GLint        givenVertexBufferLoc,
-           unsigned int givenVertexCount,
-           GLuint       givenNormalBuffer,
-           GLint        givenNormalBufferLoc,
-           GLuint       givenIndexBuffer);
+    Track(GLint        givenVertexBufferLoc,
+          GLint        givenNormalBufferLoc);
     ~Track();
     
     /**
@@ -38,8 +34,11 @@ private:
     GLuint vertexArrayObjectHandle;
     unsigned int vertexCount;
     
-    glm::mat4 scaleMatrix;
+    GLuint vertexBuffer;
+    GLuint normalBuffer;
+    GLuint indexBuffer;
     
+    glm::mat4 scaleMatrix;
 };
 
 #endif /* defined(__GroupProjectCSE20212__Track__) */
