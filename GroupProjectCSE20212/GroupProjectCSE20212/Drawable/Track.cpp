@@ -94,3 +94,5 @@ void Track::draw() {
 drawableObjectType_t Track::type() {
     return kDrawableObjectTypeSample;
 }
+
+#warning How to detect interaction between the track and the motorcycle
