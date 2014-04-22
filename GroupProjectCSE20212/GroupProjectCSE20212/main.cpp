@@ -195,7 +195,7 @@ void initOpenGL() {
                                 glm::vec3(0, 0, 0),
                                 glm::vec3(1, 0, 0),
                                 0.001f,
-                                0.1f);
+                                0.01f);
     globalDrawableObjects.push_back(motorcycle);
 
     Track * myTrack = new Track(vertexBufferLoc, normalBufferLoc);
