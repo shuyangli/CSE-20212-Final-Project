@@ -63,15 +63,25 @@ private:
     GLuint indexBuffer[4];
     
     
+    // position of motorcycle; coordinates of motorcycle's origin
     glm::vec3 position;
     
+    // "front" direction of motorcycle
     glm::vec3 direction;
     
-    float speed; // (Unit: unit length per centisecond)
+    // speed of motorcycle;
+    // (Unit: unit length per centisecond)
+    float speed;
     
-    float acceleration; // Acceleration for speed increase and/or decrease (Unit: unit length per centisecond squared)
+    // Acceleration for speed increase and/or decrease
+    // Acceleration is a CONSTANT
+    // (Unit: unit length per centisecond squared)
+    float acceleration;
     
-    float rotation; // Change in direction angle when turning left or right(Unit: rad per centisecond)
+    // Change in direction angle when turning left or right
+    // Also a CONSTANT
+    // (Unit: rad per centisecond)
+    float rotation;
     
     glm::mat4 scaleMatrix;
 };

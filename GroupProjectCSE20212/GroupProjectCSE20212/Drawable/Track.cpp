@@ -44,6 +44,7 @@ Track::Track(GLint        givenVertexBufferLoc,
     
     // setup initial model matrix as identity matrix
     scaleMatrix = glm::mat4(1.0f);
+    glm::scale(scaleMatrix, glm::vec3(10.0f, 10.0f, 10.0f));
     setModelMatrix(scaleMatrix);
     
     // wrap states using vao

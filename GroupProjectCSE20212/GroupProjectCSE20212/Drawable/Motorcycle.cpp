@@ -173,16 +173,19 @@ void Motorcycle::decSpeed()
 
 int Motorcycle::isInBounds()           // Determines if the motorcycle is in on the road
 {
+#warning TODO
     return 1;
 }
 
 int Motorcycle::isInCollision()        // Determines if the motorcycle collides with something
 {
+#warning TODO
     return 0;
 }
 
 int Motorcycle::isFinished()           // Determines if the motorcycle gets to the finish line
 {
+#warning TODO
     return 0;
 }
 
