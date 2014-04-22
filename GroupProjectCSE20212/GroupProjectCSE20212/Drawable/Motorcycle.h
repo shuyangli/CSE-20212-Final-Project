@@ -25,14 +25,23 @@ public:
     
     virtual drawableObjectType_t type();
     
-    virtual void draw(); // Draws the motorcycle
-    void move(); // Moves the motorcycle
+    // Draws the motorcycle
+    virtual void draw();
+    
+    // calculate rotation
+    virtual void calculateModelMatrix();
+    
+    glm::vec3 getCameraLocation();
+    glm::vec3 getCameraFocus();
+    
+    // Moves the motorcycle
+    void move(unsigned int deltaTime);
     
     /* Controls for the motorcycle */
-    void turnLeft();
-    void turnRight();
-    void incSpeed();
-    void decSpeed();
+    void turnLeft(unsigned int deltaTime);
+    void turnRight(unsigned int deltaTime);
+    void incSpeed(unsigned int deltaTime);
+    void decSpeed(unsigned int deltaTime);
     
     int isInBounds();           // Determines if the motorcycle is in on the road
     int isInCollision();        // Determines if the motorcycle collides with something
@@ -68,19 +77,20 @@ private:
     
     // "front" direction of motorcycle
     glm::vec3 direction;
+    glm::vec3 initialDirection;     // used to calculate rotation angle
     
     // speed of motorcycle;
-    // (Unit: unit length per centisecond)
+    // Unit: unit length per millisecond
     float speed;
     
     // Acceleration for speed increase and/or decrease
     // Acceleration is a CONSTANT
-    // (Unit: unit length per centisecond squared)
+    // Unit: unit length per millisecond^2
     float acceleration;
     
     // Change in direction angle when turning left or right
     // Also a CONSTANT
-    // (Unit: rad per centisecond)
+    // Unit: rad per millisecond
     float rotation;
     
     glm::mat4 scaleMatrix;

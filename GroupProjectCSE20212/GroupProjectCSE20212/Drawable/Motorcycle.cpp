@@ -59,7 +59,9 @@ Motorcycle::Motorcycle(GLint        givenVertexBufferLoc,
         
         
         // setup initial model matrix as identity matrix
-        scaleMatrix = glm::mat4(1.0f);
+        scaleMatrix = glm::scale(glm::mat4(1.0f),
+                                 glm::vec3(0.2f, 0.2f, 0.2f));
+        
         setModelMatrix(scaleMatrix);
         
         // wrap states using vao
@@ -95,6 +97,7 @@ Motorcycle::Motorcycle(GLint        givenVertexBufferLoc,
     // Reset everything
     setPosition(objPosition);
     setDirection(objDirection);
+    initialDirection = objDirection;
     setAcceleration(objAcceleration);
     setRotation(objRotation);
     setSpeed(0);
@@ -114,7 +117,15 @@ Motorcycle::~Motorcycle()
 drawableObjectType_t Motorcycle::type() {
     return kDrawableObjectTypeMotorcycle;
 }
-    
+
+void Motorcycle::calculateModelMatrix() {
+    glm::mat4 tempModel = glm::rotate(scaleMatrix,
+                                      glm::acos(glm::dot(initialDirection, direction) /
+                                                (glm::length(initialDirection) * glm::length(direction))), // (c*d)/(|c|*|d|)
+                                      glm::vec3(0, 1, 0));      // rotate around y-axis
+    setModelMatrix(tempModel);
+}
+
 void Motorcycle::draw() // Draws the motorcycle
 {
     for (int i = 0; i < 4; ++i) {
@@ -127,48 +138,54 @@ void Motorcycle::draw() // Draws the motorcycle
     glBindVertexArrayAPPLE(0);
 }
 
-void Motorcycle::move() // Moves the motorcycle
+void Motorcycle::move(unsigned int deltaTime) // Moves the motorcycle
 {
-#warning all of the usleeps in this class should be changed
     // Add speed to the position
-    setPosition(getPosition() + getDirection() * getSpeed());
-    usleep(100);
+    setPosition(getPosition() + getDirection() * (getSpeed() * deltaTime));
 }
 
-void Motorcycle::turnLeft()
+void Motorcycle::turnLeft(unsigned int deltaTime)
 {
     glm::vec3 newDir = getDirection();
     float angle = 0;
     if (newDir.x == 0) angle = (newDir.y > 0) ? M_PI / 2 : -M_PI / 2;
-    angle += rotation;
+    angle += rotation * deltaTime;
     newDir.x = cosf(angle);
     newDir.y = sinf(angle);
     setDirection(newDir);
-    usleep(100);
 }
 
-void Motorcycle::turnRight()
+void Motorcycle::turnRight(unsigned int deltaTime)
 {
     glm::vec3 newDir = getDirection();
     float angle = 0;
     if (newDir.x == 0) angle = (newDir.y > 0) ? M_PI / 2 : -M_PI / 2;
-    angle -= rotation;
+    angle -= rotation * deltaTime;
     newDir.x = cosf(angle);
     newDir.y = sinf(angle);
     setDirection(newDir);
-    usleep(100);
 }
 
-void Motorcycle::incSpeed()
+void Motorcycle::incSpeed(unsigned int deltaTime)
 {
-    setSpeed(getSpeed() + getAcceleration());
-    usleep(100);
+    setSpeed(getSpeed() + getAcceleration() * deltaTime);
 }
 
-void Motorcycle::decSpeed()
+void Motorcycle::decSpeed(unsigned int deltaTime)
 {
-    setSpeed(getSpeed() - getAcceleration());
-    usleep(100);
+    setSpeed(getSpeed() - getAcceleration() * deltaTime);
+}
+
+glm::vec3 Motorcycle::getCameraFocus() {
+    // direction of motorcycle, then look down 1 unit
+#warning should be tweaked
+    return getCameraLocation() + getDirection() - glm::vec3(0, 1.0f, 0);
+}
+
+glm::vec3 Motorcycle::getCameraLocation() {
+    // position of motorcycle, move back 2 units, and move up 2 units
+#warning these should be tweaked
+    return getPosition() - getDirection() * 2.0f + glm::vec3(0, 2.0f, 0);
 }
 
 int Motorcycle::isInBounds()           // Determines if the motorcycle is in on the road
