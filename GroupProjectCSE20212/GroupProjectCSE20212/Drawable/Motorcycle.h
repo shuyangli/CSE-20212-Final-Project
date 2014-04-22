@@ -93,6 +93,9 @@ private:
     // Unit: rad per millisecond
     float rotation;
     
+    // angle of motorcycle's head direction
+    float angleToFront;
+    
     glm::mat4 scaleMatrix;
 };
 
