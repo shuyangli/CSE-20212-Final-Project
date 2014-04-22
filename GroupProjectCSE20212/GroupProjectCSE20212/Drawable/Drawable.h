@@ -44,6 +44,12 @@ public:
     virtual void draw() = 0;
     
     /**
+     * Performs introspection on the Drawable object
+     * @return  corresponding enum
+     */
+    virtual drawableObjectType_t type() = 0;
+    
+    /**
      * Returns a model matrix used in translation to draw this object
      * @return model matrix
      */

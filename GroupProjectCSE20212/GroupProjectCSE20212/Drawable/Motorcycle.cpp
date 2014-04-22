@@ -120,12 +120,15 @@ drawableObjectType_t Motorcycle::type() {
 }
 
 void Motorcycle::calculateModelMatrix() {
-    glm::mat4 tempModel = glm::rotate(scaleMatrix,
-//                                      glm::acos(glm::dot(initialDirection, direction) /
-//                                                (glm::length(initialDirection) * glm::length(direction))), // (c*d)/(|c|*|d|)
-                                      angleToFront,
-                                      glm::vec3(0, 1, 0));      // rotate around y-axis
-    setModelMatrix(tempModel);
+    
+    glm::mat4 rotatedModel = glm::rotate(scaleMatrix,
+                                        angleToFront,
+                                        glm::vec3(0, 1, 0));      // rotate around y-axis
+    
+    glm::mat4 translatedModel = glm::translate(glm::mat4(1.0f),
+                                               getPosition());
+    
+    setModelMatrix(translatedModel * rotatedModel);
 }
 
 void Motorcycle::draw() // Draws the motorcycle
@@ -142,6 +145,7 @@ void Motorcycle::draw() // Draws the motorcycle
 
 void Motorcycle::move(unsigned int deltaTime) // Moves the motorcycle
 {
+    std::cout << "moved" << std::endl;
     // Add speed to the position
     setPosition(getPosition() + getDirection() * (getSpeed() * deltaTime));
 }
@@ -194,8 +198,8 @@ void Motorcycle::decSpeed(unsigned int deltaTime)
 glm::vec3 Motorcycle::getCameraFocus() {
     // 20 units in front of motorcycle
 #warning should be tweaked
-//    return getPosition() + glm::vec3(20.0f, 0.0f, 0.0f);
-    return getPosition();
+    return getPosition() + glm::vec3(4.0f, 2.0f, 0.0f);
+//    return getPosition();
 }
 
 glm::vec3 Motorcycle::getCameraLocation() {
