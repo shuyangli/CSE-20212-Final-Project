@@ -66,7 +66,7 @@ void deleteObjects();
 void deletePrograms();
 
 void processEvents(myGameStatus_t &status);
-void keyDownFunc(SDL_Keysym *keysym);
+void keyDownFunc(SDL_Keysym *keysym, unsigned int deltaTime);
 
 myMenuSelection_t displayMainMenu();
 void displaySetting();
@@ -194,8 +194,8 @@ void initOpenGL() {
                                 normalBufferLoc,
                                 glm::vec3(0, 0, 0),
                                 glm::vec3(1, 0, 0),
-                                0.0f,
-                                0.0f);
+                                0.01f,
+                                0.01f);
     globalDrawableObjects.push_back(motorcycle);
 
     Track * myTrack = new Track(vertexBufferLoc, normalBufferLoc);
@@ -225,12 +225,19 @@ void quit(int exitCode) {
 
 void processEvents(myGameStatus_t &status) {
     
+    // initial setup for timer
+    static unsigned int lastTick = SDL_GetTicks();
+    
+    // calculate delta time for each time events are processed
+    unsigned int deltaTime = SDL_GetTicks() - lastTick;
+#warning todo
     // Grab all the events off the event queue
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
+        
         switch(event.type) {
             case SDL_KEYDOWN:
-                keyDownFunc(&event.key.keysym);
+                keyDownFunc(&event.key.keysym, deltaTime);
                 break;
                 
             case SDL_QUIT:
@@ -241,9 +248,12 @@ void processEvents(myGameStatus_t &status) {
                 break;
         }
     }
+    
+    // update time after each frame
+    lastTick = SDL_GetTicks();
 }
 
-void keyDownFunc(SDL_Keysym * keysym) {
+void keyDownFunc(SDL_Keysym * keysym, unsigned int deltaTime) {
     std::cout << "key down" << std::endl;
     
     switch (keysym -> sym) {
@@ -254,7 +264,24 @@ void keyDownFunc(SDL_Keysym * keysym) {
             
         case SDLK_a:
             break;
+            
         case SDLK_d:
+            break;
+            
+        case SDLK_UP:
+            motorcycle -> incSpeed(deltaTime);
+            break;
+            
+        case SDLK_DOWN:
+            motorcycle -> decSpeed(deltaTime);
+            break;
+            
+        case SDLK_LEFT:
+            motorcycle -> turnLeft(deltaTime);
+            break;
+            
+        case SDLK_RIGHT:
+            motorcycle -> turnRight(deltaTime);
             break;
             
         default:
@@ -300,6 +327,7 @@ void calculateObjects() {
 
 void redrawGameScreen() {
     
+    
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClearDepth(1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -320,8 +348,8 @@ void redrawGameScreen() {
     std::for_each(globalDrawableObjects.begin(), globalDrawableObjects.end(), [&](Drawable * obj){
         
         glm::mat4 modelMat = obj -> getModelMatrix();
-        glm::mat4 viewMat = glm::lookAt(glm::vec3(8, 5, 5),
-                                        glm::vec3(0, 0, 0),
+        glm::mat4 viewMat = glm::lookAt(motorcycle->getCameraLocation(),
+                                        motorcycle->getCameraFocus(),
                                         glm::vec3(0, 1, 0));
         glm::mat4 mvpMat = projMat * viewMat * modelMat;
         glm::mat3 mvMat = glm::transpose(glm::inverse(glm::mat3(viewMat * modelMat)));
