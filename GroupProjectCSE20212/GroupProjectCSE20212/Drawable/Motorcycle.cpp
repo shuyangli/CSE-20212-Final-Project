@@ -155,14 +155,14 @@ void Motorcycle::turnLeft(unsigned int deltaTime)
     glm::vec3 newDir = getDirection();
     float currentAngle = 0;
     std::cout << newDir.x << " " << newDir.y << std::endl;
-    if (newDir.x == 0) currentAngle = (newDir.y > 0) ? M_PI / 2 : -M_PI / 2;
+    if (newDir.x == 0) currentAngle = (newDir.z > 0) ? M_PI / 2 : -M_PI / 2;
     else {
-        currentAngle = atanf(newDir.y / newDir.x);
+        currentAngle = atanf(newDir.z / newDir.x);
         if (newDir.x < 0) currentAngle = M_PI + currentAngle;
     }
     currentAngle += rotation * deltaTime;
     newDir.x = cosf(currentAngle);
-    newDir.y = sinf(currentAngle);
+    newDir.z = sinf(currentAngle);
     setDirection(newDir);
     
     angleToFront = currentAngle;
@@ -172,14 +172,14 @@ void Motorcycle::turnRight(unsigned int deltaTime)
 {
     glm::vec3 newDir = getDirection();
     float currentAngle = 0;
-    if (newDir.x == 0) currentAngle = (newDir.y > 0) ? M_PI / 2 : -M_PI / 2;
+    if (newDir.x == 0) currentAngle = (newDir.z > 0) ? M_PI / 2 : -M_PI / 2;
     else {
-        currentAngle = atanf(newDir.y / newDir.x);
+        currentAngle = atanf(newDir.z / newDir.x);
         if (newDir.x < 0) currentAngle = M_PI + currentAngle;
     }
     currentAngle -= rotation * deltaTime;
     newDir.x = cosf(currentAngle);
-    newDir.y = sinf(currentAngle);
+    newDir.z = sinf(currentAngle);
     setDirection(newDir);
     
     angleToFront = currentAngle;
