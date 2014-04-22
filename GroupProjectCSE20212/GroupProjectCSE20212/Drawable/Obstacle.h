@@ -27,37 +27,30 @@ public:
     void draw(); // Draws the obstacle
     int isInCollision();        // Determines if any motorcycle has crashed into the obstacle
     
-    // Getters and Setters
+    // Getters and setters
     
-    /*
-    void setSpeedX(double);
-    double getSpeedX() const;
-    void setSpeedY(double);
-    double getSpeedY() const;
-    void setSpeedZ(double);
-    double getSpeedZ() const;
-    void setPositionX(double);
-    double getPositionX() const;
-    void setPositionY(double);
-    double getPositionY() const;
-    void setPositionZ(double);
-    double getPositionZ() const;
-    void setTime(double);
-    double getTime() const;
-    */
      
 private:
+    // drawing
+    GLuint vertexArrayObjectHandle;
+    unsigned int vertexCount;
     
-    /* Position on the road */
-    /*
-    double position_x;
-    double position_y;
-    double position_z;
-     */
+    GLuint vertexBuffer;
+    GLuint normalBuffer;
+    GLuint indexBuffer;
     
+    glm::vec3 position;
     
+    glm::vec3 direction;
     
-    /* Record the time (unit: millisecond) from the start to the finish line */
+    float speed; // (Unit: unit length per centisecond)
+    
+    float acceleration; // Acceleration for speed increase and/or decrease (Unit: unit length per centisecond squared)
+    
+    float rotation; // Change in direction angle when turning left or right(Unit: rad per centisecond)
+    
+    glm::mat4 scaleMatrix;
+    
 };
 
 
