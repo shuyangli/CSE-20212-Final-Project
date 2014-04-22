@@ -19,9 +19,6 @@ public:
           GLint        givenNormalBufferLoc);
     ~Track();
     
-    /**
-     * Draws the object on screen
-     */
     void draw();
     
     /**
