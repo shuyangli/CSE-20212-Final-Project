@@ -55,12 +55,12 @@ public:
 private:
     
     // drawing
-    GLuint vertexArrayObjectHandle;
-    unsigned int vertexCount;
+    GLuint vertexArrayObjectHandle[4];
+    unsigned int vertexCount[4];
     
-    GLuint vertexBuffer;
-    GLuint normalBuffer;
-    GLuint indexBuffer;
+    GLuint vertexBuffer[4];
+    GLuint normalBuffer[4];
+    GLuint indexBuffer[4];
     
     
     glm::vec3 position;

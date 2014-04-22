@@ -190,16 +190,16 @@ void initOpenGL() {
 //    Sample * sampleObject = new Sample(vertexBufferLoc, normalBufferLoc);
 //    globalDrawableObjects.push_back(sampleObject)
 //    
-//    motorcycle = new Motorcycle(vertexBufferLoc,
-//                                normalBufferLoc,
-//                                glm::vec3(0, 0, 0),
-//                                glm::vec3(1, 0, 0),
-//                                0.0f,
-//                                0.0f);
-//    globalDrawableObjects.push_back(motorcycle);
-    
-    Track * myTrack = new Track(vertexBufferLoc, normalBufferLoc);
-    globalDrawableObjects.push_back(myTrack);
+    motorcycle = new Motorcycle(vertexBufferLoc,
+                                normalBufferLoc,
+                                glm::vec3(0, 0, 0),
+                                glm::vec3(1, 0, 0),
+                                0.0f,
+                                0.0f);
+    globalDrawableObjects.push_back(motorcycle);
+//
+//    Track * myTrack = new Track(vertexBufferLoc, normalBufferLoc);
+//    globalDrawableObjects.push_back(myTrack);
 }
 
 void deleteObjects() {
@@ -332,9 +332,9 @@ void redrawGameScreen() {
         // for untextured lit stuff
         glUniformMatrix3fv(normalModelViewMatLoc, 1, GL_FALSE, glm::value_ptr(mvMat));
         
-        glUniform3fv(directionToLightLoc, 1, glm::value_ptr(glm::vec3(0.0f, 0.0f, -1.0f)));
-        glUniform4f(lightIntensityLoc, 0.8f, 0.8f, 0.8f, 1.0f);
-        glUniform4f(ambientLightIntensityLoc, 0.2f, 0.2f, 0.2f, 1.0f);
+        glUniform3fv(directionToLightLoc, 1, glm::value_ptr(glm::vec3(0.0f, 0.0f, 1.0f)));
+        glUniform4f(lightIntensityLoc, 0.7f, 0.7f, 0.7f, 1.0f);
+        glUniform4f(ambientLightIntensityLoc, 0.3f, 0.3f, 0.3f, 1.0f);
         
         obj -> draw();
     });
