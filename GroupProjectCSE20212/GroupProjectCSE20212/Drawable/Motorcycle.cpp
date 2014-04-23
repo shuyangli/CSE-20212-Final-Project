@@ -152,9 +152,9 @@ void Motorcycle::move(unsigned int deltaTime) // Moves the motorcycle
 
 void Motorcycle::turnLeft(unsigned int deltaTime)
 {
+    /*
     glm::vec3 newDir = getDirection();
     float currentAngle = 0;
-    std::cout << newDir.x << " " << newDir.y << std::endl;
     if (newDir.x == 0) currentAngle = (newDir.z > 0) ? M_PI / 2 : -M_PI / 2;
     else {
         currentAngle = atanf(newDir.z / newDir.x);
@@ -166,10 +166,17 @@ void Motorcycle::turnLeft(unsigned int deltaTime)
     setDirection(newDir);
     
     angleToFront = currentAngle;
+     */
+    angleToFront += rotation * deltaTime;
+    glm::vec3 newDir = getDirection();
+    newDir.x = cosf(-angleToFront);
+    newDir.z = sinf(-angleToFront);
+    setDirection(newDir);
 }
 
 void Motorcycle::turnRight(unsigned int deltaTime)
 {
+    /*
     glm::vec3 newDir = getDirection();
     float currentAngle = 0;
     if (newDir.x == 0) currentAngle = (newDir.z > 0) ? M_PI / 2 : -M_PI / 2;
@@ -183,6 +190,12 @@ void Motorcycle::turnRight(unsigned int deltaTime)
     setDirection(newDir);
     
     angleToFront = currentAngle;
+     */
+    angleToFront -= rotation * deltaTime;
+    glm::vec3 newDir = getDirection();
+    newDir.x = cosf(-angleToFront);
+    newDir.z = sinf(-angleToFront);
+    setDirection(newDir);
 }
 
 void Motorcycle::incSpeed(unsigned int deltaTime)
@@ -205,7 +218,7 @@ glm::vec3 Motorcycle::getCameraFocus() {
 glm::vec3 Motorcycle::getCameraLocation() {
     // position of motorcycle, move up 2 units
 #warning these should be tweaked
-    return getPosition() + glm::vec3(-2.0f, 2.0f, 0);
+    return getPosition() + glm::vec3(-1.0f, 0.5f, 0);
 }
 
 int Motorcycle::isInBounds()           // Determines if the motorcycle is in on the road
