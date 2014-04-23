@@ -146,9 +146,25 @@ void Motorcycle::draw() // Draws the motorcycle
                        0);
     }
     
-//    std::cout << position.x << " " << position.y << " " << position.z << std::endl;
-    
     glBindVertexArrayAPPLE(0);
+}
+
+void Motorcycle::draw(GLint lightIntensityLoc, GLint ambientLightIntensityLoc) {
+    
+    ObjLoader * myLoaderRef = getLoader();
+    
+    for (int i = 0; i < 4; ++i) {
+        tinyobj::material_t material = myLoaderRef -> getMaterial(i);
+        
+        glUniform4f(lightIntensityLoc, material.diffuse[0], material.diffuse[1], material.diffuse[2], 1.0f);
+        glUniform4f(ambientLightIntensityLoc, material.ambient[0], material.ambient[1], material.ambient[2], 1.0f);
+        
+        glBindVertexArrayAPPLE(vertexArrayObjectHandle[i]);
+        glDrawElements(GL_TRIANGLES,
+                       vertexCount[i],
+                       GL_UNSIGNED_INT,
+                       0);
+    }
 }
 
 void Motorcycle::move(unsigned int deltaTime) { // Moves the motorcycle

@@ -28,6 +28,9 @@ public:
     // Draws the motorcycle
     virtual void draw();
     
+    // Special drawing for motorcycle for different parts
+    void draw(GLint lightIntensityLoc, GLint ambientLightIntensityLoc);
+    
     // calculate rotation
     virtual void calculateModelMatrix();
     
