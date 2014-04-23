@@ -63,7 +63,7 @@ Motorcycle::Motorcycle(GLint        givenVertexBufferLoc,
         
         // setup initial model matrix as identity matrix
         scaleMatrix = glm::scale(glm::mat4(1.0f),
-                                 glm::vec3(0.2f, 0.2f, 0.2f));
+                                 glm::vec3(0.2f, 0.2f, 0.2f)) * glm::mat4(1.0f);
         
         setModelMatrix(scaleMatrix);
         
