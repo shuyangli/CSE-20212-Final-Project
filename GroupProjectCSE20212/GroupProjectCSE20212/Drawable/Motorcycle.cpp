@@ -160,7 +160,7 @@ void Motorcycle::turnLeft(unsigned int deltaTime)
         currentAngle = atanf(newDir.z / newDir.x);
         if (newDir.x < 0) currentAngle = M_PI + currentAngle;
     }
-    currentAngle += rotation * deltaTime;
+    currentAngle += rotation;
     newDir.x = cosf(currentAngle);
     newDir.z = sinf(currentAngle);
     setDirection(newDir);
@@ -177,7 +177,7 @@ void Motorcycle::turnRight(unsigned int deltaTime)
         currentAngle = atanf(newDir.z / newDir.x);
         if (newDir.x < 0) currentAngle = M_PI + currentAngle;
     }
-    currentAngle -= rotation * deltaTime;
+    currentAngle -= rotation;
     newDir.x = cosf(currentAngle);
     newDir.z = sinf(currentAngle);
     setDirection(newDir);
@@ -198,7 +198,7 @@ void Motorcycle::decSpeed(unsigned int deltaTime)
 glm::vec3 Motorcycle::getCameraFocus() {
     // 20 units in front of motorcycle
 #warning should be tweaked
-    return getPosition() + glm::vec3(4.0f, 2.0f, 0.0f);
+    return getPosition() + glm::vec3(4.0f, 1.0f, 0.0f);
 //    return getPosition();
 }
 
