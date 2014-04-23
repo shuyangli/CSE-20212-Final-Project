@@ -39,3 +39,7 @@ std::vector<GLfloat>& ObjLoader::getNormals(size_t index) {
 std::vector<unsigned int>& ObjLoader::getIndices(size_t index) {
     return shapes[index].mesh.indices;
 }
+
+tinyobj::material_t& ObjLoader::getMaterial(size_t index) {
+    return shapes[index].material;
+}

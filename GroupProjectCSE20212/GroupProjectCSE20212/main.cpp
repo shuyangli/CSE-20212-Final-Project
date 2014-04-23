@@ -329,6 +329,7 @@ void redrawGameScreen() {
     GLint directionToLightLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_DIRECTION_TO_LIGHT);
     GLint lightIntensityLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_LIGHT_INTENSITY);
     GLint ambientLightIntensityLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_AMBIENT_INTENSITY);
+    GLint materialColorLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_MATERIAL_COLOR);
     
     // proj matrix (clip space) only changes when fov or aspect ratio changes, so we don't modify it
     static const glm::mat4 projMat = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 100.0f);
@@ -348,8 +349,8 @@ void redrawGameScreen() {
 
         // for lighting
         glUniformMatrix3fv(normalModelViewMatLoc, 1, GL_FALSE, glm::value_ptr(mvMat));
+        glUniform4f(materialColorLoc, 0.6f, 0.6f, 0.6f, 1.0f);
         
-#warning    for material texturing
         ObjLoader * myLoaderRef = obj -> getLoader();
         if (myLoaderRef != nullptr) {
             glUniform3fv(directionToLightLoc, 1, glm::value_ptr(glm::vec3(0.0f, 0.0f, 1.0f)));
