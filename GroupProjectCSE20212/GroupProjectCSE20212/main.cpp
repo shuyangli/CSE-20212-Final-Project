@@ -187,9 +187,9 @@ void initOpenGL() {
                                 0.001f,
                                 0.05f);
     globalDrawableObjects.push_back(motorcycle);
-
-    Track * myTrack = new Track(vertexBufferLoc, normalBufferLoc);
-    globalDrawableObjects.push_back(myTrack);
+    
+    globalDrawableObjects.push_back(new Track(vertexBufferLoc, normalBufferLoc));
+//    globalDrawableObjects.push_back(new Ground(vertexBufferLoc, normalBufferLoc));
 }
 
 void deleteObjects() {

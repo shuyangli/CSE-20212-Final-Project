@@ -18,18 +18,18 @@ Ground::Ground(GLint        givenVertexBufferLoc,
         -1500.0f, -1.0f, +1500.0f,
         +1500.0f, -1.0f, -1500.0f,
         +1500.0f, -1.0f, +1500.0f
-    }
+    };
     
     GLfloat normalBufferData[12] = {
         0.0f, 1.0f, 0.0f,
         0.0f, 1.0f, 0.0f,
         0.0f, 1.0f, 0.0f
-    }
+    };
     
     GLuint indexBufferData[6] = {
         0, 2, 3,
         3, 1, 0
-    }
+    };
     
     glGenBuffers(1, &vertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);

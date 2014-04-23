@@ -10,12 +10,13 @@
 #define __GroupProjectCSE20212__Ground__
 
 #include <iostream>
+#include "Drawable.h"
 
 class Ground : public Drawable {
     
 public:
     Ground(GLint        givenVertexBufferLoc,
-          GLint        givenNormalBufferLoc);
+           GLint        givenNormalBufferLoc);
     ~Ground();
     
     void draw();
