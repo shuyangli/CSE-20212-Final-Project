@@ -16,6 +16,7 @@
 		880BCF5318C78B4000EA9760 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 880BCF5218C78B4000EA9760 /* main.cpp */; };
 		880BCF5518C78B4000EA9760 /* GroupProjectCSE20212.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 880BCF5418C78B4000EA9760 /* GroupProjectCSE20212.1 */; };
 		880BCF5E18C78C6100EA9760 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 880BCF5D18C78C6100EA9760 /* OpenGL.framework */; };
+		881A4A2A190778AA00272D06 /* Ground.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 881A4A28190778AA00272D06 /* Ground.cpp */; };
 		88276C0418D69405005FB674 /* ObjLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88276C0018D69405005FB674 /* ObjLoader.cpp */; };
 		88276C0518D69405005FB674 /* tiny_obj_loader.cc in Sources */ = {isa = PBXBuildFile; fileRef = 88276C0218D69405005FB674 /* tiny_obj_loader.cc */; };
 		88BB807E18CA8FF10036728A /* ProgramCreator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88BB807C18CA8FF10036728A /* ProgramCreator.cpp */; };
@@ -61,6 +62,8 @@
 		880BCF5218C78B4000EA9760 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		880BCF5418C78B4000EA9760 /* GroupProjectCSE20212.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = GroupProjectCSE20212.1; sourceTree = "<group>"; };
 		880BCF5D18C78C6100EA9760 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		881A4A28190778AA00272D06 /* Ground.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Ground.cpp; path = Drawable/Ground.cpp; sourceTree = "<group>"; };
+		881A4A29190778AA00272D06 /* Ground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Ground.h; path = Drawable/Ground.h; sourceTree = "<group>"; };
 		88276C0018D69405005FB674 /* ObjLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ObjLoader.cpp; path = Helper/ObjLoader.cpp; sourceTree = "<group>"; };
 		88276C0118D69405005FB674 /* ObjLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ObjLoader.h; path = Helper/ObjLoader.h; sourceTree = "<group>"; };
 		88276C0218D69405005FB674 /* tiny_obj_loader.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tiny_obj_loader.cc; path = Helper/tiny_obj_loader.cc; sourceTree = "<group>"; };
@@ -721,14 +724,16 @@
 				0FE8C82E18E5BB95006F9FA0 /* Drawable.h */,
 				0FB170A718F2E212004CE328 /* Sample.cpp */,
 				0FB170A818F2E212004CE328 /* Sample.h */,
+				881A4A29190778AA00272D06 /* Ground.h */,
+				881A4A28190778AA00272D06 /* Ground.cpp */,
 				0FB170AA18F2E212004CE328 /* Skybox.h */,
 				0FB170A918F2E212004CE328 /* Skybox.cpp */,
 				0FE8C83018E5BB95006F9FA0 /* Motorcycle.h */,
 				0FE8C82F18E5BB95006F9FA0 /* Motorcycle.cpp */,
 				0FE8C83318E5BB95006F9FA0 /* Obstacle.cpp */,
 				0FE8C83418E5BB95006F9FA0 /* Obstacle.h */,
-				0FE8C83918E5BB95006F9FA0 /* Track.cpp */,
 				0FE8C83A18E5BB95006F9FA0 /* Track.h */,
+				0FE8C83918E5BB95006F9FA0 /* Track.cpp */,
 			);
 			name = Drawable;
 			sourceTree = "<group>";
@@ -792,6 +797,7 @@
 				0FE8C84218E5BB95006F9FA0 /* Track.cpp in Sources */,
 				88276C0418D69405005FB674 /* ObjLoader.cpp in Sources */,
 				0FB170AB18F2E212004CE328 /* Sample.cpp in Sources */,
+				881A4A2A190778AA00272D06 /* Ground.cpp in Sources */,
 				0FB170AC18F2E212004CE328 /* Skybox.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -27,8 +27,9 @@ Motorcycle::Motorcycle(GLint        givenVertexBufferLoc,
 {
     
     // load objects
-    ObjLoader loader;
-    loader.loadObj(MOTORCYCLE_PATH, MTL_BASEPATH);
+    setLoader(new ObjLoader());
+    ObjLoader * myLoaderRef = getLoader();
+    myLoaderRef -> loadObj(MOTORCYCLE_PATH, MTL_BASEPATH);
     
     // four parts!
     for (int i = 0; i < 4; ++i) {
@@ -36,36 +37,29 @@ Motorcycle::Motorcycle(GLint        givenVertexBufferLoc,
         glGenBuffers(1, &vertexBuffer[i]);
         glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer[i]);
         glBufferData(GL_ARRAY_BUFFER,
-                     loader.getVertices(i).size() * sizeof(GLfloat),
-                     loader.getVertices(i).data(),
+                     myLoaderRef -> getVertices(i).size() * sizeof(GLfloat),
+                     myLoaderRef -> getVertices(i).data(),
                      GL_STATIC_DRAW);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         
         glGenBuffers(1, &normalBuffer[i]);
         glBindBuffer(GL_ARRAY_BUFFER, normalBuffer[i]);
         glBufferData(GL_ARRAY_BUFFER,
-                     loader.getNormals(i).size() * sizeof(GLfloat),
-                     loader.getNormals(i).data(),
+                     myLoaderRef -> getNormals(i).size() * sizeof(GLfloat),
+                     myLoaderRef -> getNormals(i).data(),
                      GL_STATIC_DRAW);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         
         glGenBuffers(1, &indexBuffer[i]);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer[i]);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-                     loader.getIndices(i).size() * sizeof(GLuint),
-                     loader.getIndices(i).data(),
+                     myLoaderRef -> getIndices(i).size() * sizeof(GLuint),
+                     myLoaderRef -> getIndices(i).data(),
                      GL_STATIC_DRAW);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
         
         
-        vertexCount[i] = (unsigned int) loader.getIndices(i).size();
-        
-        
-        // setup initial model matrix as identity matrix
-        scaleMatrix = glm::scale(glm::mat4(1.0f),
-                                 glm::vec3(0.2f, 0.2f, 0.2f)) * glm::mat4(1.0f);
-        
-        setModelMatrix(scaleMatrix);
+        vertexCount[i] = (unsigned int) myLoaderRef -> getIndices(i).size();
         
         // wrap states using vao
         glGenVertexArraysAPPLE(1, &vertexArrayObjectHandle[i]);
@@ -97,9 +91,15 @@ Motorcycle::Motorcycle(GLint        givenVertexBufferLoc,
         glBindVertexArrayAPPLE(0);
     }
     
+    // setup initial model matrix as identity matrix
+    scaleMatrix = glm::scale(glm::mat4(1.0f),
+                             glm::vec3(0.2f, 0.2f, 0.2f)) * glm::mat4(1.0f);
+    
+    setModelMatrix(scaleMatrix);
+    
     // Reset everything
     position = objPosition;
-    setDirection(objDirection);
+    direction = glm::normalize(objDirection);
     
     initialDirection = objDirection;
     acceleration = objAcceleration;
@@ -110,6 +110,8 @@ Motorcycle::Motorcycle(GLint        givenVertexBufferLoc,
 
 Motorcycle::~Motorcycle()
 {
+    setLoader(nullptr);
+    
     // clean up vertex array, which is generated in the constructor
     for (int i = 0; i < 4; ++i) {
         glDeleteVertexArraysAPPLE(1, &vertexArrayObjectHandle[i]);
@@ -143,8 +145,6 @@ void Motorcycle::draw() // Draws the motorcycle
                        GL_UNSIGNED_INT,
                        0);
     }
-    
-    std::cout << angleToFront << std::endl;
     
     glBindVertexArrayAPPLE(0);
 }
@@ -201,8 +201,4 @@ int Motorcycle::isFinished()           // Determines if the motorcycle gets to t
 {
 #warning TODO
     return 0;
-}
-
-void Motorcycle::setDirection(glm::vec3 dir) {
-    direction = dir / float(sqrt(dir.x * dir.x + dir.y * dir.y + dir.z * dir.z));
 }

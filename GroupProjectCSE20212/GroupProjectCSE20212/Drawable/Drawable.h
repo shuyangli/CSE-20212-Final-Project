@@ -16,7 +16,6 @@
 #include "../Helper/glm/glm.hpp"
 #include "../Helper/glm/gtc/matrix_transform.hpp"
 
-#warning Part of an attempt to add introspection to Drawable objects; this enum list must be updated with all new subclasses of Drawable
 typedef enum _drawableObjectType_t {
     kDrawableObjectTypeSample = -1,
     kDrawableObjectTypeSkybox = 0,
@@ -36,7 +35,7 @@ class Drawable {
 public:
     
     Drawable() { }
-    virtual ~Drawable() { }
+    virtual ~Drawable() { setLoader(nullptr); }
     
     /**
      * Draws the object on screen
@@ -62,6 +61,21 @@ public:
     void setModelMatrix(glm::mat4 newModelMatrix) { modelMatrix = newModelMatrix; }
     
     /**
+     * Returns pointer to object loader
+     * @return loader
+     */
+    ObjLoader * getLoader() { return loader; }
+    
+    /**
+     * Set pointer to object loader
+     * @param newLoader     new loader
+     */
+    void setLoader(ObjLoader * newLoader) {
+        if (loader == nullptr) delete loader;
+        loader = newLoader;
+    }
+    
+    /**
      * Calculate new model matrix, called once each frame
      */
     virtual void calculateModelMatrix() { }
@@ -85,6 +99,10 @@ public:
                 return "Skybox";
                 break;
                 
+            case kDrawableObjectTypeTrack:
+                return "Track";
+                break;
+                
             default:
                 return "Error";
                 break;
@@ -93,7 +111,7 @@ public:
     
 private:
     glm::mat4 modelMatrix;
-    glm::vec3 pos;          // Add a position vector 
+    ObjLoader *loader = nullptr;
 };
 
 #endif /* defined(__Learn_OpenGL__Drawable__) */

@@ -1,50 +1,64 @@
 //
-//  Track.cpp
+//  Ground.cpp
 //  GroupProjectCSE20212
 //
-//  Created by Yuxuan Chen on 3/28/14.
+//  Created by Shuyang Li on 04/23/14.
 //  Copyright (c) 2014 Shuyang Li. All rights reserved.
 //
 
-#include "Track.h"
+#include "Ground.h"
 #include "Constants.h"
 #include "Drawable.h"
 
-Track::Track(GLint        givenVertexBufferLoc,
-             GLint        givenNormalBufferLoc) {
+Ground::Ground(GLint        givenVertexBufferLoc,
+               GLint        givenNormalBufferLoc) {
     
-    setLoader(new ObjLoader());
-    ObjLoader * myLoaderRef = getLoader();
-    myLoaderRef -> loadObj(TRACK_PATH, MTL_BASEPATH);
+    GLfloat arrayBufferData[12] = {
+        -1500.0f, -1.0f, -1500.0f,
+        -1500.0f, -1.0f, +1500.0f,
+        +1500.0f, -1.0f, -1500.0f,
+        +1500.0f, -1.0f, +1500.0f
+    }
+    
+    GLfloat normalBufferData[12] = {
+        0.0f, 1.0f, 0.0f,
+        0.0f, 1.0f, 0.0f,
+        0.0f, 1.0f, 0.0f
+    }
+    
+    GLuint indexBufferData[6] = {
+        0, 2, 3,
+        3, 1, 0
+    }
     
     glGenBuffers(1, &vertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
     glBufferData(GL_ARRAY_BUFFER,
-                 myLoaderRef -> getVertices().size() * sizeof(GLfloat),
-                 myLoaderRef -> getVertices().data(),
+                 sizeof(arrayBufferData),
+                 arrayBufferData,
                  GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     
     glGenBuffers(1, &normalBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
     glBufferData(GL_ARRAY_BUFFER,
-                 myLoaderRef -> getNormals().size() * sizeof(GLfloat),
-                 myLoaderRef -> getNormals().data(),
+                 sizeof(normalBufferData),
+                 normalBufferData,
                  GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     
     glGenBuffers(1, &indexBuffer);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-                 myLoaderRef -> getIndices().size() * sizeof(GLuint),
-                 myLoaderRef -> getIndices().data(),
+                 sizeof(indexBufferData),
+                 indexBufferData,
                  GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     
-    vertexCount = (unsigned int) myLoaderRef -> getIndices().size();
+    vertexCount = 6;
     
     // setup initial model matrix
-    scaleMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -1.0f, 0.0f)) * glm::mat4(1.0f);
+    scaleMatrix = glm::mat4(1.0f);
     setModelMatrix(scaleMatrix);
     
     // wrap states using vao
@@ -77,9 +91,7 @@ Track::Track(GLint        givenVertexBufferLoc,
     glBindVertexArrayAPPLE(0);
 }
 
-Track::~Track() {
-    
-    setLoader(nullptr);
+Ground::~Ground() {
     
     // clean up vertex array, which is generated in the constructor
     glDeleteVertexArraysAPPLE(1, &vertexArrayObjectHandle);
@@ -88,7 +100,7 @@ Track::~Track() {
     glDeleteBuffers(1, &indexBuffer);
 }
 
-void Track::draw() {
+void Ground::draw() {
     glBindVertexArrayAPPLE(vertexArrayObjectHandle);
     glDrawElements(GL_TRIANGLES,
                    vertexCount,
@@ -97,8 +109,6 @@ void Track::draw() {
     glBindVertexArrayAPPLE(0);
 }
 
-drawableObjectType_t Track::type() {
+drawableObjectType_t Ground::type() {
     return kDrawableObjectTypeSample;
 }
-
-#warning How to detect interaction between the track and the motorcycle

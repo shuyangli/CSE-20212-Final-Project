@@ -47,20 +47,6 @@ public:
     int isInCollision();        // Determines if the motorcycle collides with something
     int isFinished();           // Determines if the motorcycle gets to the finish line
     
-    
-    /* Getters and Setters */
-    void setPosition(glm::vec3);
-    glm::vec3 getPosition() const;
-    void setDirection(glm::vec3);
-    glm::vec3 getDirection() const;
-    void setSpeed(double);
-    float getSpeed() const;
-    void setAcceleration(double);
-    float getAcceleration() const;
-    void setRotation(double);
-    float getRotation() const;
-    
-    
 private:
     
     // drawing
