@@ -93,7 +93,8 @@ int main(int argc, const char * argv[]) {
 
     initSDL();
     initOpenGL();
-/*    myMenuSelection_t sel = kMyMenuSelectionDefault;
+    
+    myMenuSelection_t sel = kMyMenuSelectionDefault;
     
     while (sel != kMyMenuSelectionQuit) {
         
@@ -112,14 +113,6 @@ int main(int argc, const char * argv[]) {
                 break;
         }
     }
- */
-    
-    while (true) {                  // temporary
-        myGameStatus_t temp;        // temporary
-        processEvents(temp);        // temporary
-        calculateObjects();         // temporary
-        redrawGameScreen();         // temporary
-    }                               // temporary
     
     quit(0);                        // temporary
     
@@ -187,9 +180,6 @@ void initOpenGL() {
     if (normalBufferLoc == -1) quit(9);
     
     // setup all objects
-//    Sample * sampleObject = new Sample(vertexBufferLoc, normalBufferLoc);
-//    globalDrawableObjects.push_back(sampleObject)
-    
     motorcycle = new Motorcycle(vertexBufferLoc,
                                 normalBufferLoc,
                                 glm::vec3(0, 0, 0),
@@ -207,6 +197,7 @@ void deleteObjects() {
         delete obj;
     });
     globalDrawableObjects.clear();
+    motorcycle = nullptr;
 }
 
 void deletePrograms() {
@@ -265,12 +256,6 @@ void keyDownFunc(SDL_Keysym * keysym, unsigned int deltaTime) {
             quit(0);
             break;
             
-        case SDLK_a:
-            break;
-            
-        case SDLK_d:
-            break;
-            
         case SDLK_UP:
             motorcycle -> incSpeed(deltaTime);
             break;
@@ -299,6 +284,7 @@ myMenuSelection_t displayMainMenu() {
     myMenuSelection_t tempSel = kMyMenuSelectionDefault;
     
 #warning TODO
+    tempSel = kMyMenuSelectionMainGame;
     
     return tempSel;
 }
@@ -360,12 +346,20 @@ void redrawGameScreen() {
         // bind uniforms
         glUniformMatrix4fv(mvpMatLoc, 1, GL_FALSE, glm::value_ptr(mvpMat));
 
-        // for untextured lit stuff
+        // for lighting
         glUniformMatrix3fv(normalModelViewMatLoc, 1, GL_FALSE, glm::value_ptr(mvMat));
         
-        glUniform3fv(directionToLightLoc, 1, glm::value_ptr(glm::vec3(0.0f, 0.0f, 1.0f)));
-        glUniform4f(lightIntensityLoc, 0.7f, 0.7f, 0.7f, 1.0f);
-        glUniform4f(ambientLightIntensityLoc, 0.3f, 0.3f, 0.3f, 1.0f);
+#warning    for material texturing
+        ObjLoader * myLoaderRef = obj -> getLoader();
+        if (myLoaderRef != nullptr) {
+            glUniform3fv(directionToLightLoc, 1, glm::value_ptr(glm::vec3(0.0f, 0.0f, 1.0f)));
+            glUniform4f(lightIntensityLoc, 0.7f, 0.7f, 0.7f, 1.0f);
+            glUniform4f(ambientLightIntensityLoc, 0.3f, 0.3f, 0.3f, 1.0f);
+        } else {
+            glUniform3fv(directionToLightLoc, 1, glm::value_ptr(glm::vec3(0.0f, 0.0f, 1.0f)));
+            glUniform4f(lightIntensityLoc, 0.7f, 0.7f, 0.7f, 1.0f);
+            glUniform4f(ambientLightIntensityLoc, 0.3f, 0.3f, 0.3f, 1.0f);
+        }
         
         obj -> draw();
     });
