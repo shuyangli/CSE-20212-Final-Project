@@ -12,7 +12,6 @@
 		0FDB3F7A18E232AF00ED7759 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FDB3F7918E232AF00ED7759 /* SDL2.framework */; };
 		0FE8C83D18E5BB95006F9FA0 /* Motorcycle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0FE8C82F18E5BB95006F9FA0 /* Motorcycle.cpp */; };
 		0FE8C83F18E5BB95006F9FA0 /* Obstacle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0FE8C83318E5BB95006F9FA0 /* Obstacle.cpp */; };
-		0FE8C84118E5BB95006F9FA0 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0FE8C83718E5BB95006F9FA0 /* Player.cpp */; };
 		0FE8C84218E5BB95006F9FA0 /* Track.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0FE8C83918E5BB95006F9FA0 /* Track.cpp */; };
 		880BCF5318C78B4000EA9760 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 880BCF5218C78B4000EA9760 /* main.cpp */; };
 		880BCF5518C78B4000EA9760 /* GroupProjectCSE20212.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 880BCF5418C78B4000EA9760 /* GroupProjectCSE20212.1 */; };
@@ -54,8 +53,6 @@
 		0FE8C83018E5BB95006F9FA0 /* Motorcycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Motorcycle.h; path = Drawable/Motorcycle.h; sourceTree = "<group>"; };
 		0FE8C83318E5BB95006F9FA0 /* Obstacle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Obstacle.cpp; path = Drawable/Obstacle.cpp; sourceTree = "<group>"; };
 		0FE8C83418E5BB95006F9FA0 /* Obstacle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Obstacle.h; path = Drawable/Obstacle.h; sourceTree = "<group>"; };
-		0FE8C83718E5BB95006F9FA0 /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Player.cpp; path = Drawable/Player.cpp; sourceTree = "<group>"; };
-		0FE8C83818E5BB95006F9FA0 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Player.h; path = Drawable/Player.h; sourceTree = "<group>"; };
 		0FE8C83918E5BB95006F9FA0 /* Track.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Track.cpp; path = Drawable/Track.cpp; sourceTree = "<group>"; };
 		0FE8C83A18E5BB95006F9FA0 /* Track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Track.h; path = Drawable/Track.h; sourceTree = "<group>"; };
 		0FE8C85B18E72D6A006F9FA0 /* Wheel.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Wheel.mtl; sourceTree = "<group>"; };
@@ -730,8 +727,6 @@
 				0FE8C82F18E5BB95006F9FA0 /* Motorcycle.cpp */,
 				0FE8C83318E5BB95006F9FA0 /* Obstacle.cpp */,
 				0FE8C83418E5BB95006F9FA0 /* Obstacle.h */,
-				0FE8C83718E5BB95006F9FA0 /* Player.cpp */,
-				0FE8C83818E5BB95006F9FA0 /* Player.h */,
 				0FE8C83918E5BB95006F9FA0 /* Track.cpp */,
 				0FE8C83A18E5BB95006F9FA0 /* Track.h */,
 			);
@@ -792,7 +787,6 @@
 				880BCF5318C78B4000EA9760 /* main.cpp in Sources */,
 				88BB807E18CA8FF10036728A /* ProgramCreator.cpp in Sources */,
 				0FE8C83F18E5BB95006F9FA0 /* Obstacle.cpp in Sources */,
-				0FE8C84118E5BB95006F9FA0 /* Player.cpp in Sources */,
 				88276C0518D69405005FB674 /* tiny_obj_loader.cc in Sources */,
 				0FE8C83D18E5BB95006F9FA0 /* Motorcycle.cpp in Sources */,
 				0FE8C84218E5BB95006F9FA0 /* Track.cpp in Sources */,

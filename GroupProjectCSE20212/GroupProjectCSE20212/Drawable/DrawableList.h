@@ -21,7 +21,4 @@
 
 #include "Motorcycle.h"
 
-// we're not rendering a person; it's a subclass of Motorcycle and we can control its position, direction vector, etc
-#include "Player.h"
-
 #endif
