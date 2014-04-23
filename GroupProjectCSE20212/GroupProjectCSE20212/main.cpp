@@ -182,8 +182,8 @@ void initOpenGL() {
     // setup all objects
     motorcycle = new Motorcycle(vertexBufferLoc,
                                 normalBufferLoc,
-                                glm::vec3(0, 0, 0),
-                                glm::vec3(1, 0, 0),
+                                glm::vec3(0.0f, 0.0f, -33.0f),
+                                glm::vec3(1.0f, 0.0f, 0.0f),
                                 0.001f,
                                 0.05f);
     globalDrawableObjects.push_back(motorcycle);

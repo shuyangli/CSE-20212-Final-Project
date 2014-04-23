@@ -61,6 +61,18 @@ public:
     void setModelMatrix(glm::mat4 newModelMatrix) { modelMatrix = newModelMatrix; }
     
     /**
+     * Returns the scale vector corresponding to size relative to model size
+     * @return scale vector
+     */
+    glm::vec3 getScaleVector() { return modelScale; }
+    
+    /**
+     * Modify scale vector
+     * @param newScaleVector    new scale vector
+     */
+    void setScaleVector(glm::vec3 newScaleVector) { modelScale = newScaleVector; }
+    
+    /**
      * Returns pointer to object loader
      * @return loader
      */
@@ -111,6 +123,7 @@ public:
     
 private:
     glm::mat4 modelMatrix;
+    glm::vec3 modelScale = glm::vec3(1.0f);
     ObjLoader *loader = nullptr;
 };
 
