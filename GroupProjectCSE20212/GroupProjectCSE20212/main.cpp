@@ -329,6 +329,7 @@ void redrawGameScreen() {
     GLint directionToLightLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_DIRECTION_TO_LIGHT);
     GLint lightIntensityLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_LIGHT_INTENSITY);
     GLint ambientLightIntensityLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_AMBIENT_INTENSITY);
+    GLint materialColorLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_MATERIAL_COLOR);
     
     // proj matrix (clip space) only changes when fov or aspect ratio changes, so we don't modify it
     static const glm::mat4 projMat = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 100.0f);
@@ -348,21 +349,42 @@ void redrawGameScreen() {
 
         // for lighting
         glUniformMatrix3fv(normalModelViewMatLoc, 1, GL_FALSE, glm::value_ptr(mvMat));
+        glUniform4f(materialColorLoc, 0.6f, 0.6f, 0.6f, 1.0f);
+        glUniform3fv(directionToLightLoc, 1, glm::value_ptr(glm::vec3(0.0f, 0.0f, 1.0f)));
         
-#warning    for material texturing
         ObjLoader * myLoaderRef = obj -> getLoader();
         if (myLoaderRef != nullptr) {
-            glUniform3fv(directionToLightLoc, 1, glm::value_ptr(glm::vec3(0.0f, 0.0f, 1.0f)));
-            glUniform4f(lightIntensityLoc, 0.7f, 0.7f, 0.7f, 1.0f);
-            glUniform4f(ambientLightIntensityLoc, 0.3f, 0.3f, 0.3f, 1.0f);
+            tinyobj::material_t material = myLoaderRef -> getMaterial();
+            glUniform4f(lightIntensityLoc, material.diffuse[0], material.diffuse[1], material.diffuse[2], 1.0f);
+            glUniform4f(ambientLightIntensityLoc, material.ambient[0], material.ambient[1], material.ambient[2], 1.0f);
         } else {
-            glUniform3fv(directionToLightLoc, 1, glm::value_ptr(glm::vec3(0.0f, 0.0f, 1.0f)));
             glUniform4f(lightIntensityLoc, 0.7f, 0.7f, 0.7f, 1.0f);
             glUniform4f(ambientLightIntensityLoc, 0.3f, 0.3f, 0.3f, 1.0f);
         }
         
         obj -> draw();
     });
+    
+    
+//    // drawing motorcycle
+//    {
+//        glm::mat4 modelMat = motorcycle -> getModelMatrix();
+//        glm::mat4 viewMat = glm::lookAt(motorcycle->getCameraLocation(),
+//                                        motorcycle->getCameraFocus(),
+//                                        glm::vec3(0, 1, 0));
+//        glm::mat4 mvpMat = projMat * viewMat * modelMat;
+//        glm::mat3 mvMat = glm::transpose(glm::inverse(glm::mat3(viewMat * modelMat)));
+//        
+//        // bind uniforms
+//        glUniformMatrix4fv(mvpMatLoc, 1, GL_FALSE, glm::value_ptr(mvpMat));
+//        
+//        // for lighting
+//        glUniformMatrix3fv(normalModelViewMatLoc, 1, GL_FALSE, glm::value_ptr(mvMat));
+//        glUniform4f(materialColorLoc, 0.6f, 0.6f, 0.6f, 1.0f);
+//        glUniform3fv(directionToLightLoc, 1, glm::value_ptr(glm::vec3(0.0f, 0.0f, 1.0f)));
+//        
+//        motorcycle -> draw(lightIntensityLoc, ambientLightIntensityLoc);
+//    }
     
     glUseProgram(0);
     

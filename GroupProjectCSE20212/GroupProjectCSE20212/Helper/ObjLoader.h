@@ -80,6 +80,13 @@ public:
      */
     std::vector<unsigned int>& getIndices(size_t index = 0);
     
+    /**
+     * Return a struct of material
+     *
+     * @return struct of material
+     */
+    tinyobj::material_t& getMaterial(size_t index = 0);
+    
 private:
     std::vector<tinyobj::shape_t> shapes;
     

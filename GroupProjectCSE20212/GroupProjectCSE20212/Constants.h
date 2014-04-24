@@ -21,11 +21,16 @@
 #define TEXTURED_VERTEX_SHADER_PATH "./GLSL/vertexSkybox.glsl"
 #define TEXTURED_FRAGMENT_SHADER_PATH "./GLSL/fragmentSkybox.glsl"
 
+// Attributes
 #define ATTRIB_NAME_INPUT_VERTEX    "inputVertexPosModelSpace"
 #define ATTRIB_NAME_INPUT_NORMAL    "inputVertexNormalModelSpace"
 
+// Vertex shader
 #define UNIFORM_NAME_MVP_MATRIX     "mvpMatrix"
 #define UNIFORM_NAME_NORMAL_MV_MATRIX   "normalModelViewMatrix"
+
+// Fragment shader
+#define UNIFORM_NAME_MATERIAL_COLOR     "materialColor"
 #define UNIFORM_NAME_DIRECTION_TO_LIGHT "directionToLight"
 #define UNIFORM_NAME_LIGHT_INTENSITY    "directionalLightIntensity"
 #define UNIFORM_NAME_AMBIENT_INTENSITY  "ambientLightIntensity"

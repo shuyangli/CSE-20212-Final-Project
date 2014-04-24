@@ -92,8 +92,8 @@ Motorcycle::Motorcycle(GLint        givenVertexBufferLoc,
     }
     
     // setup initial model matrix as identity matrix
-    scaleMatrix = glm::scale(glm::mat4(1.0f),
-                             glm::vec3(0.2f, 0.2f, 0.2f)) * glm::mat4(1.0f);
+    setScaleVector(glm::vec3(0.2f, 0.2f, 0.2f));
+    scaleMatrix = glm::scale(glm::mat4(1.0f), getScaleVector()) * glm::mat4(1.0f);
     
     setModelMatrix(scaleMatrix);
     
@@ -147,6 +147,24 @@ void Motorcycle::draw() // Draws the motorcycle
     }
     
     glBindVertexArrayAPPLE(0);
+}
+
+void Motorcycle::draw(GLint lightIntensityLoc, GLint ambientLightIntensityLoc) {
+    
+    ObjLoader * myLoaderRef = getLoader();
+    
+    for (int i = 0; i < 4; ++i) {
+        tinyobj::material_t material = myLoaderRef -> getMaterial(i);
+        
+        glUniform4f(lightIntensityLoc, material.diffuse[0], material.diffuse[1], material.diffuse[2], 1.0f);
+        glUniform4f(ambientLightIntensityLoc, material.ambient[0], material.ambient[1], material.ambient[2], 1.0f);
+        
+        glBindVertexArrayAPPLE(vertexArrayObjectHandle[i]);
+        glDrawElements(GL_TRIANGLES,
+                       vertexCount[i],
+                       GL_UNSIGNED_INT,
+                       0);
+    }
 }
 
 void Motorcycle::move(unsigned int deltaTime) { // Moves the motorcycle
