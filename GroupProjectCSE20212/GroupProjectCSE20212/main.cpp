@@ -353,14 +353,14 @@ void redrawGameScreen() {
         glUniform3fv(directionToLightLoc, 1, glm::value_ptr(glm::vec3(0.0f, 0.0f, 1.0f)));
         
         ObjLoader * myLoaderRef = obj -> getLoader();
-        if (myLoaderRef != nullptr) {
-            tinyobj::material_t material = myLoaderRef -> getMaterial();
-            glUniform4f(lightIntensityLoc, material.diffuse[0], material.diffuse[1], material.diffuse[2], 1.0f);
-            glUniform4f(ambientLightIntensityLoc, material.ambient[0], material.ambient[1], material.ambient[2], 1.0f);
-        } else {
+//        if (myLoaderRef != nullptr) {
+//            tinyobj::material_t material = myLoaderRef -> getMaterial();
+//            glUniform4f(lightIntensityLoc, material.diffuse[0], material.diffuse[1], material.diffuse[2], 1.0f);
+//            glUniform4f(ambientLightIntensityLoc, material.ambient[0], material.ambient[1], material.ambient[2], 1.0f);
+//        } else {
             glUniform4f(lightIntensityLoc, 0.7f, 0.7f, 0.7f, 1.0f);
             glUniform4f(ambientLightIntensityLoc, 0.3f, 0.3f, 0.3f, 1.0f);
-        }
+//        }
         
         obj -> draw();
     });
