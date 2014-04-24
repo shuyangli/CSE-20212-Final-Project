@@ -182,7 +182,7 @@ glm::vec3 Motorcycle::getCameraFocus() {
 
 glm::vec3 Motorcycle::getCameraLocation() {
     // camera location is 1 unit back from the position, so that part of the motorcycle can be seen
-    return position - direction * 1.0f + glm::vec3(0.0f, 1.0f, 0.0f);
+    return position - direction * 0.5f + glm::vec3(0.0f, 1.0f, 0.0f);
 }
 
 int Motorcycle::isInBounds()           // Determines if the motorcycle is in on the road

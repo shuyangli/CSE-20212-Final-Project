@@ -184,7 +184,7 @@ void initOpenGL() {
                                 normalBufferLoc,
                                 glm::vec3(0, 0, 0),
                                 glm::vec3(1, 0, 0),
-                                0.001f,
+                                0.0001f,
                                 0.05f);
     globalDrawableObjects.push_back(motorcycle);
     
