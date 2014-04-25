@@ -46,20 +46,22 @@ public:
     void incSpeed(unsigned int deltaTime);
     void decSpeed(unsigned int deltaTime);
     
-    int isInBounds();           // Determines if the motorcycle is in on the road
+    /* Calculates the wrapping box vertices */
+    void calculateWrappingBoxVertices();
+    
+    int isInBounds();           // Determines if the motorcycle is on the road
     int isInCollision();        // Determines if the motorcycle collides with something
     int isFinished();           // Determines if the motorcycle gets to the finish line
     
 private:
     
-    // drawing
+    // Drawing
     GLuint vertexArrayObjectHandle[4];
     unsigned int vertexCount[4];
     
     GLuint vertexBuffer[4];
     GLuint normalBuffer[4];
     GLuint indexBuffer[4];
-    
     
     // position of motorcycle; coordinates of motorcycle's origin
     glm::vec3 position;
@@ -82,8 +84,12 @@ private:
     // Unit: rad per millisecond
     float rotation;
     
-    // angle of motorcycle's head direction
+    // Angle of motorcycle's head direction
     float angleToFront;
+    
+    // Imagine a smallest possible triangular box containing the motorcycle.
+    // This array stores the coordinates of the bottom four vertices of the box.
+    glm::vec3 wrappingBoxVertices[4];
     
     glm::mat4 scaleMatrix;
 };
