@@ -381,6 +381,13 @@ void redrawGameScreen() {
     // used textured program to render skybox
     glUseProgram(globalTexturedProgram);
     glActiveTexture(GL_TEXTURE0);
+#warning yet to finish
+    glm::mat4 modelMat = skybox -> getModelMatrix();
+    glm::mat4 viewMat = glm::lookAt(motorcycle->getCameraLocation(),
+                                    motorcycle->getCameraFocus(),
+                                    glm::vec3(0, 1, 0));
+    glm::mat4 mvpMat = projMat * viewMat * modelMat;
+    glUniformMatrix4fv(texMvpMatLoc, 1, GL_FALSE, glm::value_ptr(mvpMat));
     glUniform1i(texSamplerLoc, skyboxTextureHandle);
     skybox -> draw();
     
