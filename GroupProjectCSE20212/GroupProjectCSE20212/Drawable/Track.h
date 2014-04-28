@@ -10,6 +10,7 @@
 #define __GroupProjectCSE20212__Track__
 
 #include <iostream>
+#include <vector>
 #include "Drawable.h"
 
 class Track : public Drawable {
@@ -36,6 +37,12 @@ private:
     GLuint indexBuffer;
     
     glm::mat4 scaleMatrix;
+    
+    // The track has walls that flank the road.
+    // The inner part of the walls are considered to consist of multiple neighboring rectangular faces.
+    // This vector stores the coordinates of the bottom two vertices of these rectangular faces.
+    std::vector<std::vector <glm::vec3> > innerWallFaces;
+    
 };
 
 #endif /* defined(__GroupProjectCSE20212__Track__) */

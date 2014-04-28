@@ -100,7 +100,6 @@ Motorcycle::Motorcycle(GLint        givenVertexBufferLoc,
     // Reset everything
     position = objPosition;
     direction = glm::normalize(objDirection);
-    
     initialDirection = objDirection;
     acceleration = objAcceleration;
     rotation = objRotation;
@@ -199,8 +198,8 @@ glm::vec3 Motorcycle::getCameraFocus() {
 }
 
 glm::vec3 Motorcycle::getCameraLocation() {
-    // camera location is 1 unit back from the position, so that part of the motorcycle can be seen
-    return position - direction * 1.0f + glm::vec3(0.0f, 1.0f, 0.0f);
+    // camera location is 0.5 unit back from the position, so that part of the motorcycle can be seen
+    return position - direction * 0.5f + glm::vec3(0.0f, 1.0f, 0.0f);
 }
 
 int Motorcycle::isInBounds()           // Determines if the motorcycle is in on the road

@@ -29,6 +29,7 @@
 #include "Helper/glm/glm.hpp"
 #include "Helper/glm/gtc/matrix_transform.hpp"      // GLM extensions
 #include "Helper/glm/gtc/constants.hpp"             // GLM constants
+#warning Need Better Comment
 #include "Helper/glm/gtc/type_ptr.hpp"              // glm::value_ptr()
 
 // Drawable game objects
@@ -182,14 +183,14 @@ void initOpenGL() {
     // setup all objects
     motorcycle = new Motorcycle(vertexBufferLoc,
                                 normalBufferLoc,
-                                glm::vec3(0.0f, 0.0f, -33.0f),
-                                glm::vec3(1.0f, 0.0f, 0.0f),
-                                0.001f,
+                                glm::vec3(0, 0, 0),
+                                glm::vec3(1, 0, 0),
+                                0.0001f,
                                 0.05f);
     globalDrawableObjects.push_back(motorcycle);
     
     globalDrawableObjects.push_back(new Track(vertexBufferLoc, normalBufferLoc));
-//    globalDrawableObjects.push_back(new Ground(vertexBufferLoc, normalBufferLoc));
+    //globalDrawableObjects.push_back(new Ground(vertexBufferLoc, normalBufferLoc));
 }
 
 void deleteObjects() {
@@ -248,7 +249,6 @@ void processEvents(myGameStatus_t &status) {
 }
 
 void keyDownFunc(SDL_Keysym * keysym, unsigned int deltaTime) {
-    std::cout << "key down" << std::endl;
     
     switch (keysym -> sym) {
         case SDLK_ESCAPE:
