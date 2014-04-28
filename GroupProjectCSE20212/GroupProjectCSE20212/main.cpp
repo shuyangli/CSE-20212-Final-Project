@@ -23,6 +23,7 @@
 #include "Constants.h"
 #include "Helper/ProgramCreator.h"
 #include "Helper/ObjLoader.h"
+#include "ImageLoader.h"
 
 // GLM headers
 #define GLM_FORCE_RADIANS
@@ -82,11 +83,14 @@ SDL_Window * globalWindow = NULL;
 SDL_GLContext globalGLContext;
 
 GLuint globalProgram = 0;
+GLuint globalTexturedProgram = 0;
 
 std::vector<Drawable *> globalDrawableObjects;
 std::vector<GLuint> globalBuffers;
 
-Motorcycle * motorcycle; // controllable object
+Motorcycle * motorcycle;    // controllable object
+Skybox * skybox;            // textured object
+GLuint skyboxTextureHandle = -1;    // texture handle
 
 #pragma mark - Main
 
@@ -156,8 +160,6 @@ void initSDL() {
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
     
-    glEnable(GL_TEXTURE_2D);
-    
     // error checking
     if (globalWindow == 0) {
         std::cerr << "Video mode set failed: " << SDL_GetError() << std::endl;
@@ -171,14 +173,23 @@ void initOpenGL() {
     ProgramCreator myProgramCreator;
     myProgramCreator.loadShader(GL_VERTEX_SHADER, VERTEX_SHADER_PATH);
     myProgramCreator.loadShader(GL_FRAGMENT_SHADER, FRAGMENT_SHADER_PATH);
-    
     globalProgram = myProgramCreator.linkProgram();
+    
+    ProgramCreator myTexturedProgramCreator;
+    myTexturedProgramCreator.loadShader(GL_VERTEX_SHADER, TEXTURED_VERTEX_SHADER_PATH);
+    myTexturedProgramCreator.loadShader(GL_FRAGMENT_SHADER, TEXTURED_FRAGMENT_SHADER_PATH);
+    globalTexturedProgram = myTexturedProgramCreator.linkProgram();
     
     // bind buffer location
     GLint vertexBufferLoc = glGetAttribLocation(globalProgram, ATTRIB_NAME_INPUT_VERTEX);
     if (vertexBufferLoc == -1) quit(9);
     GLint normalBufferLoc = glGetAttribLocation(globalProgram, ATTRIB_NAME_INPUT_NORMAL);
     if (normalBufferLoc == -1) quit(9);
+    
+    GLint texVertexBufferLoc = glGetAttribLocation(globalTexturedProgram, ATTRIB_NAME_INPUT_VERTEX);
+    if (texVertexBufferLoc == -1) quit(9);
+    GLint texUVBufferLoc = glGetAttribLocation(globalTexturedProgram, ATTRIB_NAME_INPUT_UV);
+    if (texUVBufferLoc == -1) quit(9);
     
     // setup all objects
     motorcycle = new Motorcycle(vertexBufferLoc,
@@ -190,7 +201,11 @@ void initOpenGL() {
     globalDrawableObjects.push_back(motorcycle);
     
     globalDrawableObjects.push_back(new Track(vertexBufferLoc, normalBufferLoc));
-    //globalDrawableObjects.push_back(new Ground(vertexBufferLoc, normalBufferLoc));
+    
+    skyboxTextureHandle = ImageLoader::loadImageAsTexture(SKYBOX_TEXTURE_PATH);
+    
+    skybox = new Skybox(vertexBufferLoc, normalBufferLoc, -1);
+//    globalDrawableObjects.push_back(new Ground(vertexBufferLoc, normalBufferLoc));
 }
 
 void deleteObjects() {
@@ -199,6 +214,8 @@ void deleteObjects() {
     });
     globalDrawableObjects.clear();
     motorcycle = nullptr;
+    
+    glDeleteTextures(1, &skyboxTextureHandle);
 }
 
 void deletePrograms() {
@@ -316,20 +333,24 @@ void calculateObjects() {
 
 void redrawGameScreen() {
     
-    
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClearDepth(1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     // get uniform location
-    glUseProgram(globalProgram);
-    
     GLint mvpMatLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_MVP_MATRIX);
     GLint normalModelViewMatLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_NORMAL_MV_MATRIX);
     GLint directionToLightLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_DIRECTION_TO_LIGHT);
     GLint lightIntensityLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_LIGHT_INTENSITY);
     GLint ambientLightIntensityLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_AMBIENT_INTENSITY);
     GLint materialColorLoc = glGetUniformLocation(globalProgram, UNIFORM_NAME_MATERIAL_COLOR);
+    
+    GLint texMvpMatLoc = glGetUniformLocation(globalTexturedProgram, UNIFORM_NAME_MVP_MATRIX);
+    GLint texSamplerLoc = glGetUniformLocation(globalTexturedProgram, UNIFORM_NAME_TEXTURE_SAMPLER);
+    
+    
+    // render untextured objects
+    glUseProgram(globalProgram);
     
     // proj matrix (clip space) only changes when fov or aspect ratio changes, so we don't modify it
     static const glm::mat4 projMat = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 100.0f);
@@ -351,40 +372,18 @@ void redrawGameScreen() {
         glUniformMatrix3fv(normalModelViewMatLoc, 1, GL_FALSE, glm::value_ptr(mvMat));
         glUniform4f(materialColorLoc, 0.6f, 0.6f, 0.6f, 1.0f);
         glUniform3fv(directionToLightLoc, 1, glm::value_ptr(glm::vec3(0.0f, 0.0f, 1.0f)));
-        
-        ObjLoader * myLoaderRef = obj -> getLoader();
-//        if (myLoaderRef != nullptr) {
-//            tinyobj::material_t material = myLoaderRef -> getMaterial();
-//            glUniform4f(lightIntensityLoc, material.diffuse[0], material.diffuse[1], material.diffuse[2], 1.0f);
-//            glUniform4f(ambientLightIntensityLoc, material.ambient[0], material.ambient[1], material.ambient[2], 1.0f);
-//        } else {
-            glUniform4f(lightIntensityLoc, 0.7f, 0.7f, 0.7f, 1.0f);
-            glUniform4f(ambientLightIntensityLoc, 0.3f, 0.3f, 0.3f, 1.0f);
-//        }
+        glUniform4f(lightIntensityLoc, 0.7f, 0.7f, 0.7f, 1.0f);
+        glUniform4f(ambientLightIntensityLoc, 0.3f, 0.3f, 0.3f, 1.0f);
         
         obj -> draw();
     });
     
+    // used textured program to render skybox
+    glUseProgram(globalTexturedProgram);
+    glActiveTexture(GL_TEXTURE0);
+    glUniform1i(texSamplerLoc, skyboxTextureHandle);
+    skybox -> draw();
     
-//    // drawing motorcycle
-//    {
-//        glm::mat4 modelMat = motorcycle -> getModelMatrix();
-//        glm::mat4 viewMat = glm::lookAt(motorcycle->getCameraLocation(),
-//                                        motorcycle->getCameraFocus(),
-//                                        glm::vec3(0, 1, 0));
-//        glm::mat4 mvpMat = projMat * viewMat * modelMat;
-//        glm::mat3 mvMat = glm::transpose(glm::inverse(glm::mat3(viewMat * modelMat)));
-//        
-//        // bind uniforms
-//        glUniformMatrix4fv(mvpMatLoc, 1, GL_FALSE, glm::value_ptr(mvpMat));
-//        
-//        // for lighting
-//        glUniformMatrix3fv(normalModelViewMatLoc, 1, GL_FALSE, glm::value_ptr(mvMat));
-//        glUniform4f(materialColorLoc, 0.6f, 0.6f, 0.6f, 1.0f);
-//        glUniform3fv(directionToLightLoc, 1, glm::value_ptr(glm::vec3(0.0f, 0.0f, 1.0f)));
-//        
-//        motorcycle -> draw(lightIntensityLoc, ambientLightIntensityLoc);
-//    }
     
     glUseProgram(0);
     

@@ -32,15 +32,16 @@ public:
      */
     virtual drawableObjectType_t type();
     
+    
+    GLuint getTextureHandle();
+    
 private:
     GLuint vertexArrayObjectHandle;
     unsigned int vertexCount;
     
     GLuint vertexBuffer;
-    GLuint normalBuffer;
     GLuint indexBuffer;
     GLuint uvBuffer;
-    GLuint textureHandle;
     
     glm::mat4 scaleMatrix;
 };

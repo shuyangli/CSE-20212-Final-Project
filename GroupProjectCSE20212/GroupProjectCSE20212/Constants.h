@@ -24,6 +24,7 @@
 // Attributes
 #define ATTRIB_NAME_INPUT_VERTEX    "inputVertexPosModelSpace"
 #define ATTRIB_NAME_INPUT_NORMAL    "inputVertexNormalModelSpace"
+#define ATTRIB_NAME_INPUT_UV        "inputVertexUVModelSpace"
 
 // Vertex shader
 #define UNIFORM_NAME_MVP_MATRIX         "mvpMatrix"
@@ -34,6 +35,8 @@
 #define UNIFORM_NAME_DIRECTION_TO_LIGHT "directionToLight"
 #define UNIFORM_NAME_LIGHT_INTENSITY    "directionalLightIntensity"
 #define UNIFORM_NAME_AMBIENT_INTENSITY  "ambientLightIntensity"
+
+#define UNIFORM_NAME_TEXTURE_SAMPLER    "textureSampler"
 
 /* Objects */
 #pragma mark - Objects

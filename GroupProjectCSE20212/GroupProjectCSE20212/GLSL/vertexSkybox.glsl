@@ -2,7 +2,7 @@
 
 // input attributes for each vertex
 attribute vec3 inputVertexPosModelSpace;
-attribute vec3 inputVertexUVModelSpace;
+attribute vec2 inputVertexUVModelSpace;
 
 // output data for each fragment
 varying vec2 UV;
