@@ -9,7 +9,7 @@
 #include "ImageLoader.h"
 #include "Constants.h"
 
-GLuint ImageLoader::loadImageAsTexture() {
+GLuint ImageLoader::loadImageAsTexture(char * filename) {
     
     GLuint textureHandle = -1;
     
@@ -22,7 +22,7 @@ GLuint ImageLoader::loadImageAsTexture() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     
     // actually loading image
-    CGDataProviderRef imageDataProvider = CGDataProviderCreateWithFilename(SKYBOX_TEXTURE_PATH);
+    CGDataProviderRef imageDataProvider = CGDataProviderCreateWithFilename(filename);
     CGImageRef image = CGImageCreateWithJPEGDataProvider(imageDataProvider,
                                                          NULL,
                                                          false,

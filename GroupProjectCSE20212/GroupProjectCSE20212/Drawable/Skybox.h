@@ -11,17 +11,14 @@
 
 #include <iostream>
 #include "Drawable.h"
+#include "Constants.h"
 
 class Skybox : public Drawable {
 
 public:
-    Skybox(GLuint       givenVertexBuffer,
-           GLint        givenVertexBufferLoc,
-           unsigned int givenVertexCount,
-           GLuint       givenNormalBuffer,
-           GLint        givenNormalBufferLoc,
-           GLuint       givenIndexBuffer,
-           GLuint       givenTextureHandle);
+    Skybox(GLint    givenVertexBufferLoc,
+           GLint    givenNormalBufferLoc,
+           GLint    givenUVBufferLoc);
     virtual ~Skybox();
     
     /**
@@ -38,6 +35,13 @@ public:
 private:
     GLuint vertexArrayObjectHandle;
     unsigned int vertexCount;
+    
+    GLuint vertexBuffer;
+    GLuint normalBuffer;
+    GLuint indexBuffer;
+    GLuint uvBuffer;
+    GLuint textureHandle;
+    
     glm::mat4 scaleMatrix;
 };
 

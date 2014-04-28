@@ -15,12 +15,11 @@
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
 
-
 // caveat: CGImage has the y axis inverted!
 class ImageLoader {
     
 public:
-    static GLuint loadImageAsTexture();
+    static GLuint loadImageAsTexture(char * filename);
     
 };
 

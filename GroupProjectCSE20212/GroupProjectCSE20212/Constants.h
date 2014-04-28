@@ -26,7 +26,7 @@
 #define ATTRIB_NAME_INPUT_NORMAL    "inputVertexNormalModelSpace"
 
 // Vertex shader
-#define UNIFORM_NAME_MVP_MATRIX     "mvpMatrix"
+#define UNIFORM_NAME_MVP_MATRIX         "mvpMatrix"
 #define UNIFORM_NAME_NORMAL_MV_MATRIX   "normalModelViewMatrix"
 
 // Fragment shader

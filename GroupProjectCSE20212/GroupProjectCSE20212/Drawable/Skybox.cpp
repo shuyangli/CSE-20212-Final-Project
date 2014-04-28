@@ -7,14 +7,44 @@
 //
 
 #include "Skybox.h"
+#include "ImageLoader.h"
 
-Skybox::Skybox(GLuint       givenVertexBuffer,
-               GLint        givenVertexBufferLoc,
-               unsigned int givenVertexCount,
-               GLuint       givenNormalBuffer,
-               GLint        givenNormalBufferLoc,
-               GLuint       givenIndexBuffer,
-               GLuint       givenTextureHandle) : vertexCount(givenVertexCount) {
+Skybox::Skybox(GLint    givenVertexBufferLoc,
+               GLint    givenNormalBufferLoc,
+               GLint    givenUVBufferLoc) {
+    
+    setLoader(new ObjLoader());
+    ObjLoader * myLoaderRef = getLoader();
+    myLoaderRef -> loadObj(SKYBOX_PATH, MTL_BASEPATH);
+    
+    glGenBuffers(1, &vertexBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+    glBufferData(GL_ARRAY_BUFFER,
+                 myLoaderRef -> getVertices().size() * sizeof(GLfloat),
+                 myLoaderRef -> getVertices().data(),
+                 GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    
+    glGenBuffers(1, &normalBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
+    glBufferData(GL_ARRAY_BUFFER,
+                 myLoaderRef -> getNormals().size() * sizeof(GLfloat),
+                 myLoaderRef -> getNormals().data(),
+                 GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    
+    glGenBuffers(1, &indexBuffer);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+                 myLoaderRef -> getIndices().size() * sizeof(GLuint),
+                 myLoaderRef -> getIndices().data(),
+                 GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    
+    vertexCount = (unsigned int) myLoaderRef -> getIndices().size();
+    
+    textureHandle = ImageLoader::loadImageAsTexture(SKYBOX_TEXTURE_PATH);
+    
     scaleMatrix = glm::mat4(1.0f);
     setModelMatrix(scaleMatrix);
     
@@ -24,7 +54,7 @@ Skybox::Skybox(GLuint       givenVertexBuffer,
     
     // bind vertex array
     glEnableVertexAttribArray(givenVertexBufferLoc);
-    glBindBuffer(GL_ARRAY_BUFFER, givenVertexBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
     glVertexAttribPointer(givenVertexBufferLoc,
                           3,            // to simplify program, we always use triangles
                           GL_FLOAT,     // type of elements in vertex buffer is GLfloat
@@ -32,8 +62,9 @@ Skybox::Skybox(GLuint       givenVertexBuffer,
                           0,            // to simplify program, we keep each object in a homogeneous buffer
                           0);
     
+    // bind normal array
     glEnableVertexAttribArray(givenNormalBufferLoc);
-    glBindBuffer(GL_ARRAY_BUFFER, givenNormalBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
     glVertexAttribPointer(givenNormalBufferLoc,
                           3,
                           GL_FLOAT,
@@ -41,18 +72,32 @@ Skybox::Skybox(GLuint       givenVertexBuffer,
                           0,
                           0);
     
+    // bind UV array
+    glEnableVertexAttribArray(givenUVBufferLoc);
+    glBindBuffer(GL_ARRAY_BUFFER, uvBuffer);
+    glVertexAttribPointer(givenUVBufferLoc,
+                          2,
+                          GL_FLOAT,
+                          GL_FALSE,
+                          0,
+                          0);
+    
     // bind index array
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, givenIndexBuffer);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
     
     // bind texture
-    glBindTexture(GL_TEXTURE_2D, givenTextureHandle);
+    glBindTexture(GL_TEXTURE_2D, textureHandle);
     
-    // finish
+    // finished: unbind vao to clear state
     glBindVertexArrayAPPLE(0);
 }
 
 Skybox::~Skybox() {
     glDeleteVertexArraysAPPLE(1, &vertexArrayObjectHandle);
+    glDeleteBuffers(1, &vertexBuffer);
+    glDeleteBuffers(1, &normalBuffer);
+    glDeleteBuffers(1, &indexBuffer);
+    glDeleteTextures(1, &textureHandle);
 }
 
 void Skybox::draw() {

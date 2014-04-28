@@ -1,9 +1,12 @@
 #version 120
 
-uniform sampler2D skyboxTextureSampler;
+// varyings
+varying vec2 UV;
 
-varying vec2 varyUV;
+uniform sampler2D textureSampler;
 
 void main() {
-	gl_FragColor = texture(skyboxTextureSampler, varyUV);
+    
+    vec4 color = lightWithoutColor * materialColor / (dist * dist);
+	gl_FragColor = texture(texturSampler, UV).rgb;
 }

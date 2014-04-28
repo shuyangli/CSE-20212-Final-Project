@@ -2,16 +2,16 @@
 
 // input attributes for each vertex
 attribute vec3 inputVertexPosModelSpace;
-attribute vec3 inputVertexUV;
-attribute vec3 inputVertexNormalModelSpace;
+attribute vec3 inputVertexUVModelSpace;
 
 // output data for each fragment
-varying vec2 varyUV;
+varying vec2 UV;
 
 // uniforms
 uniform mat4 mvpMatrix;
 
 void main() {
-    varyUV = inputVertexUV;
-	gl_Position = mvpMatrix * vec4(inputCoords, 1.0f);
+    
+	gl_Position = mvpMatrix * vec4(inputVertexPosModelSpace, 1.0f);
+    UV = inputVertexUVModelSpace;
 }
