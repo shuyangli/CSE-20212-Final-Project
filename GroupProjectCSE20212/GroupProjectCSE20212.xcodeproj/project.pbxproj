@@ -19,6 +19,9 @@
 		881A4A2A190778AA00272D06 /* Ground.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 881A4A28190778AA00272D06 /* Ground.cpp */; };
 		88276C0418D69405005FB674 /* ObjLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88276C0018D69405005FB674 /* ObjLoader.cpp */; };
 		88276C0518D69405005FB674 /* tiny_obj_loader.cc in Sources */ = {isa = PBXBuildFile; fileRef = 88276C0218D69405005FB674 /* tiny_obj_loader.cc */; };
+		8897AAF6190DE1CF00E8A854 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88D2D3F91905A8D6002DD9FC /* CoreFoundation.framework */; };
+		8897AAF7190DE1CF00E8A854 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88D2D3FA1905A8D6002DD9FC /* CoreGraphics.framework */; };
+		8897AAF8190DE1E600E8A854 /* ImageLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88D2D3FD1905A904002DD9FC /* ImageLoader.cpp */; };
 		88BB807E18CA8FF10036728A /* ProgramCreator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88BB807C18CA8FF10036728A /* ProgramCreator.cpp */; };
 /* End PBXBuildFile section */
 
@@ -339,6 +342,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8897AAF6190DE1CF00E8A854 /* CoreFoundation.framework in Frameworks */,
+				8897AAF7190DE1CF00E8A854 /* CoreGraphics.framework in Frameworks */,
 				0FDB3F7A18E232AF00ED7759 /* SDL2.framework in Frameworks */,
 				880BCF5E18C78C6100EA9760 /* OpenGL.framework in Frameworks */,
 			);
@@ -789,6 +794,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8897AAF8190DE1E600E8A854 /* ImageLoader.cpp in Sources */,
 				880BCF5318C78B4000EA9760 /* main.cpp in Sources */,
 				88BB807E18CA8FF10036728A /* ProgramCreator.cpp in Sources */,
 				0FE8C83F18E5BB95006F9FA0 /* Obstacle.cpp in Sources */,
