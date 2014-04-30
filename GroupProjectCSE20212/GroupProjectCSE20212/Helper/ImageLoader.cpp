@@ -17,8 +17,10 @@ GLuint ImageLoader::loadImageAsTexture(char * filename) {
     
     // generate texture
     glActiveTexture(GL_TEXTURE0);
+    std::cout << "glActiveTexture: " << glGetError() << std::endl;
     glGenTextures(1, &textureHandle);
     glBindTexture(GL_TEXTURE_2D, textureHandle);
+    std::cout << "glBindTexture: " << glGetError() << std::endl;
     
     // we're not using mipmaps
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -37,8 +39,12 @@ GLuint ImageLoader::loadImageAsTexture(char * filename) {
     // create context
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
     void * imageData = malloc(imageWidth * imageHeight * 4);
-    CGContextRef context = CGBitmapContextCreate(imageData, imageWidth, imageHeight,
-                                                 8, 4 * imageWidth, colorSpace,
+    CGContextRef context = CGBitmapContextCreate(imageData,
+                                                 imageWidth,
+                                                 imageHeight,
+                                                 8,
+                                                 4 * imageWidth,
+                                                 colorSpace,
                                                  kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Host);
     
     // draw image into context
@@ -47,44 +53,52 @@ GLuint ImageLoader::loadImageAsTexture(char * filename) {
     CGContextDrawImage(context, CGRectMake(0, 0, imageWidth, imageHeight), image);
     
     // use image data from context as texture
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
                  imageWidth, imageHeight,
                  0,
-                 GL_RGBA,
+                 GL_RGB,
                  GL_UNSIGNED_BYTE, imageData);
+    std::cout << "glTexImage2D: " << glGetError() << std::endl;
     
-    // debug: write image to file
-    CGDataProviderRef writtenImageDataProvider = CGDataProviderCreateWithData(nullptr,
-                                                                              imageData,
-                                                                              imageWidth * imageHeight * 4,
-                                                                              nullptr);
-    CGImageRef writtenImage = CGImageCreate(imageWidth, imageHeight, 8,
-                                            24, imageWidth * 3,
-                                            colorSpace, kCGBitmapByteOrderDefault,
-                                            writtenImageDataProvider,
-                                            nullptr,
-                                            false,
-                                            kCGRenderingIntentDefault);
-    
-    CFStringRef destURLString = CFStringCreateWithCString(nullptr, "test.jpg", kCFStringEncodingUTF8);
-    CFStringRef imageTypeString = CFStringCreateWithCString(nullptr, "public.jpeg", kCFStringEncodingUTF8);
-    CFURLRef destURL = CFURLCreateWithString(nullptr,
-                                             destURLString,
-                                             nullptr);
-    CGImageDestinationRef imageDest = CGImageDestinationCreateWithURL(destURL,
-                                                                      imageTypeString,
-                                                                      1,
-                                                                      nullptr);
-    CGImageDestinationAddImage(imageDest,
-                               writtenImage,
-                               nullptr);
+    {
+        // debug: write image to file
+        CGDataProviderRef writtenImageDataProvider = CGDataProviderCreateWithData(nullptr,
+                                                                                  imageData,
+                                                                                  imageWidth * imageHeight * 4,
+                                                                                  nullptr);
+        CGImageRef writtenImage = CGImageCreate(imageWidth,
+                                                imageHeight, 8,
+                                                24,
+                                                imageWidth * 3,
+                                                colorSpace,
+                                                kCGBitmapByteOrderDefault,
+                                                writtenImageDataProvider,
+                                                nullptr,
+                                                false,
+                                                kCGRenderingIntentDefault);
+        
+        CFStringRef destURLString = CFStringCreateWithCString(nullptr, "test.jpg", kCFStringEncodingUTF8);
+        CFStringRef imageTypeString = CFStringCreateWithCString(nullptr, "public.jpeg", kCFStringEncodingUTF8);
+        CFURLRef destURL = CFURLCreateWithString(nullptr,
+                                                 destURLString,
+                                                 nullptr);
+        CGImageDestinationRef imageDest = CGImageDestinationCreateWithURL(destURL,
+                                                                          imageTypeString,
+                                                                          1,
+                                                                          nullptr);
+        CGImageDestinationAddImage(imageDest,
+                                   writtenImage,
+                                   nullptr);
+        
+        CGImageDestinationFinalize(imageDest);
+        
+        // clean up
+        CGDataProviderRelease(writtenImageDataProvider);
+        CGImageRelease(writtenImage);
+    }
     
     // unbind texture
     glBindTexture(GL_TEXTURE_2D, 0);
-    
-    // clean up
-    CGDataProviderRelease(writtenImageDataProvider);
-    CGImageRelease(writtenImage);
     
     CGColorSpaceRelease(colorSpace);
     CGContextRelease(context);
