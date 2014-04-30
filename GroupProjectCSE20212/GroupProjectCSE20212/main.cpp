@@ -160,11 +160,15 @@ void initSDL() {
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
     
+    glEnable(GL_TEXTURE_2D);
+    
     // error checking
     if (globalWindow == 0) {
         std::cerr << "Video mode set failed: " << SDL_GetError() << std::endl;
         quit(1);
     }
+    
+    std::cout << "InitSDL: " << glGetError() << std::endl;
 }
 
 void initOpenGL() {
@@ -179,6 +183,7 @@ void initOpenGL() {
     myTexturedProgramCreator.loadShader(GL_VERTEX_SHADER, TEXTURED_VERTEX_SHADER_PATH);
     myTexturedProgramCreator.loadShader(GL_FRAGMENT_SHADER, TEXTURED_FRAGMENT_SHADER_PATH);
     globalTexturedProgram = myTexturedProgramCreator.linkProgram();
+    std::cout << "Link global textured program: " << glGetError() << std::endl;
     
     // bind buffer location
     GLint vertexBufferLoc = glGetAttribLocation(globalProgram, ATTRIB_NAME_INPUT_VERTEX);
@@ -203,9 +208,13 @@ void initOpenGL() {
     globalDrawableObjects.push_back(new Track(vertexBufferLoc, normalBufferLoc));
     
     skyboxTextureHandle = ImageLoader::loadImageAsTexture(SKYBOX_TEXTURE_PATH);
+    std::cout << "loadImageAsTexture: " << glGetError() << std::endl;
     
-    skybox = new Skybox(vertexBufferLoc, normalBufferLoc, -1);
+    skybox = new Skybox(texVertexBufferLoc, normalBufferLoc, texUVBufferLoc);
+    std::cout << "new Skybox:" << glGetError() << std::endl;
 //    globalDrawableObjects.push_back(new Ground(vertexBufferLoc, normalBufferLoc));
+    
+    std::cout << "InitOpenGL: " << glGetError() << std::endl;
 }
 
 void deleteObjects() {
@@ -239,7 +248,7 @@ void processEvents(myGameStatus_t &status) {
     
     // calculate delta time for each time events are processed
     unsigned int deltaTime = SDL_GetTicks() - lastTick;
-#warning todo
+    
     // Grab all the events off the event queue
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
@@ -269,7 +278,6 @@ void keyDownFunc(SDL_Keysym * keysym, unsigned int deltaTime) {
     
     switch (keysym -> sym) {
         case SDLK_ESCAPE:
-#warning Ideally this should display an in-game menu instead of quitting directly
             quit(0);
             break;
             
@@ -300,7 +308,6 @@ void keyDownFunc(SDL_Keysym * keysym, unsigned int deltaTime) {
 myMenuSelection_t displayMainMenu() {
     myMenuSelection_t tempSel = kMyMenuSelectionDefault;
     
-#warning TODO
     tempSel = kMyMenuSelectionMainGame;
     
     return tempSel;
@@ -333,7 +340,7 @@ void calculateObjects() {
 
 void redrawGameScreen() {
     
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
     glClearDepth(1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
@@ -348,12 +355,11 @@ void redrawGameScreen() {
     GLint texMvpMatLoc = glGetUniformLocation(globalTexturedProgram, UNIFORM_NAME_MVP_MATRIX);
     GLint texSamplerLoc = glGetUniformLocation(globalTexturedProgram, UNIFORM_NAME_TEXTURE_SAMPLER);
     
-    
     // render untextured objects
     glUseProgram(globalProgram);
     
     // proj matrix (clip space) only changes when fov or aspect ratio changes, so we don't modify it
-    static const glm::mat4 projMat = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 100.0f);
+    static const glm::mat4 projMat = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 1000.0f);
     
     // actual drawing (not very efficient, but works)
     std::for_each(globalDrawableObjects.begin(), globalDrawableObjects.end(), [&](Drawable * obj){
@@ -381,16 +387,14 @@ void redrawGameScreen() {
     // used textured program to render skybox
     glUseProgram(globalTexturedProgram);
     glActiveTexture(GL_TEXTURE0);
-#warning yet to finish
-    glm::mat4 modelMat = skybox -> getModelMatrix();
+    glUniform1i(texSamplerLoc, skyboxTextureHandle);
+    glm::mat4 modelMat = glm::mat4(50.0f);
     glm::mat4 viewMat = glm::lookAt(motorcycle->getCameraLocation(),
                                     motorcycle->getCameraFocus(),
                                     glm::vec3(0, 1, 0));
     glm::mat4 mvpMat = projMat * viewMat * modelMat;
     glUniformMatrix4fv(texMvpMatLoc, 1, GL_FALSE, glm::value_ptr(mvpMat));
-    glUniform1i(texSamplerLoc, skyboxTextureHandle);
     skybox -> draw();
-    
     
     glUseProgram(0);
     

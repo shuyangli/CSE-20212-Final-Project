@@ -21,6 +21,8 @@
 		88276C0518D69405005FB674 /* tiny_obj_loader.cc in Sources */ = {isa = PBXBuildFile; fileRef = 88276C0218D69405005FB674 /* tiny_obj_loader.cc */; };
 		8897AAF7190DE1CF00E8A854 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88D2D3FA1905A8D6002DD9FC /* CoreGraphics.framework */; };
 		8897AAF8190DE1E600E8A854 /* ImageLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88D2D3FD1905A904002DD9FC /* ImageLoader.cpp */; };
+		8897AAF91910C2E500E8A854 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88D2D3F91905A8D6002DD9FC /* CoreFoundation.framework */; };
+		8897AAFB1910C3FF00E8A854 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8897AAFA1910C3FF00E8A854 /* ImageIO.framework */; };
 		88BB807E18CA8FF10036728A /* ProgramCreator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88BB807C18CA8FF10036728A /* ProgramCreator.cpp */; };
 /* End PBXBuildFile section */
 
@@ -72,6 +74,7 @@
 		88276C0318D69405005FB674 /* tiny_obj_loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tiny_obj_loader.h; path = Helper/tiny_obj_loader.h; sourceTree = "<group>"; };
 		88276C1118D69E3B005FB674 /* fragment.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = fragment.glsl; sourceTree = "<group>"; };
 		88276C1218D69E3B005FB674 /* vertex.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = vertex.glsl; sourceTree = "<group>"; };
+		8897AAFA1910C3FF00E8A854 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		889A0E7918DE20000033AF9A /* cube.mtl */ = {isa = PBXFileReference; lastKnownFileType = text; path = cube.mtl; sourceTree = "<group>"; };
 		889A0E7A18DE20000033AF9A /* cube.obj */ = {isa = PBXFileReference; lastKnownFileType = text; path = cube.obj; sourceTree = "<group>"; };
 		88BB807C18CA8FF10036728A /* ProgramCreator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ProgramCreator.cpp; path = Helper/ProgramCreator.cpp; sourceTree = "<group>"; };
@@ -341,6 +344,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8897AAFB1910C3FF00E8A854 /* ImageIO.framework in Frameworks */,
+				8897AAF91910C2E500E8A854 /* CoreFoundation.framework in Frameworks */,
 				8897AAF7190DE1CF00E8A854 /* CoreGraphics.framework in Frameworks */,
 				0FDB3F7A18E232AF00ED7759 /* SDL2.framework in Frameworks */,
 				880BCF5E18C78C6100EA9760 /* OpenGL.framework in Frameworks */,
@@ -353,6 +358,7 @@
 		880BCF4618C78B4000EA9760 = {
 			isa = PBXGroup;
 			children = (
+				8897AAFA1910C3FF00E8A854 /* ImageIO.framework */,
 				88D2D3F91905A8D6002DD9FC /* CoreFoundation.framework */,
 				88D2D3FA1905A8D6002DD9FC /* CoreGraphics.framework */,
 				0FDB3F7918E232AF00ED7759 /* SDL2.framework */,

@@ -9,11 +9,14 @@
 #include "ImageLoader.h"
 #include "Constants.h"
 
+#include <ImageIO/ImageIO.h>
+
 GLuint ImageLoader::loadImageAsTexture(char * filename) {
     
     GLuint textureHandle = -1;
     
     // generate texture
+    glActiveTexture(GL_TEXTURE0);
     glGenTextures(1, &textureHandle);
     glBindTexture(GL_TEXTURE_2D, textureHandle);
     
@@ -37,7 +40,6 @@ GLuint ImageLoader::loadImageAsTexture(char * filename) {
     CGContextRef context = CGBitmapContextCreate(imageData, imageWidth, imageHeight,
                                                  8, 4 * imageWidth, colorSpace,
                                                  kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Host);
-    CGColorSpaceRelease(colorSpace);
     
     // draw image into context
     CGContextClearRect(context, CGRectMake(0, 0, imageWidth, imageHeight));
@@ -51,10 +53,40 @@ GLuint ImageLoader::loadImageAsTexture(char * filename) {
                  GL_RGBA,
                  GL_UNSIGNED_BYTE, imageData);
     
+    // debug: write image to file
+    CGDataProviderRef writtenImageDataProvider = CGDataProviderCreateWithData(nullptr,
+                                                                              imageData,
+                                                                              imageWidth * imageHeight * 4,
+                                                                              nullptr);
+    CGImageRef writtenImage = CGImageCreate(imageWidth, imageHeight, 8,
+                                            24, imageWidth * 3,
+                                            colorSpace, kCGBitmapByteOrderDefault,
+                                            writtenImageDataProvider,
+                                            nullptr,
+                                            false,
+                                            kCGRenderingIntentDefault);
+    
+    CFStringRef destURLString = CFStringCreateWithCString(nullptr, "test.jpg", kCFStringEncodingUTF8);
+    CFStringRef imageTypeString = CFStringCreateWithCString(nullptr, "image/jpeg", kCFStringEncodingUTF8);
+    CFURLRef destURL = CFURLCreateWithString(nullptr,
+                                             destURLString,
+                                             nullptr);
+    CGImageDestinationRef imageDest = CGImageDestinationCreateWithURL(destURL,
+                                                                      imageTypeString,
+                                                                      1,
+                                                                      nullptr);
+    CGImageDestinationAddImage(imageDest,
+                               writtenImage,
+                               nullptr);
+    
     // unbind texture
     glBindTexture(GL_TEXTURE_2D, 0);
     
     // clean up
+    CGDataProviderRelease(writtenImageDataProvider);
+    CGImageRelease(writtenImage);
+    
+    CGColorSpaceRelease(colorSpace);
     CGContextRelease(context);
     CGImageRelease(image);
     CGDataProviderRelease(imageDataProvider);
