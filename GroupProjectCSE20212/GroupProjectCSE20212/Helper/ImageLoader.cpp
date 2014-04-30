@@ -45,10 +45,10 @@ GLuint ImageLoader::loadImageAsTexture(char * filename) {
     CGContextDrawImage(context, CGRectMake(0, 0, imageWidth, imageHeight), image);
     
     // use image data from context as texture
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
                  imageWidth, imageHeight,
                  0,
-                 GL_RGBA,
+                 GL_RGB,
                  GL_UNSIGNED_BYTE, imageData);
     
     // unbind texture
