@@ -89,7 +89,10 @@ private:
     
     // Imagine a smallest possible triangular box containing the motorcycle.
     // This array stores the coordinates of the bottom four vertices of the box.
-    glm::vec3 wrappingBoxVertices[4];
+    // Consider the head direction of the motorcycle as the front direction.
+    // wrappingBoxVertices[0] is front left, [1] front right, [2] back left,
+    // and [3] back right.
+    glm::vec2 wrappingBoxVertices[4];
     
     glm::mat4 scaleMatrix;
 };

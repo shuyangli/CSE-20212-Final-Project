@@ -26,12 +26,12 @@ Motorcycle::Motorcycle(GLint        givenVertexBufferLoc,
                        double       objRotation)
 {
     
-    // load objects
+    // Load the motorcycle object
     setLoader(new ObjLoader());
     ObjLoader * myLoaderRef = getLoader();
     myLoaderRef -> loadObj(MOTORCYCLE_PATH, MTL_BASEPATH);
     
-    // four parts!
+    // The Blender motorcycle model has four parts to be rendered.
     for (int i = 0; i < 4; ++i) {
     
         glGenBuffers(1, &vertexBuffer[i]);
@@ -105,6 +105,10 @@ Motorcycle::Motorcycle(GLint        givenVertexBufferLoc,
     rotation = objRotation;
     speed = 0.0f;
     angleToFront = 0.0f;
+    wrappingBoxVertices[0] = glm::vec2(0.850f, 0.180f);
+    wrappingBoxVertices[1] = glm::vec2(0.850f, -0.180f);
+    wrappingBoxVertices[2] = glm::vec2(-0.155f, 0.180f);
+    wrappingBoxVertices[3] = glm::vec2(-0.155f, -0.180f);
 }
 
 Motorcycle::~Motorcycle()
@@ -167,8 +171,17 @@ void Motorcycle::draw(GLint lightIntensityLoc, GLint ambientLightIntensityLoc) {
 }
 
 void Motorcycle::move(unsigned int deltaTime) { // Moves the motorcycle
-    // Add speed to the position
     position += direction * (speed * deltaTime);
+    
+    // Update the wrapping box.
+    // Remember we only consider the horizontal x-z plane.
+    glm::vec2 XZdir = glm::vec2(direction.x, direction.z);          // Only consider the direction on x-z plane
+    glm::vec2 XZleft = glm::vec2(-direction.z, direction.x);        // Left direction with respect to the direction vector
+    glm::vec2 XZpos = glm::vec2(position.x, position.z);
+    wrappingBoxVertices[0] = XZpos + XZdir * 0.850f + XZleft * 0.180f;
+    wrappingBoxVertices[1] = XZpos + XZdir * 0.850f + XZleft * -0.180f;
+    wrappingBoxVertices[2] = XZpos + XZdir * -0.155f + XZleft * 0.180f;
+    wrappingBoxVertices[3] = XZpos + XZdir * -0.155f + XZleft * -0.180f;
 }
 
 void Motorcycle::turnLeft(unsigned int deltaTime) {
