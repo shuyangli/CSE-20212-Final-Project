@@ -67,7 +67,7 @@ GLuint ImageLoader::loadImageAsTexture(char * filename) {
                                             kCGRenderingIntentDefault);
     
     CFStringRef destURLString = CFStringCreateWithCString(nullptr, "test.jpg", kCFStringEncodingUTF8);
-    CFStringRef imageTypeString = CFStringCreateWithCString(nullptr, "image/jpeg", kCFStringEncodingUTF8);
+    CFStringRef imageTypeString = CFStringCreateWithCString(nullptr, "public.jpeg", kCFStringEncodingUTF8);
     CFURLRef destURL = CFURLCreateWithString(nullptr,
                                              destURLString,
                                              nullptr);
