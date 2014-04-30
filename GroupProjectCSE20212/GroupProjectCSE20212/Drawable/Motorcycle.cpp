@@ -26,12 +26,12 @@ Motorcycle::Motorcycle(GLint        givenVertexBufferLoc,
                        double       objRotation)
 {
     
-    // load objects
+    // Load the motorcycle object
     setLoader(new ObjLoader());
     ObjLoader * myLoaderRef = getLoader();
     myLoaderRef -> loadObj(MOTORCYCLE_PATH, MTL_BASEPATH);
     
-    // four parts!
+    // The Blender motorcycle model has four parts to be rendered.
     for (int i = 0; i < 4; ++i) {
     
         glGenBuffers(1, &vertexBuffer[i]);
@@ -105,6 +105,10 @@ Motorcycle::Motorcycle(GLint        givenVertexBufferLoc,
     rotation = objRotation;
     speed = 0.0f;
     angleToFront = 0.0f;
+    wrappingBoxVertices.push_back(glm::vec2(0.850f, 0.180f));
+    wrappingBoxVertices.push_back(glm::vec2(0.850f, -0.180f));
+    wrappingBoxVertices.push_back(glm::vec2(-0.155f, -0.180f));
+    wrappingBoxVertices.push_back(glm::vec2(-0.155f, 0.180f));
 }
 
 Motorcycle::~Motorcycle()
@@ -118,6 +122,10 @@ Motorcycle::~Motorcycle()
         glDeleteBuffers(1, &normalBuffer[i]);
         glDeleteBuffers(1, &indexBuffer[i]);
     }
+}
+
+std::vector<glm::vec2> Motorcycle::getWrappingBox() const {
+    return wrappingBoxVertices;
 }
 
 drawableObjectType_t Motorcycle::type() {
@@ -167,8 +175,32 @@ void Motorcycle::draw(GLint lightIntensityLoc, GLint ambientLightIntensityLoc) {
 }
 
 void Motorcycle::move(unsigned int deltaTime) { // Moves the motorcycle
-    // Add speed to the position
     position += direction * (speed * deltaTime);
+    
+    // Normalizing the direction vector
+    direction = direction / sqrtf(direction.x * direction.x + direction.y * direction.y + direction.z * direction.z);
+    
+    // Update the wrapping box.
+    // Remember we only consider the horizontal x-z plane.
+    glm::vec2 XZdir = glm::vec2(direction.x, direction.z);          // Only consider the direction on x-z plane
+    XZdir = XZdir / sqrtf(XZdir.x * XZdir.x + XZdir.y * XZdir.y);   // Normalizing the XZdir
+    //std::cout << "XZdir: " << XZdir.x << ", " << XZdir.y << "\n";
+    glm::vec2 XZleft = glm::vec2(-XZdir.y, XZdir.x);        // Left direction with respect to the direction vector
+    XZleft = XZleft / sqrtf(XZleft.x * XZleft.x + XZleft.y * XZleft.y); // Normalizing the XZleft
+    glm::vec2 XZpos = glm::vec2(position.x, position.z);
+    //wrappingBoxVertices[0] = XZpos + XZdir * 0.850f + XZleft * 0.180f;
+    wrappingBoxVertices[0] = XZpos + XZdir * 1.0f + XZleft * 0.30f;
+    wrappingBoxVertices[1] = XZpos + XZdir * 1.0f + XZleft * -0.30f;
+    wrappingBoxVertices[2] = XZpos + XZdir * -0.3f + XZleft * -0.30f;
+    wrappingBoxVertices[3] = XZpos + XZdir * -0.3f + XZleft * 0.30f;
+    
+    /*
+    std::cout << "ListPlot[{" << std::endl;
+    std::cout << "{" << wrappingBoxVertices[0].x << "," << wrappingBoxVertices[0].y << "},"
+              << "{" << wrappingBoxVertices[1].x << "," << wrappingBoxVertices[1].y << "},"
+              << "{" << wrappingBoxVertices[2].x << "," << wrappingBoxVertices[2].y << "},"
+              << "{" << wrappingBoxVertices[3].x << "," << wrappingBoxVertices[3].y << "}}]\n";
+     */
 }
 
 void Motorcycle::turnLeft(unsigned int deltaTime) {
@@ -200,22 +232,4 @@ glm::vec3 Motorcycle::getCameraFocus() {
 glm::vec3 Motorcycle::getCameraLocation() {
     // camera location is 0.5 unit back from the position, so that part of the motorcycle can be seen
     return position - direction * 0.5f + glm::vec3(0.0f, 1.0f, 0.0f);
-}
-
-int Motorcycle::isInBounds()           // Determines if the motorcycle is in on the road
-{
-#warning TODO
-    return 1;
-}
-
-int Motorcycle::isInCollision()        // Determines if the motorcycle collides with something
-{
-#warning TODO
-    return 0;
-}
-
-int Motorcycle::isFinished()           // Determines if the motorcycle gets to the finish line
-{
-#warning TODO
-    return 0;
 }
