@@ -12,6 +12,7 @@
 #include <iostream>
 #include <vector>
 #include "Drawable.h"
+#include "Motorcycle.h"
 
 class Track : public Drawable {
     
@@ -21,6 +22,9 @@ public:
     ~Track();
     
     void draw();
+    
+    // Getter of the walls variable
+    std::vector<glm::vec2> getWalls() const;
     
     /**
      * Performs introspection on the Drawable object
@@ -39,9 +43,9 @@ private:
     glm::mat4 scaleMatrix;
     
     // The track has walls that flank the road.
-    // The inner part of the walls are considered to consist of multiple neighboring rectangular faces.
-    // This vector stores the coordinates of the bottom two vertices of these rectangular faces.
-    std::vector<std::vector <glm::vec3> > innerWallFaces;
+    // This variable stores the bottom vertices of the walls
+    std::vector<glm::vec2> walls;
+    
     
 };
 

@@ -88,9 +88,55 @@ GLuint globalTexturedProgram = 0;
 std::vector<Drawable *> globalDrawableObjects;
 std::vector<GLuint> globalBuffers;
 
-Motorcycle * motorcycle;    // controllable object
+Motorcycle * motorcycle;    // Motorcycle object
+Track * track;              // Track object
 Skybox * skybox;            // textured object
 GLuint skyboxTextureHandle = -1;    // texture handle
+
+#pragma mark - Determine collision between the motorcycle and the track
+// Returns the area, which is half the determinant of the vertices which should be in order, either clockwise or counterclockwise
+float area(const std::vector<glm::vec2> P) {
+    float result = 0.0, x1, y1, x2, y2;
+    for (int i = 1; i < (int)P.size() - 1; i++) {
+        x1 = P[i].x - P[0].x; x2 = P[i+1].x - P[0].x;
+        y1 = P[i].y - P[0].y; y2 = P[i+1].y - P[0].y;
+        result += (x1 * y2 - x2 * y1);
+    }
+    return fabsf(result) / 2.0;
+}
+
+// Determine if a point is inside a rectangle
+bool isPointInsideRectangle(glm::vec2 point, std::vector<glm::vec2> rect) {
+    if (rect.size() != 4) return false; // return false if it's not a rectanle
+    std::vector<glm::vec2> subrect_1;
+    subrect_1.push_back(rect[0]);subrect_1.push_back(rect[1]);subrect_1.push_back(point);
+    std::vector<glm::vec2> subrect_2;
+    subrect_2.push_back(rect[1]);subrect_2.push_back(rect[2]);subrect_2.push_back(point);
+    std::vector<glm::vec2> subrect_3;
+    subrect_3.push_back(rect[2]);subrect_3.push_back(rect[3]);subrect_3.push_back(point);
+    std::vector<glm::vec2> subrect_4;
+    subrect_4.push_back(rect[3]);subrect_4.push_back(rect[0]);subrect_4.push_back(point);
+    float subrect_1_area = area(subrect_1);
+    float subrect_2_area = area(subrect_2);
+    float subrect_3_area = area(subrect_3);
+    float subrect_4_area = area(subrect_4);
+    float rect_area = area(rect);
+    float subrects_area_sum = subrect_1_area + subrect_2_area + subrect_3_area + subrect_4_area;
+    return subrects_area_sum <= rect_area;
+}
+
+// Determine if the motorcycle is on track
+bool isMotorcycleOnTrack(Motorcycle *motorcycle, Track *track)           // Determines if the motorcycle is in on the road
+{
+    std::vector<glm::vec2> wrappingBoxVertices = motorcycle->getWrappingBox();
+    std::vector<glm::vec2> walls = track->getWalls();
+    for (int i = 0; i < walls.size(); ++i) {
+        glm::vec2 point = walls[i];
+        if (isPointInsideRectangle(point, wrappingBoxVertices))
+            return false;
+    }
+    return true;
+}
 
 #pragma mark - Main
 
@@ -205,7 +251,9 @@ void initOpenGL() {
                                 0.05f);
     globalDrawableObjects.push_back(motorcycle);
     
-    globalDrawableObjects.push_back(new Track(vertexBufferLoc, normalBufferLoc));
+    track = new Track(vertexBufferLoc, normalBufferLoc);
+    
+    globalDrawableObjects.push_back(track);
     
     skyboxTextureHandle = ImageLoader::loadImageAsTexture(SKYBOX_TEXTURE_PATH);
     std::cout << "loadImageAsTexture: " << glGetError() << std::endl;
@@ -269,6 +317,15 @@ void processEvents(myGameStatus_t &status) {
     
     // move motorcycle here
     motorcycle -> move(deltaTime);
+    
+    static int collisionCount = 0;
+    
+    if (!isMotorcycleOnTrack(motorcycle, track)) {
+        std::cout << ++collisionCount << "\nCollision!" << std::endl;
+        int n = 4;
+        while (n--)
+        motorcycle->turnLeft(deltaTime);
+    }
     
     // update time after each frame
     lastTick = SDL_GetTicks();

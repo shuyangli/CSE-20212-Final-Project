@@ -11,6 +11,8 @@
 
 #include <iostream>
 #include "Drawable.h"
+#include <vector>
+#include "Track.h"
 
 class Motorcycle : public Drawable {
     
@@ -49,9 +51,11 @@ public:
     /* Calculates the wrapping box vertices */
     void calculateWrappingBoxVertices();
     
-    int isInBounds();           // Determines if the motorcycle is on the road
-    int isInCollision();        // Determines if the motorcycle collides with something
-    int isFinished();           // Determines if the motorcycle gets to the finish line
+    // Change the direction when the motorcycle crashes into the walls of the track
+    void reactToCollision();
+    
+    // Getter of wrapping box vertices
+    std::vector<glm::vec2> getWrappingBox() const;
     
 private:
     
@@ -90,9 +94,9 @@ private:
     // Imagine a smallest possible triangular box containing the motorcycle.
     // This array stores the coordinates of the bottom four vertices of the box.
     // Consider the head direction of the motorcycle as the front direction.
-    // wrappingBoxVertices[0] is front left, [1] front right, [2] back left,
-    // and [3] back right.
-    glm::vec2 wrappingBoxVertices[4];
+    // wrappingBoxVertices[0] is front left, [1] front right, [2] back right,
+    // and [3] back left.
+    std::vector<glm::vec2> wrappingBoxVertices;
     
     glm::mat4 scaleMatrix;
 };
