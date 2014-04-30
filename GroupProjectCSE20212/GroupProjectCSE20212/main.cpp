@@ -296,7 +296,7 @@ void processEvents(myGameStatus_t &status) {
     
     // calculate delta time for each time events are processed
     unsigned int deltaTime = SDL_GetTicks() - lastTick;
-    std::cout << deltaTime << std::endl;
+    //std::cout << deltaTime << std::endl;
     // Grab all the events off the event queue
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
@@ -444,16 +444,16 @@ void redrawGameScreen() {
     // used textured program to render skybox
     glUseProgram(globalTexturedProgram);
     glActiveTexture(GL_TEXTURE0);
-    std::cout << "glActiveTexture: " << glGetError() << std::endl;
+    //std::cout << "glActiveTexture: " << glGetError() << std::endl;
     glUniform1i(texSamplerLoc, skyboxTextureHandle);
-    std::cout << "glUniform1i: " << glGetError() << std::endl;
+    //std::cout << "glUniform1i: " << glGetError() << std::endl;
     glm::mat4 modelMat = glm::mat4(50.0f);
     glm::mat4 viewMat = glm::lookAt(motorcycle->getCameraLocation(),
                                     motorcycle->getCameraFocus(),
                                     glm::vec3(0, 1, 0));
     glm::mat4 mvpMat = projMat * viewMat * modelMat;
     glUniformMatrix4fv(texMvpMatLoc, 1, GL_FALSE, glm::value_ptr(mvpMat));
-    std::cout << "glUniformMatrix4fv: " << glGetError() << std::endl;
+    //std::cout << "glUniformMatrix4fv: " << glGetError() << std::endl;
     skybox -> draw();
     
     glUseProgram(0);
