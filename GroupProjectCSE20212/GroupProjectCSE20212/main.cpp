@@ -18,6 +18,7 @@
 // SDL header
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
+#include <SDL2_ttf/SDL_ttf.h>   // for font rendering for overlaying UI components
 
 // Helpers
 #include "Constants.h"
@@ -412,7 +413,7 @@ void calculateObjects() {
 
 void redrawGameScreen() {
     
-    glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
+    glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
     glClearDepth(1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
@@ -459,10 +460,9 @@ void redrawGameScreen() {
     // used textured program to render skybox
     glUseProgram(globalTexturedProgram);
     glActiveTexture(GL_TEXTURE0);
-    //std::cout << "glActiveTexture: " << glGetError() << std::endl;
-    glUniform1i(texSamplerLoc, skyboxTextureHandle);
-    //std::cout << "glUniform1i: " << glGetError() << std::endl;
-    glm::mat4 modelMat = glm::mat4(50.0f);
+    glBindTexture(GL_TEXTURE_2D, skyboxTextureHandle);
+    glUniform1i(texSamplerLoc, 0);                          // "TEXTURE 0"
+    glm::mat4 modelMat = skybox -> getModelMatrix();
     glm::mat4 viewMat = glm::lookAt(motorcycle->getCameraLocation(),
                                     motorcycle->getCameraFocus(),
                                     glm::vec3(0, 1, 0));
