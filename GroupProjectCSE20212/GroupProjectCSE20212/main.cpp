@@ -18,6 +18,7 @@
 // SDL header
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
+#include <SDL2_ttf/SDL_ttf.h>   // for font rendering for overlaying UI components
 
 // Helpers
 #include "Constants.h"
