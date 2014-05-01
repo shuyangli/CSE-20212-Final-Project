@@ -56,10 +56,10 @@ GLuint ImageLoader::loadImageAsTexture(char * filename) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     
     // use image data from context as texture
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
                  imageWidth, imageHeight,
                  0,
-                 GL_RGB,
+                 GL_RGBA,
                  GL_UNSIGNED_BYTE, imageData);
     std::cout << "glTexImage2D: " << glGetError() << std::endl;
     
