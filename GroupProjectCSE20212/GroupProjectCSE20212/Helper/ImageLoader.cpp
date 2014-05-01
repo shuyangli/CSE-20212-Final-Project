@@ -13,19 +13,6 @@
 
 GLuint ImageLoader::loadImageAsTexture(char * filename) {
     
-    GLuint textureHandle = -1;
-    
-    // generate texture
-    glActiveTexture(GL_TEXTURE0);
-    std::cout << "glActiveTexture: " << glGetError() << std::endl;
-    glGenTextures(1, &textureHandle);
-    glBindTexture(GL_TEXTURE_2D, textureHandle);
-    std::cout << "glBindTexture: " << glGetError() << std::endl;
-    
-    // we're not using mipmaps
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    
     // actually loading image
     CGDataProviderRef imageDataProvider = CGDataProviderCreateWithFilename(filename);
     CGImageRef image = CGImageCreateWithJPEGDataProvider(imageDataProvider,
@@ -35,7 +22,7 @@ GLuint ImageLoader::loadImageAsTexture(char * filename) {
     // setup parameters
     GLuint imageWidth = (GLuint) CGImageGetWidth(image);
     GLuint imageHeight = (GLuint) CGImageGetHeight(image);
-
+    
     // create context
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
     void * imageData = malloc(imageWidth * imageHeight * 4);
@@ -50,7 +37,23 @@ GLuint ImageLoader::loadImageAsTexture(char * filename) {
     // draw image into context
     CGContextClearRect(context, CGRectMake(0, 0, imageWidth, imageHeight));
     CGContextTranslateCTM(context, 0, 0);
+    
+    // fix flip problem
+    CGAffineTransform flipVertical = CGAffineTransformMake(1, 0, 0, -1, 0, imageHeight);
+    CGContextConcatCTM(context, flipVertical);
+    
     CGContextDrawImage(context, CGRectMake(0, 0, imageWidth, imageHeight), image);
+    
+    
+    // generate texture
+    GLuint textureHandle;
+    glActiveTexture(GL_TEXTURE0);
+    glGenTextures(1, &textureHandle);
+    glBindTexture(GL_TEXTURE_2D, textureHandle);
+    
+    // we're not using mipmaps
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     
     // use image data from context as texture
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
@@ -97,8 +100,6 @@ GLuint ImageLoader::loadImageAsTexture(char * filename) {
         CGImageRelease(writtenImage);
     }
     
-    // unbind texture
-    glBindTexture(GL_TEXTURE_2D, 0);
     
     CGColorSpaceRelease(colorSpace);
     CGContextRelease(context);

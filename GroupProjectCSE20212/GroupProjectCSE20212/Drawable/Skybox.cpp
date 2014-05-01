@@ -61,16 +61,13 @@ Skybox::Skybox(GLint    givenVertexBufferLoc,
     
     // bind UV array
     glEnableVertexAttribArray(givenUVBufferLoc);
-    std::cout << "enable buffer loc: " << glGetError() << std::endl;
     glBindBuffer(GL_ARRAY_BUFFER, uvBuffer);
-    std::cout << "bind uv buffer: " << glGetError() << std::endl;
     glVertexAttribPointer(givenUVBufferLoc,
                           2,
                           GL_FLOAT,
                           GL_FALSE,
                           0,
                           0);
-    std::cout << "vertex for UV buffer: " << glGetError() << std::endl;
     
     // bind index array
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);

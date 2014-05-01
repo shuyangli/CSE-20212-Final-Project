@@ -444,9 +444,8 @@ void redrawGameScreen() {
     // used textured program to render skybox
     glUseProgram(globalTexturedProgram);
     glActiveTexture(GL_TEXTURE0);
-    std::cout << "glActiveTexture: " << glGetError() << std::endl;
-    glUniform1i(texSamplerLoc, skyboxTextureHandle);
-    std::cout << "glUniform1i: " << glGetError() << std::endl;
+    glBindTexture(GL_TEXTURE_2D, skyboxTextureHandle);
+    glUniform1i(texSamplerLoc, 0);                          // "TEXTURE 0"
     glm::mat4 modelMat = glm::mat4(50.0f);
     glm::mat4 viewMat = glm::lookAt(motorcycle->getCameraLocation(),
                                     motorcycle->getCameraFocus(),
