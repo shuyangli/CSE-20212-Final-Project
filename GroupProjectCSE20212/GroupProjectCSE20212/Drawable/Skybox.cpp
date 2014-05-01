@@ -42,7 +42,8 @@ Skybox::Skybox(GLint    givenVertexBufferLoc,
     
     vertexCount = (unsigned int) myLoaderRef -> getIndices().size();
     
-    scaleMatrix = glm::mat4(1.0f);
+    scaleMatrix = glm::scale(glm::mat4(1.0f),
+                             glm::vec3(40.0f, 40.0f, 40.0f)) * glm::mat4(1.0f);
     setModelMatrix(scaleMatrix);
     
     // wrap states using vao

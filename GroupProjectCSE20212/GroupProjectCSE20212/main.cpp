@@ -446,7 +446,7 @@ void redrawGameScreen() {
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, skyboxTextureHandle);
     glUniform1i(texSamplerLoc, 0);                          // "TEXTURE 0"
-    glm::mat4 modelMat = glm::mat4(50.0f);
+    glm::mat4 modelMat = skybox -> getModelMatrix();
     glm::mat4 viewMat = glm::lookAt(motorcycle->getCameraLocation(),
                                     motorcycle->getCameraFocus(),
                                     glm::vec3(0, 1, 0));
