@@ -40,8 +40,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0F031D021911B646002507E9 /* Track.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Track.mtl; sourceTree = "<group>"; };
-		0F031D031911B646002507E9 /* Track.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Track.obj; sourceTree = "<group>"; };
+		0F031D061911BCD0002507E9 /* Track.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Track.mtl; sourceTree = "<group>"; };
+		0F031D071911BCD0002507E9 /* Track.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Track.obj; sourceTree = "<group>"; };
 		0F39F20318F81ADC00A9C340 /* Skybox.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Skybox.mtl; sourceTree = "<group>"; };
 		0F39F20418F81ADC00A9C340 /* Skybox.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Skybox.obj; sourceTree = "<group>"; };
 		0F630CE01906326800ADE8D8 /* Motorcycle.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Motorcycle.mtl; sourceTree = "<group>"; };
@@ -420,8 +420,8 @@
 		889A0E7718DE1FD50033AF9A /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				0F031D021911B646002507E9 /* Track.mtl */,
-				0F031D031911B646002507E9 /* Track.obj */,
+				0F031D061911BCD0002507E9 /* Track.mtl */,
+				0F031D071911BCD0002507E9 /* Track.obj */,
 				0F630CE01906326800ADE8D8 /* Motorcycle.mtl */,
 				0F630CE11906326800ADE8D8 /* Motorcycle.obj */,
 				0F78870518F864AD0068EED6 /* skybox_texture.jpg */,

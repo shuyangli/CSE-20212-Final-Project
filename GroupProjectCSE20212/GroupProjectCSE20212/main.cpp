@@ -94,6 +94,12 @@ Skybox * skybox;            // textured object
 GLuint skyboxTextureHandle = -1;    // texture handle
 
 #pragma mark - Determine collision between the motorcycle and the track
+
+// Returns the distance between p1 and p2
+float dist(glm::vec2 p1, glm::vec2 p2) {
+    return hypotf(p1.x - p2.x, p1.y - p2.y);
+}
+
 // Returns the area, which is half the determinant of the vertices which should be in order, either clockwise or counterclockwise
 float area(const std::vector<glm::vec2> P) {
     float result = 0.0, x1, y1, x2, y2;
@@ -126,16 +132,20 @@ bool isPointInsideRectangle(glm::vec2 point, std::vector<glm::vec2> rect) {
 }
 
 // Determine if the motorcycle is on track
-bool isMotorcycleOnTrack(Motorcycle *motorcycle, Track *track)           // Determines if the motorcycle is in on the road
+// If the result is 0, then it's on track.
+// If the result is 1, it should turn right; if the result is -1, it should turn left.
+int isMotorcycleOnTrack(Motorcycle *motorcycle, Track *track)           // Determines if the motorcycle is in on the road
 {
     std::vector<glm::vec2> wrappingBoxVertices = motorcycle->getWrappingBox();
     std::vector<glm::vec2> walls = track->getWalls();
     for (int i = 0; i < walls.size(); ++i) {
         glm::vec2 point = walls[i];
         if (isPointInsideRectangle(point, wrappingBoxVertices))
-            return false;
+        {
+            return (dist(wrappingBoxVertices[0], point) < dist(wrappingBoxVertices[1], point)) ? 1 : -1;
+        }
     }
-    return true;
+    return 0;
 }
 
 #pragma mark - Main
@@ -320,11 +330,16 @@ void processEvents(myGameStatus_t &status) {
     
     static int collisionCount = 0;
     
-    if (!isMotorcycleOnTrack(motorcycle, track)) {
+    int collisionIndex = isMotorcycleOnTrack(motorcycle, track);
+    
+    if (collisionIndex) {
         std::cout << ++collisionCount << "\nCollision!" << std::endl;
         int n = 4;
         while (n--)
-        motorcycle->turnLeft(deltaTime);
+            if (collisionIndex < 0)
+                motorcycle->turnLeft(deltaTime);
+            else
+                motorcycle->turnRight(deltaTime);
     }
     
     // update time after each frame

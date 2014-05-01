@@ -22,15 +22,15 @@ Track::Track(GLint        givenVertexBufferLoc,
     // In this OpenGL program, x-z is the horizontal plane.
     // The following code snippet grabs the x and z coordinates of all the
     // vertices that are at the bottom of the inner walls of the track.
-    std::cout << "ListPlot[ { " << std::endl;
+    //std::cout << "ListPlot[ { " << std::endl;
     std::vector<GLfloat> vertices = myLoaderRef->getVertices();
     for (int i = 0; i < vertices.size(); i += 3) {
         if (vertices[i + 1] > 1) continue;
-        if (i) std::cout << ", ";
-        std::cout << "{" << vertices[i] << ", " << vertices[i + 2] << "}";
+        //if (i) std::cout << ", ";
+        //std::cout << "{" << vertices[i] << ", " << vertices[i + 2] << "}";
         walls.push_back(glm::vec2(vertices[i], vertices[i+2]));
     }
-    std::cout << " } ]" << std::endl;
+    //std::cout << " } ]" << std::endl;
     
     glGenBuffers(1, &vertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
