@@ -50,8 +50,8 @@
 		0FB170A818F2E212004CE328 /* Sample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Sample.h; path = Drawable/Sample.h; sourceTree = "<group>"; };
 		0FB170A918F2E212004CE328 /* Skybox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Skybox.cpp; path = Drawable/Skybox.cpp; sourceTree = "<group>"; };
 		0FB170AA18F2E212004CE328 /* Skybox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Skybox.h; path = Drawable/Skybox.h; sourceTree = "<group>"; };
-		0FBC3EEB1913DDB100A5109A /* Track.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Track.mtl; sourceTree = "<group>"; };
-		0FBC3EEC1913DDB100A5109A /* Track.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Track.obj; sourceTree = "<group>"; };
+		0FBC3EED1913E1FD00A5109A /* Track.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Track.mtl; sourceTree = "<group>"; };
+		0FBC3EEE1913E1FD00A5109A /* Track.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Track.obj; sourceTree = "<group>"; };
 		0FDB3F7918E232AF00ED7759 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../../../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
 		0FE8C82E18E5BB95006F9FA0 /* Drawable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Drawable.h; path = Drawable/Drawable.h; sourceTree = "<group>"; };
 		0FE8C82F18E5BB95006F9FA0 /* Motorcycle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Motorcycle.cpp; path = Drawable/Motorcycle.cpp; sourceTree = "<group>"; };
@@ -420,8 +420,8 @@
 		889A0E7718DE1FD50033AF9A /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				0FBC3EEB1913DDB100A5109A /* Track.mtl */,
-				0FBC3EEC1913DDB100A5109A /* Track.obj */,
+				0FBC3EED1913E1FD00A5109A /* Track.mtl */,
+				0FBC3EEE1913E1FD00A5109A /* Track.obj */,
 				0F630CE01906326800ADE8D8 /* Motorcycle.mtl */,
 				0F630CE11906326800ADE8D8 /* Motorcycle.obj */,
 				0F78870518F864AD0068EED6 /* skybox_texture.jpg */,
