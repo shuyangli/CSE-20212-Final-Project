@@ -57,6 +57,9 @@ public:
     // Getter of wrapping box vertices
     std::vector<glm::vec2> getWrappingBox() const;
     
+    /* Setter of speed */
+    void setSpeed(float);
+    
 private:
     
     // Drawing

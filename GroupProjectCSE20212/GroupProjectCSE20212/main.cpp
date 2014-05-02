@@ -335,12 +335,7 @@ void processEvents(myGameStatus_t &status) {
     
     if (collisionIndex) {
         std::cout << ++collisionCount << "\nCollision!" << std::endl;
-        int n = 4;
-        while (n--)
-            if (collisionIndex < 0)
-                motorcycle->turnLeft(deltaTime);
-            else
-                motorcycle->turnRight(deltaTime);
+        motorcycle->setSpeed(0);
     }
     
     // update time after each frame
