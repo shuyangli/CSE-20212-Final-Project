@@ -105,10 +105,10 @@ Motorcycle::Motorcycle(GLint        givenVertexBufferLoc,
     rotation = objRotation;
     speed = 0.0f;
     angleToFront = 0.0f;
-    wrappingBoxVertices.push_back(glm::vec2(1.0f, 0.3f));
-    wrappingBoxVertices.push_back(glm::vec2(1.0f, -0.3f));
-    wrappingBoxVertices.push_back(glm::vec2(-0.3f, -0.3f));
-    wrappingBoxVertices.push_back(glm::vec2(-0.3f, 0.3f));
+    wrappingBoxVertices.push_back(glm::vec2(1.5f, 1.f));
+    wrappingBoxVertices.push_back(glm::vec2(1.5f, -1.f));
+    wrappingBoxVertices.push_back(glm::vec2(-0.5f, -1.f));
+    wrappingBoxVertices.push_back(glm::vec2(-0.5f, 1.f));
 }
 
 Motorcycle::~Motorcycle()
@@ -231,7 +231,7 @@ glm::vec3 Motorcycle::getCameraFocus() {
 
 glm::vec3 Motorcycle::getCameraLocation() {
     // camera location is 0.5 unit back from the position, so that part of the motorcycle can be seen
-    return position - direction * 0.5f + glm::vec3(0.0f, 1.0f, 0.0f);
+    return position - direction * 0.8f + glm::vec3(0.0f, 1.0f, 0.0f);
 }
 
 void Motorcycle::setSpeed(float spd) {
